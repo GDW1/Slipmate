@@ -87,26 +87,26 @@ class CardItem extends Component {
             <div className={classes.baseline}>
               <div className={classes.inline}>
                 <Typography style={{ textTransform: 'uppercase' }} color='secondary' gutterBottom>
-                  Name
+                  Student Name
                 </Typography>
                 <Typography variant="h6" gutterBottom>
-                  this.name
+                  Julian Edelman
                 </Typography>
               </div>
               <div className={classes.inline}>
                 <Typography style={{ textTransform: 'uppercase' }} color='secondary' gutterBottom>
-                  From
+                  Receiving Teacher
                 </Typography>
                 <Typography variant="h6" gutterBottom>
-                  this.assignedTeacher
+                  Curie, Marie
                 </Typography>
               </div>
               <div className={classes.inline}>
                 <Typography style={{ textTransform: 'uppercase' }} color='secondary' gutterBottom>
-                  Class
+                  Sending Teacher
                 </Typography>
                 <Typography variant="h6" gutterBottom>
-                  this.targetClass
+                  Nadal, Rafael
                 </Typography>
               </div>
             </div>
@@ -114,8 +114,8 @@ class CardItem extends Component {
               <Typography style={{ textTransform: 'uppercase' }} color='secondary' gutterBottom>
                 Reason
               </Typography>
-              <Typography variant="h4" gutterBottom>
-                this.reason
+              <Typography variant="h6" gutterBottom>
+                Lorem ipsum
               </Typography>
               <ButtonBar />
             </div>

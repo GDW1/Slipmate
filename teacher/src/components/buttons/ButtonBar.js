@@ -25,14 +25,14 @@ class ButtonBar extends Component {
         <Button
           className={classes.primary}
         >
-          Delete
+          Deny
         </Button>
         <Button
           variant="contained"
           color="primary"
           className={classes.secondary}
         >
-          Edit
+          Accept
         </Button>
       </div>
     )

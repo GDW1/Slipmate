@@ -33,10 +33,10 @@ export default [
         'end': new Date(2015, 3, 9, 0, 0, 0)
     },
     {
-        'title': 'Conference',
-        'bgColor': '#e9967a',
-        'start': new Date(2019, 4, 11),
-        'end': new Date(2019, 4, 13),
+        'title': 'Away',
+        'bgColor': '#FF0000',
+        'start': new Date(2019, 4, 13),
+        'end': new Date(2019, 4, 18),
         desc: 'Big conference for important people'
     },
     {
