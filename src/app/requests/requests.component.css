@@ -1,0 +1,16 @@
+.card-container {
+    margin: auto;
+    padding: 1em;
+}
+
+.card {
+    border-radius: 12px;
+}
+
+.button-bar {
+    padding: 1em;
+}
+
+.pad {
+    padding: 0.5em;
+}

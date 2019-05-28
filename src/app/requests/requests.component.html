@@ -1,0 +1,26 @@
+<div style="padding: 100px; alignment: center" *ngIf="requests.length">
+    <div class="card-container" *ngFor="let r of requests" style="max-width: 900px">
+        <mat-card class="card">
+            <mat-card-title class="pad">{{r}}</mat-card-title>
+            <mat-card-content style="padding-left: 1em;">
+                Hello
+            </mat-card-content>
+            <mat-card-actions style="overflow: auto">
+                <div class="button-bar" style="float: right">
+                    <button mat-stroked-button color="warn">
+                        Deny
+                    </button>
+                    <button mat-raised-button style="background-color: limegreen">
+                        <span class="mat-button-wrapper" style="color: white">Allow</span>
+                    </button>
+                </div>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>
+
+<div style="padding: 100px; alignment: center" *ngIf="!requests.length">
+    <mat-card class="card">
+        <mat-card-title style="padding: 0.5em;">No more requests!</mat-card-title>
+    </mat-card>
+</div>
