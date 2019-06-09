@@ -27,7 +27,7 @@ export class AppComponent implements AfterViewInit, OnInit {
     }
 
     private user: SocialUser;
-    private loggedIn: boolean;
+    public loggedIn: boolean;
 
     ngAfterViewInit() {
         this.sidenavContainer.scrollable.elementScrolled().subscribe(() => {
