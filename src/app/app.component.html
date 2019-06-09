@@ -1,1 +1,61 @@
-<router-outlet></router-outlet>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<div *ngIf="!loggedIn">
+    <button mat-raised-button (click)="signInWithGoogle()">Login</button>
+</div>
+<div class="container" *ngIf="loggedIn">
+    <mat-toolbar color="primary" class="app-toolbar">
+        <button mat-icon-button (click)="sidenav.toggle()" style="margin-right: 1em; margin-bottom: 2px">
+            <mat-icon style="margin-bottom: 1px">menu</mat-icon>
+        </button>
+        <span style="margin-bottom: -2px; margin-left: 0.1em">
+            <a style="font-family: 'psans-med', sans-serif; font-size: 20pt; color: white; text-decoration: none !important;"
+               routerLink="today">Slip</a>
+            <a style="font-family: 'psans-light', sans-serif; font-size: 20pt; color: white; text-decoration: none !important;"
+               routerLink="today">mate</a>
+        </span>
+        <span class="spacer"></span>
+        <span>{{this.getTitle() | titlecase}}</span>
+        <span class="spacer"></span>
+        <span style="margin-right: 1em">Hello, {{user.name.split(' ')[0]}}!</span>
+        <button mat-mini-fab [matMenuTriggerFor]="usermenu">
+            <img src="{{user.photoUrl}}" width="100%" style="margin-top: -0.575em">
+        </button>
+        <mat-menu #usermenu>
+            <a mat-menu-item routerLink="settings">Settings</a>
+            <a mat-menu-item routerLink="help">Help</a>
+            <a mat-menu-item (click)="signOut()">Log Out</a>
+        </mat-menu>
+    </mat-toolbar>
+
+    <mat-sidenav-container class="sidenav-container">
+        <mat-sidenav #sidenav disableClose mode="side" opened fixedTopGap="56" role="navigation"
+                     style="margin-right: 0px">
+            <mat-nav-list>
+                <a mat-list-item routerLink="today" [ngClass]="{ active: isActive('today')}">
+                    <mat-icon class="sn-icon">event</mat-icon>
+                    <span class="sn-text">Today</span>
+                </a>
+                <a mat-list-item routerLink="requests" [ngClass]="{ active: isActive('requests')}">
+                    <mat-icon class="sn-icon">dns</mat-icon>
+                    <span class="sn-text">Requests</span>
+                </a>
+                <a mat-list-item routerLink="students" [ngClass]="{ active: isActive('students')}">
+                    <mat-icon class="sn-icon">people</mat-icon>
+                    <span class="sn-text">Students</span>
+                </a>
+                <a mat-list-item routerLink="calendar" [ngClass]="{ active: isActive('calendar')}">
+                    <mat-icon class="sn-icon">date_range</mat-icon>
+                    <span class="sn-text">Calendar</span>
+                </a>
+                <a mat-list-item routerLink="create" [ngClass]="{ active: isActive('create')}">
+                    <mat-icon class="sn-icon">chrome_reader_mode</mat-icon>
+                    <span class="sn-text">Create</span>
+                </a>
+            </mat-nav-list>
+        </mat-sidenav>
+        <mat-sidenav-content role="main" class="bg-light" style="margin-left: 0px">
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>
+

@@ -1,7 +1,7 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
-import { AppComponent } from './app.component';
+import {AppComponent} from './app.component';
 import {
     MAT_CHECKBOX_CLICK_ACTION,
     MatButtonModule,
@@ -17,19 +17,30 @@ import {
     MatStepperModule,
     MatToolbarModule
 } from '@angular/material';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule} from '@angular/router';
-import { AppRoutingModule } from './app-routing.module';
-import { TodayComponent } from './today/today.component';
-import { RequestsComponent } from './requests/requests.component';
-import { StudentsComponent } from './students/students.component';
-import { CreateComponent } from './create/create.component';
-import { CalendarComponent } from './calendar/calendar.component';
-import { SettingsComponent } from './settings/settings.component';
-import { HelpComponent } from './help/help.component';
-import { LoginComponent } from './login/login.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {RouterModule} from '@angular/router';
+import {AppRoutingModule} from './app-routing.module';
+import {TodayComponent} from './today/today.component';
+import {RequestsComponent} from './requests/requests.component';
+import {StudentsComponent} from './students/students.component';
+import {CreateComponent} from './create/create.component';
+import {CalendarComponent} from './calendar/calendar.component';
+import {SettingsComponent} from './settings/settings.component';
+import {HelpComponent} from './help/help.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {SocialLoginModule, AuthServiceConfig} from "angularx-social-login";
+import {GoogleLoginProvider} from "angularx-social-login";
+
+let config = new AuthServiceConfig([
+    {
+        id: GoogleLoginProvider.PROVIDER_ID,
+        provider: new GoogleLoginProvider("133453041482-q1f5t28tt0qf897sll1sel00minbm4m4.apps.googleusercontent.com")
+    }
+]);
+
+export function provideConfig() {
+    return config;
+}
 
 @NgModule({
     declarations: [
@@ -40,9 +51,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
         CreateComponent,
         CalendarComponent,
         SettingsComponent,
-        HelpComponent,
-        LoginComponent,
-        DashboardComponent
+        HelpComponent
     ],
     imports: [
         BrowserModule,
@@ -63,11 +72,16 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
         MatNativeDateModule,
         ReactiveFormsModule,
         MatCheckboxModule,
-        FormsModule
+        FormsModule,
+        SocialLoginModule
     ],
     providers: [
-    {provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'check'}
-],
+        {
+            provide: AuthServiceConfig,
+            useFactory: provideConfig
+        },
+        {provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'check'}
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {

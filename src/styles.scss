@@ -1,0 +1,30 @@
+/* You can add global styles to this file, and also import other style files */
+@import "light.scss";
+
+@font-face {
+    font-family: psans;
+    src: url(assets/fonts/ProductSans-Regular.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: psans-light;
+    src: url(assets/fonts/ProductSans-Light.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: psans-med;
+    src: url(assets/fonts/ProductSans-Medium.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: psans-bold;
+    src: url(assets/fonts/ProductSans-Bold.ttf) format("truetype");
+}
+
+* {
+    font-family: psans, sans-serif;
+}
+
+.bg-light {
+    background-image: url('https://img.freepik.com/free-photo/black-white-bamboo-surface-merge-background_7182-2053.jpg?size=626&ext=jpg');
+}
