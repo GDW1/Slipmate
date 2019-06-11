@@ -1,26 +1,44 @@
-<div *ngIf="!loggedIn && !mobile">
+<div *ngIf="!loggedIn && !mobile" style="margin-bottom: -0.5em">
     <div class="container" style="height: 7.8vh; margin: -0.5em -0.5em 0;">
         <mat-toolbar color="primary" class="app-toolbar">
-            <img src="../assets/images/slipmate-gray.png" height="50vh">
+            <img src="../assets/images/slipmate-gray.png" height="70">
+
             <span style="flex: 1; text-align: center; font-size: 20px">{{this.welcome}}</span>
-            <img src="../assets/images/woodside.png" height="50vh">
+            <img src="../assets/images/woodside.png" height="60">
         </mat-toolbar>
     </div>
-    <div class="container" style="cursor: pointer; height: 92.2vh; margin: 0 -0.5em -0.5em;">
-        <a (click)="signIn()" class="main link">Sign-in</a>
-    </div>
+    <mat-sidenav-container style="margin-bottom: 0; margin-right: -0.5em;">
+        <mat-sidenav disableClose mode="side" opened fixedTopGap="56" role="navigation" style="margin-right: 0;">
+            <mat-list>
+                <mat-list-item>Welcome to Slipmate!</mat-list-item>
+                <mat-list-item style="height: max-content">
+                    <p style="max-width: 150px;">Please log in using your <span style="font-family: psans-bold, sans-serif;">seq.org</span> email address.</p>
+                </mat-list-item>
+                <mat-list-item style="height: max-content">
+                    <p style="max-width: 150px;">Our system will determine whether you are a student or teacher and automatically redirect you to the respective online portal.</p>
+                </mat-list-item>
+            </mat-list>
+        </mat-sidenav>
+        <mat-sidenav-content class="container" style="cursor: pointer; height: 93.2vh; margin: -0.5em -0.5em 0;">
+            <a (click)="signIn()" class="main link">Sign-in</a>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
 </div>
+
+
 
 <button mat-raised-button *ngIf="loggedIn" (click)="signOut()">Log out</button>
 
+
+
 <div *ngIf="!loggedIn && mobile">
     <div style="display: flex; height: 60vh; margin: -0.5em -0.5em 0;">
-        <a href="" (click)="signIn()" class="m-main link" style="background-color: whitesmoke; color: darkorange;">Sign-in</a>
+        <a href="" (click)="signIn()" class="m-main m-link" style="background-color: whitesmoke; color: darkorange;">Sign-in</a>
     </div>
     <div class="container" style=" height: 20vh; margin: 0 -0.5em 0;">
-        <a href="https://student.slipmate.ml" class="m-sub link" style="background-color: darkorange; color: whitesmoke;">Student</a>
+        <a href="https://student.slipmate.ml" class="m-sub m-link" style="background-color: darkorange; color: whitesmoke;">Student</a>
     </div>
     <div class="container" style="height: 20vh; margin: 0 -0.5em -0.5em;">
-        <a href="https://teacher.slipmate.ml" class="m-sub link" style="background-color: black; color: lightgray;">Teacher</a>
+        <a href="https://teacher.slipmate.ml" class="m-sub m-link" style="background-color: black; color: lightgray;">Teacher</a>
     </div>
 </div>

@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
 
     @HostListener('window:resize', ['$event'])
     onResize(event) {
-        this.mobile = event.target.innerWidth <= 600;
+        this.mobile = event.target.innerWidth < 768;
     }
 
     signIn(): void {
@@ -49,6 +49,6 @@ export class AppComponent implements OnInit {
             this.loggedIn = (user != null);
         });
 
-        this.mobile = window.innerWidth <= 600;
+        this.mobile = window.innerWidth < 768;
     }
 }

@@ -12,6 +12,7 @@ body {
 }
 
 .container {
+
     display: flex;
     height: 20vh;
 }
@@ -30,6 +31,18 @@ body {
 
 .m-main {
     padding-top: 24vh;
+}
+
+.m-link {
+    color: black;
+    background-color: whitesmoke;
+    text-align: center;
+    vertical-align: center;
+    flex: 1;
+    font-size: 50px;
+    text-decoration: none !important;
+    animation-name: unselect;
+    animation-duration: 0.4s;
 }
 
 .link {
