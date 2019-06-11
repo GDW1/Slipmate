@@ -1,5 +1,5 @@
 import {Component, HostListener, OnInit} from '@angular/core';
-import {AuthService, SocialUser} from 'angularx-social-login';
+import {AuthService, GoogleLoginProvider, SocialUser} from 'angularx-social-login';
 
 @Component({
     selector: 'app-root',
@@ -20,6 +20,11 @@ export class AppComponent implements OnInit {
     @HostListener('window:resize', ['$event'])
     onResize(event) {
         this.mobile = event.target.innerWidth <= 600;
+    }
+
+    signIn(): void {
+        this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+        //REDIRECT HERE
     }
 
     signOut() {

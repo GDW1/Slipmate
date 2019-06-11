@@ -1,22 +1,26 @@
 <div *ngIf="!loggedIn && !mobile">
-    <div class="container" style="height: 80vh; margin: -0.5em -0.5em 0;">
-        <a (click)="signIn()" class="main link">Sign-in</a>
+    <div class="container" style="height: 7.8vh; margin: -0.5em -0.5em 0;">
+        <mat-toolbar color="primary" class="app-toolbar">
+            <img src="../assets/images/slipmate-gray.png" height="50vh">
+            <span style="flex: 1; text-align: center; font-size: 20px">Welcome to Slipmate! Please click below to sign in.</span>
+            <img src="../assets/images/woodside.png" height="50vh">
+        </mat-toolbar>
     </div>
-    <div class="container" style="height: 20vh; margin: 0 -0.5em -0.5em;">
-        <a href="https://student.slipmate.ml" class="sub link">Student</a>
-        <a href="https://teacher.slipmate.ml" class="sub link">Teacher</a>
+    <div class="container" style="cursor: pointer; height: 92.2vh; margin: 0 -0.5em -0.5em;">
+        <a (click)="signIn()" class="main link">Sign-in</a>
     </div>
 </div>
 
 <button mat-raised-button *ngIf="loggedIn" (click)="signOut()">Log out</button>
 
-<div *ngIf="!loggedIn && mobile" class="m-container">
-    <div>
-        <a href="https://student.slipmate.ml" class="m-link" style="margin-top: -0.5em; color: #102020; background-color: darkorange;">
-            <span class="m-text">Student</span>
-        </a>
+<div *ngIf="!loggedIn && mobile">
+    <div style="display: flex; height: 60vh; margin: -0.5em -0.5em 0;">
+        <a href="" (click)="signIn()" class="m-main link" style="background-color: whitesmoke; color: darkorange;">Sign-in</a>
     </div>
-    <div>
-        <a href="https://teacher.slipmate.ml" class="m-link" style="color: white; background-color: #102020;">Teacher</a>
+    <div class="container" style=" height: 20vh; margin: 0 -0.5em 0;">
+        <a href="https://student.slipmate.ml" class="m-sub link" style="background-color: darkorange; color: whitesmoke;">Student</a>
+    </div>
+    <div class="container" style="height: 20vh; margin: 0 -0.5em -0.5em;">
+        <a href="https://teacher.slipmate.ml" class="m-sub link" style="background-color: black; color: lightgray;">Teacher</a>
     </div>
 </div>

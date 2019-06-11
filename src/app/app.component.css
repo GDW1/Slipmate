@@ -3,17 +3,33 @@ body {
     padding: 0;
 }
 
+.app-toolbar {
+    background-color: darkorange;
+    position: sticky;
+    position: -webkit-sticky; /* For macOS/iOS Safari */
+    top: 0; /* Sets the sticky toolbar to be on top */
+    z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
+}
+
 .container {
     display: flex;
     height: 20vh;
 }
 
 .main {
-    padding-top: 35vh;
+    padding-top: 38vh;
 }
 
 .sub {
-    padding-top: 6vh;
+    padding-top: 6.5vh;
+}
+
+.m-sub {
+    padding-top: 5vh;
+}
+
+.m-main {
+    padding-top: 24vh;
 }
 
 .link {
