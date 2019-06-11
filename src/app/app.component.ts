@@ -16,6 +16,7 @@ export class AppComponent implements OnInit {
     private user: SocialUser;
     public loggedIn: boolean;
     public mobile = false;
+    public welcome = 'Welcome to Slipmate! Please click below to sign in.';
 
     @HostListener('window:resize', ['$event'])
     onResize(event) {
@@ -24,7 +25,18 @@ export class AppComponent implements OnInit {
 
     signIn(): void {
         this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
-        //REDIRECT HERE
+        let email = this.user.email.split('@');
+        console.log(email);
+        if (email[1] === 'seq.org') {
+            if (email[0].match(/[a-z]/i)) {
+                //TEACHER
+            } else {
+                //STUDENT
+            }
+        } else {
+            this.signOut();
+            this.welcome = 'Please use your @seq.org email address';
+        }
     }
 
     signOut() {
