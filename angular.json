@@ -3,30 +3,30 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "SlipmateFrontend": {
+    "sm-landing": {
+      "projectType": "application",
+      "schematics": {},
       "root": "",
       "sourceRoot": "src",
-      "projectType": "application",
       "prefix": "app",
-      "schematics": {},
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/SlipmateFrontend",
+            "outputPath": "dist/sm-landing",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.app.json",
+            "tsConfig": "tsconfig.app.json",
+            "aot": false,
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.css"
             ],
-            "scripts": [],
-            "es5BrowserSupport": true
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -58,18 +58,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "SlipmateFrontend:build"
+            "browserTarget": "sm-landing:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "SlipmateFrontend:build:production"
+              "browserTarget": "sm-landing:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "SlipmateFrontend:build"
+            "browserTarget": "sm-landing:build"
           }
         },
         "test": {
@@ -77,65 +77,44 @@
           "options": {
             "main": "src/test.ts",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "karmaConfig": "src/karma.conf.js",
-            "styles": [
-              "src/styles.scss"
-            ],
-            "scripts": [],
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
             "assets": [
               "src/favicon.ico",
               "src/assets"
-            ]
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
+            "scripts": []
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
+              "tsconfig.app.json",
+              "tsconfig.spec.json",
+              "e2e/tsconfig.json"
             ],
             "exclude": [
               "**/node_modules/**"
             ]
           }
-        }
-      }
-    },
-    "SlipmateFrontend-e2e": {
-      "root": "e2e/",
-      "projectType": "application",
-      "prefix": "",
-      "architect": {
+        },
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "SlipmateFrontend:serve"
+            "devServerTarget": "sm-landing:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "SlipmateFrontend:serve:production"
+              "devServerTarget": "sm-landing:serve:production"
             }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }
-    }
-  },
-  "defaultProject": "SlipmateFrontend",
-  "schematics": {
-    "@schematics/angular:component": {
-      "styleext": "scss"
-    }
-  }
+    }},
+  "defaultProject": "sm-landing"
 }

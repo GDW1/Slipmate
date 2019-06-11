@@ -1,5 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-@import "light.scss";
 
 @font-face {
     font-family: psans;
@@ -23,8 +22,4 @@
 
 * {
     font-family: psans, sans-serif;
-}
-
-.bg-light {
-    background-image: url('https://img.freepik.com/free-photo/black-white-bamboo-surface-merge-background_7182-2053.jpg?size=626&ext=jpg');
 }

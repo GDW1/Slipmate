@@ -1,37 +1,25 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {MatListItem, MatSidenavContainer} from "@angular/material";
-import {Router} from "@angular/router";
-import {AuthService, GoogleLoginProvider, SocialUser} from "angularx-social-login";
+import {Component, HostListener, OnInit} from '@angular/core';
+import {AuthService, SocialUser} from 'angularx-social-login';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+    styleUrls: ['./app.component.css']
 })
-export class AppComponent implements AfterViewInit, OnInit {
+
+export class AppComponent implements OnInit {
     title = 'Slipmate';
 
-    @ViewChild(MatSidenavContainer) sidenavContainer: MatSidenavContainer;
-    @ViewChild(MatListItem) sidenavLink: MatListItem;
-
-    constructor(private router: Router,
-                private authService: AuthService) {
-    }
-
-    signInWithGoogle(): void {
-        this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
-    }
-
-    signOut(): void {
-        this.authService.signOut();
+    constructor(private authService: AuthService) {
     }
 
     private user: SocialUser;
     public loggedIn: boolean;
+    public mobile = false;
 
-    ngAfterViewInit() {
-        this.sidenavContainer.scrollable.elementScrolled().subscribe(() => {
-        });
+    @HostListener('window:resize', ['$event'])
+    onResize(event) {
+        this.mobile = event.target.innerWidth <= 600;
     }
 
     ngOnInit() {
@@ -39,13 +27,7 @@ export class AppComponent implements AfterViewInit, OnInit {
             this.user = user;
             this.loggedIn = (user != null);
         });
-    }
 
-    getTitle() {
-        return this.router.url.substring(9);
-    }
-
-    isActive(path: string): boolean {
-        return this.router.url.substring(9) === path;
+        this.mobile = window.innerWidth <= 600;
     }
 }
