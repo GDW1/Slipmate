@@ -11,8 +11,8 @@ import {AuthService, GoogleLoginProvider, SocialUser} from "angularx-social-logi
 export class AppComponent implements AfterViewInit, OnInit {
     title = 'Slipmate';
 
-    @ViewChild(MatSidenavContainer) sidenavContainer: MatSidenavContainer;
-    @ViewChild(MatListItem) sidenavLink: MatListItem;
+    @ViewChild(MatSidenavContainer, {static: true})sidenavContainer: MatSidenavContainer;
+    @ViewChild(MatListItem, {static: true}) sidenavLink: MatListItem;
 
     constructor(private router: Router,
                 private authService: AuthService) {
