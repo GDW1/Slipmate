@@ -22,6 +22,10 @@ export class AppComponent implements OnInit {
         this.mobile = event.target.innerWidth <= 600;
     }
 
+    signOut() {
+        this.authService.signOut();
+    }
+
     ngOnInit() {
         this.authService.authState.subscribe((user) => {
             this.user = user;

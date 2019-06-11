@@ -3,3 +3,58 @@ body {
     padding: 0;
 }
 
+.container {
+    display: flex;
+    height: 20vh;
+}
+
+.main {
+    padding-top: 35vh;
+}
+
+.sub {
+    padding-top: 6vh;
+}
+
+.link {
+    color: black;
+    background-color: whitesmoke;
+    text-align: center;
+    vertical-align: center;
+    flex: 1;
+    font-size: 50px;
+    text-decoration: none !important;
+    animation-name: unselect;
+    animation-duration: 0.4s;
+}
+
+.link:hover {
+    color: darkorange;
+    background-color: lightgray;
+    animation-name: select;
+    animation-duration: 0.4s;
+}
+
+
+
+@keyframes select {
+    from {
+        color: black;
+        background-color: whitesmoke;
+    }
+    to {
+        color: darkorange;
+        background-color: lightgray;
+    }
+}
+
+@keyframes unselect {
+    from {
+        color: darkorange;
+        background-color: lightgray;
+    }
+    to {
+        color: black;
+        background-color: whitesmoke;
+    }
+}

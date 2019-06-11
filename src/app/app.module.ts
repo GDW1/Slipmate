@@ -3,6 +3,7 @@ import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
 import {AuthServiceConfig, GoogleLoginProvider, SocialLoginModule} from 'angularx-social-login';
+import {MatButtonModule} from "@angular/material";
 
 const config = new AuthServiceConfig([
     {
@@ -21,7 +22,8 @@ export function provideConfig() {
     ],
     imports: [
         BrowserModule,
-        SocialLoginModule
+        SocialLoginModule,
+        MatButtonModule
     ],
     providers: [
         {

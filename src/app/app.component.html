@@ -1,7 +1,14 @@
-<div *ngIf="!loggedIn && !mobile" class="container">
-    <a href="https://teacher.slipmate.ml" class="link" style="color: white; background-color: #102020;">Teacher</a>
-    <a href="https://student.slipmate.ml" class="link" style="color: #102020; background-color: darkorange;">Student</a>
+<div *ngIf="!loggedIn && !mobile">
+    <div class="container" style="height: 80vh; margin: -0.5em -0.5em 0;">
+        <a (click)="signIn()" class="main link">Sign-in</a>
+    </div>
+    <div class="container" style="height: 20vh; margin: 0 -0.5em -0.5em;">
+        <a href="https://student.slipmate.ml" class="sub link">Student</a>
+        <a href="https://teacher.slipmate.ml" class="sub link">Teacher</a>
+    </div>
 </div>
+
+<button mat-raised-button *ngIf="loggedIn" (click)="signOut()">Log out</button>
 
 <div *ngIf="!loggedIn && mobile" class="m-container">
     <div>
