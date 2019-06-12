@@ -2,6 +2,7 @@ const admin = require('firebase-admin');
 const functions = require('firebase-functions');
 const nodemailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
+var fs = require('fs');
 
 
 /**Firebase Firestore initialization*/
@@ -19,8 +20,6 @@ const mailTransport = nodemailer.createTransport({
 });
 /** Name that will be sent with the email*/
 const APP_NAME = 'Slipmate';
-
-
 
 /**
  * This function is meant to create a student in the firestore database
@@ -42,29 +41,36 @@ exports.initializeStudent = functions.https.onRequest((request, response) => {
         teachSeventh: teacher7th.toString()
     }
     console.log(id.toString() + "@seq.org");
-    let dataset = db.collection("students").add(data);
-    console.log(data)
-    var today = new Date();
-    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    /** Send email to newly created user */
-    const mailOptions = {
-        from: `${APP_NAME} <noreply@firebase.com>`,
-        to: ((id.toString() + "@seq.org").toString()),
-    };
-    // The user subscribed to the newsletter.
-    mailOptions.subject = `Welcome to ${APP_NAME}!`;
-    mailOptions.text = `Hey ${name.toString() || ''}! Welcome to ${APP_NAME}. I hope you will enjoy our service. 
-        If you have any questions about Slipmate or would like access to the code please contact Guy Wilks at 798932@seq.org`;
-    mailTransport.sendMail(mailOptions, function(error, info){
-        console.log(mailOptions);
-        console.log(info);
-        if(error){
-            return console.log(error);
+    db.collection("students").where("stuID", "==", id.toString()).get().then(function(docs){
+        console.log("Inside the then statement")
+        if(!docs.empty){
+            response.send("Account was already created")
+            throw new Error("done")
+        }else{
+            let dataset = db.collection("students").add(data)
+            console.log(data)
+            var today = new Date();
+            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            /** Send email to newly created user */
+            const mailOptions = {
+                from: `${APP_NAME} <noreply@firebase.com>`,
+                to: ((id.toString() + "@seq.org").toString()),
+            };
+            mailOptions.subject = `Welcome to ${APP_NAME}!`;
+            var template = fs.readFileSync('./emailFormats/studentInitialEmail.html',{encoding:'utf-8'});
+            mailOptions.html = template;
+            mailTransport.sendMail(mailOptions, function(error, info){
+                console.log(mailOptions);
+                console.log(info);
+                console.log('Message sent: ' + info.response);
+            });
+            console.log('New welcome email sent to:', (id.toString() + "@seq.org"));
+            response.send((id.toString() +"@seq.org"));
         }
-        console.log('Message sent: ' + info.response);
+        return null
+    }).catch(err => {
+        throw err;
     });
-    console.log('New welcome email sent to:', (id.toString() + "@seq.org"));
-    response.send((id.toString() +"@seq.org"));
 })
 
 /**
@@ -86,10 +92,36 @@ exports.initializeTeacher = functions.https.onRequest((request, response) => {
         seatsSeventh: (number_of_seats_sixth).toString(),
         seatsSixth: (number_of_seats_seventh).toString()
     }
-    let dataset = db.collection("teachers").add(data).then(ref => {
-        console.log('Added document with ID: ', ref.id);
-        return "it worked"
-    });//.doc(id.toString()).set(data);
+    db.collection("teacher").where("stuID", "==", id.toString()).get().then(function(docs){
+        console.log("Inside the then statement")
+        if(!docs.empty){
+            response.send("Account was already created")
+            throw new Error("done")
+        }else{
+            let dataset = db.collection("teacher").add(data)
+            console.log(data)
+            var today = new Date();
+            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            /** Send email to newly created user */
+            const mailOptions = {
+                from: `${APP_NAME} <noreply@firebase.com>`,
+                to: ((id.toString() + "@seq.org").toString()),
+            };
+            mailOptions.subject = `Welcome to ${APP_NAME}!`;
+            var template = fs.readFileSync('./emailFormats/TeacherInitialEmail.html',{encoding:'utf-8'});
+            mailOptions.html = template;
+            mailTransport.sendMail(mailOptions, function(error, info){
+                console.log(mailOptions);
+                console.log(info);
+                console.log('Message sent: ' + info.response);
+            });
+            console.log('New welcome email sent to:', (id.toString() + "@seq.org"));
+            response.send((id.toString() +"@seq.org"));
+        }
+        return null
+    }).catch(err => {
+        throw err;
+});
     var today = new Date();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     response.send(time.toString());
@@ -128,7 +160,7 @@ exports.createPass = functions.https.onRequest((request, response) => {
     });
 });
 
-function parseDatOfPass(day){
+function parseDayOfPass(day){
 
 }
 
