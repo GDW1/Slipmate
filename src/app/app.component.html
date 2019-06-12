@@ -1,10 +1,11 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<div *ngIf="!loggedIn && !mobile">
+<div *ngIf="!mobile">
     <div class="container" style="height: 7vh; margin: -0.5em -0.5em 0;overflow-y: hidden; overflow-x: hidden;">
         <mat-toolbar color="primary" class="app-toolbar">
             <img src="../assets/images/slipmate-gray.png" height="70">
 
-            <span style="flex: 1; text-align: center; font-size: 20px">{{this.welcome}}</span>
+            <span style="flex: 1; text-align: center; font-size: 20px">Welcome to Slipmate! Please click below to sign in.</span>
+            <button mat-raised-button *ngIf="loggedIn" (click)="signOut()">Logout</button>
             <img src="../assets/images/woodside.png" height="55">
         </mat-toolbar>
     </div>
@@ -32,8 +33,8 @@
                     <mat-card class="card link yellow">
                         <mat-card class="card link white">
                             <mat-card-content style="padding: 1em 1em 1.2em;">
-                                Sign in with
-                                <img src="../assets/images/google.png" height="80" style="margin-bottom: -23px">
+                                {{this.sign}}
+                                <img src="../assets/images/google.png" *ngIf="signImg" height="80" style="margin-bottom: -23px">
                             </mat-card-content>
                         </mat-card>
                     </mat-card>
@@ -62,11 +63,11 @@
                     <mat-list-item style="padding: 1.5vh"></mat-list-item>
                     <mat-list-item style="height: max-content">
                         <p style="font-size: 2vh;">
-                            {{this.welcome}}<br>Please log in using your
+                            Welcome to Slipmate! Please click below to sign in.<br>Please log in using your
                             <span style="font-family: psans-bold, sans-serif;">
                                 seq.org
                             </span>
-                             email address.
+                            email address.
                         </p>
                     </mat-list-item>
                     <mat-list-item style="height: max-content">

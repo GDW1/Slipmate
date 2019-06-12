@@ -18,7 +18,8 @@ export class AppComponent implements OnInit {
     private user: SocialUser;
     public loggedIn: boolean;
     public mobile = false;
-    public welcome = 'Welcome to Slipmate! Please click below to sign in.';
+    public sign = 'Sign in with';
+    public signImg = true;
 
     @HostListener('window:resize', ['$event'])
     onResize(event) {
@@ -43,26 +44,18 @@ export class AppComponent implements OnInit {
                 if (email[1] === 'seq.org') {
                     console.log(this.user.idToken);
 
-                    // let xhr = new XMLHttpRequest();
-                    // xhr.open('POST', 'https://backend.slipmate.ml');
-                    // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                    // xhr.onload = function() {
-                    //     console.log('Signed in as: ' + xhr.responseText);
-                    // };
-                    // xhr.send('idtoken=' + this.user.idToken);
-
                     if (email[0].match(/[a-z]/i)) {
                         //TEACHER
-                        // document.location.href = 'https://teacher.slipmate.ml';
+                        document.location.href = 'https://teacher.slipmate.ml';
                     } else {
                         //STUDENT
-                        this.cookie.set('token', this.user.idToken)
-                        // document.location.href = 'https://teacher.slipmate.ml';
+                        document.location.href = 'https://teacher.slipmate.ml';
                     }
                 } else {
                     //NOT SEQ
-                    this.signOut();
-                    this.welcome = 'Please use your seq.org email address';
+                    this.authService.signOut();
+                    this.signImg = false;
+                    this.sign = 'Please use seq.org account';
                 }
             }
         });
