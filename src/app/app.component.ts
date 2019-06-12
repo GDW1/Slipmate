@@ -31,6 +31,7 @@ export class AppComponent implements OnInit {
 
     signOut() {
         this.authService.signOut();
+        document.location.href = '';
     }
 
     ngOnInit() {
