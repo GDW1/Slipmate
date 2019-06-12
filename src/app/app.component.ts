@@ -24,6 +24,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 
     signOut(): void {
         this.authService.signOut();
+        document.location.href = 'https://slipmate.ml';
     }
 
     private user: SocialUser;
@@ -38,10 +39,11 @@ export class AppComponent implements AfterViewInit, OnInit {
         this.authService.authState.subscribe((user) => {
             this.user = user;
             this.loggedIn = (user != null);
+            if (!this.loggedIn) {
+                //TODO: get this popup to not be blocked
+                this.signInWithGoogle()
+            }
         });
-        if (!this.loggedIn) {
-            this.signInWithGoogle()
-        }
     }
 
     getTitle() {

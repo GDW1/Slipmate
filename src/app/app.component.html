@@ -17,8 +17,8 @@
         <span>{{this.getTitle() | titlecase}}</span>
         <span class="spacer"></span>
         <span style="margin-right: 1em">Hello, {{user.name.split(' ')[0]}}!</span>
-        <button mat-mini-fab [matMenuTriggerFor]="usermenu">
-            <img src="{{user.photoUrl}}" width="100%" style="margin-top: -0.575em">
+        <button mat-mini-fab [matMenuTriggerFor]="usermenu" style="overflow-y: hidden; overflow-x: hidden">
+            <img src="{{user.photoUrl}}" width="100%" style="margin-top: -0.575em" alt="Profile">
         </button>
         <mat-menu #usermenu style="border-radius: 10em">
             <span class="name">{{user.name}}</span>
