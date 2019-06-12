@@ -1,26 +1,45 @@
-<div *ngIf="!loggedIn && !mobile" style="margin-bottom: -0.5em">
-    <div class="container" style="height: 7.8vh; margin: -0.5em -0.5em 0;">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<div *ngIf="!loggedIn && !mobile">
+    <div class="container" style="height: 7vh; margin: -0.5em -0.5em 0;overflow-y: hidden; overflow-x: hidden;">
         <mat-toolbar color="primary" class="app-toolbar">
             <img src="../assets/images/slipmate-gray.png" height="70">
 
             <span style="flex: 1; text-align: center; font-size: 20px">{{this.welcome}}</span>
-            <img src="../assets/images/woodside.png" height="60">
+            <img src="../assets/images/woodside.png" height="55">
         </mat-toolbar>
     </div>
-    <mat-sidenav-container style="margin-bottom: 0; margin-right: -0.5em;">
-        <mat-sidenav disableClose mode="side" opened fixedTopGap="56" role="navigation" style="margin-right: 0;">
+    <mat-sidenav-container style="margin: 0 -0.5em -0.5em; height: 93vh;">
+        <mat-sidenav disableClose mode="side" opened fixedTopGap="0" role="navigation" style="margin-right: -0.25em; background-color: whitesmoke">
             <mat-list>
                 <mat-list-item>Welcome to Slipmate!</mat-list-item>
                 <mat-list-item style="height: max-content">
-                    <p style="max-width: 150px;">Please log in using your <span style="font-family: psans-bold, sans-serif;">seq.org</span> email address.</p>
+                    <p style="max-width: 200px;">
+                        Please log in using your
+                        <span style="font-family: psans-bold, sans-serif;">seq.org</span>
+                        email address.
+                    </p>
                 </mat-list-item>
                 <mat-list-item style="height: max-content">
-                    <p style="max-width: 150px;">Our system will determine whether you are a student or teacher and automatically redirect you to the respective online portal.</p>
+                    <p style="max-width: 200px;">
+                        Our system will determine whether you are a student or teacher and automatically redirect you to the respective online portal.
+                    </p>
                 </mat-list-item>
             </mat-list>
         </mat-sidenav>
-        <mat-sidenav-content class="container" style="cursor: pointer; height: 93.2vh; margin: -0.5em -0.5em 0;">
-            <a (click)="signIn()" class="main link">Sign-in</a>
+        <mat-sidenav-content style="background-color: lightgray">
+            <div class="card-container" style="margin-top: 25vh">
+                <mat-card class="card link pink" (click)="signIn()">
+                    <mat-card class="card link yellow">
+                        <mat-card class="card link white">
+                            <mat-card-content style="padding: 1em 1em 1.2em;">
+                                <span>Sign in with
+                                    <img src="../assets/images/google.png" height="80" style="margin-bottom: -23px">
+                                </span>
+                            </mat-card-content>
+                        </mat-card>
+                    </mat-card>
+                </mat-card>
+            </div>
         </mat-sidenav-content>
     </mat-sidenav-container>
 </div>
@@ -32,13 +51,35 @@
 
 
 <div *ngIf="!loggedIn && mobile">
-    <div style="display: flex; height: 60vh; margin: -0.5em -0.5em 0;">
+    <div class="container" style="height: 30vh; margin: -0.5em -0.5em 0; overflow-y: hidden; overflow-x: hidden;">
+        <mat-toolbar color="primary" class="app-toolbar" style="height: 30vh">
+            <mat-toolbar-row>
+                <img src="../assets/images/slipmate-gray.png" height="70">
+                <span style="flex: 1; text-align: center; font-size: 20px"></span>
+                <img src="../assets/images/woodside.png" height="50">
+            </mat-toolbar-row>
+            <mat-toolbar-row>
+                <mat-list>
+                    <mat-list-item style="padding: 1.5vh"></mat-list-item>
+                    <mat-list-item style="height: max-content">
+                        <p style="font-size: 2vh;">
+                            {{this.welcome}}<br>Please log in using your
+                            <span style="font-family: psans-bold, sans-serif;">
+                                seq.org
+                            </span>
+                             email address.
+                        </p>
+                    </mat-list-item>
+                    <mat-list-item style="height: max-content">
+                        <p style="font-size: 1.8vh;">
+                            Our system will determine whether you are a student<br>or teacher and automatically redirect you to the<br>respective online portal.
+                        </p>
+                    </mat-list-item>
+                </mat-list>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </div>
+    <div style="display: flex; height: 70vh; margin: 0 -0.5em -0.5em;">
         <a href="" (click)="signIn()" class="m-main m-link" style="background-color: whitesmoke; color: darkorange;">Sign-in</a>
-    </div>
-    <div class="container" style=" height: 20vh; margin: 0 -0.5em 0;">
-        <a href="https://student.slipmate.ml" class="m-sub m-link" style="background-color: darkorange; color: whitesmoke;">Student</a>
-    </div>
-    <div class="container" style="height: 20vh; margin: 0 -0.5em -0.5em;">
-        <a href="https://teacher.slipmate.ml" class="m-sub m-link" style="background-color: black; color: lightgray;">Teacher</a>
     </div>
 </div>

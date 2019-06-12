@@ -17,14 +17,128 @@ body {
     height: 20vh;
 }
 
-.main {
-    padding-top: 38vh;
+.card-container {
+    margin: auto;
+    padding: 1em;
+    max-width: 900px;
 }
 
-.sub {
-    padding-top: 6.5vh;
+.card {
+    border-radius: 12px;
+    cursor: pointer;
 }
 
+.link {
+    color: black;
+    text-align: center;
+    vertical-align: center;
+    flex: 1;
+    font-size: 50px;
+    text-decoration: none !important;
+}
+
+.pink {
+    background-color: #FFA9C4;
+    padding: 0;
+    animation-name: unselect-pink;
+    animation-duration: 0.3s;
+}
+
+.pink:hover {
+    background-color: lightgray;
+    animation-name: select-pink;
+    animation-duration: 0.3s;
+}
+
+.yellow {
+    background-color: #FFFF88;
+    margin: 0 0.5em 0 0;
+    padding: 0;
+    animation-name: unselect-yellow;
+    animation-duration: 0.3s;
+}
+
+.yellow:hover {
+    background-color: lightgray;
+    animation-name: select-yellow;
+    animation-duration: 0.3s;
+}
+
+.white {
+    background-color: #F3F3F3;
+    margin: 0 0.5em 0 0;
+    padding: 1em;
+    animation-name: unselect;
+    animation-duration: 0.3s;
+}
+
+.white:hover {
+    color: darkorange;
+    background-color: lightgray;
+    animation-name: select;
+    animation-duration: 0.3s;
+}
+
+@keyframes select-pink {
+    from {
+        background-color: #FFA9C4;
+    }
+    to {
+        background-color: lightgray;
+    }
+}
+
+@keyframes unselect-pink {
+    from {
+        background-color: lightgray;
+    }
+    to {
+        background-color: #FFA9C4;
+    }
+}
+
+@keyframes select-yellow {
+    from {
+        background-color: #FFFF88;
+    }
+    to {
+        background-color: lightgray;
+    }
+}
+
+@keyframes unselect-yellow {
+    from {
+        background-color: lightgray;
+    }
+    to {
+        background-color: #FFFF88;
+    }
+}
+
+@keyframes select {
+    from {
+        color: black;
+        background-color: #F3F3F3;
+    }
+    to {
+        color: darkorange;
+        background-color: lightgray;
+    }
+}
+
+@keyframes unselect {
+    from {
+        color: darkorange;
+        background-color: lightgray;
+    }
+    to {
+        color: black;
+        background-color: #F3F3F3;
+    }
+}
+
+
+/* MOBILE */
 .m-sub {
     padding-top: 5vh;
 }
@@ -41,49 +155,4 @@ body {
     flex: 1;
     font-size: 50px;
     text-decoration: none !important;
-    animation-name: unselect;
-    animation-duration: 0.4s;
-}
-
-.link {
-    color: black;
-    background-color: whitesmoke;
-    text-align: center;
-    vertical-align: center;
-    flex: 1;
-    font-size: 50px;
-    text-decoration: none !important;
-    animation-name: unselect;
-    animation-duration: 0.4s;
-}
-
-.link:hover {
-    color: darkorange;
-    background-color: lightgray;
-    animation-name: select;
-    animation-duration: 0.4s;
-}
-
-
-
-@keyframes select {
-    from {
-        color: black;
-        background-color: whitesmoke;
-    }
-    to {
-        color: darkorange;
-        background-color: lightgray;
-    }
-}
-
-@keyframes unselect {
-    from {
-        color: darkorange;
-        background-color: lightgray;
-    }
-    to {
-        color: black;
-        background-color: whitesmoke;
-    }
 }

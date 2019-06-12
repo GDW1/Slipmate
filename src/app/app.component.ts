@@ -1,5 +1,6 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {AuthService, GoogleLoginProvider, SocialUser} from 'angularx-social-login';
+import {CookieService} from "ngx-cookie-service";
 
 @Component({
     selector: 'app-root',
@@ -10,7 +11,8 @@ import {AuthService, GoogleLoginProvider, SocialUser} from 'angularx-social-logi
 export class AppComponent implements OnInit {
     title = 'Slipmate';
 
-    constructor(private authService: AuthService) {
+    constructor(private authService: AuthService,
+                private cookie: CookieService) {
     }
 
     private user: SocialUser;
@@ -25,18 +27,6 @@ export class AppComponent implements OnInit {
 
     signIn(): void {
         this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
-        let email = this.user.email.split('@');
-        console.log(email);
-        if (email[1] === 'seq.org') {
-            if (email[0].match(/[a-z]/i)) {
-                //TEACHER
-            } else {
-                //STUDENT
-            }
-        } else {
-            this.signOut();
-            this.welcome = 'Please use your @seq.org email address';
-        }
     }
 
     signOut() {
@@ -47,6 +37,33 @@ export class AppComponent implements OnInit {
         this.authService.authState.subscribe((user) => {
             this.user = user;
             this.loggedIn = (user != null);
+            if (this.loggedIn) {
+                let email = this.user.email.split('@');
+                if (email[1] === 'seq.org') {
+                    console.log(this.user.idToken);
+
+                    // let xhr = new XMLHttpRequest();
+                    // xhr.open('POST', 'https://backend.slipmate.ml');
+                    // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    // xhr.onload = function() {
+                    //     console.log('Signed in as: ' + xhr.responseText);
+                    // };
+                    // xhr.send('idtoken=' + this.user.idToken);
+
+                    if (email[0].match(/[a-z]/i)) {
+                        //TEACHER
+                        // document.location.href = 'https://teacher.slipmate.ml';
+                    } else {
+                        //STUDENT
+                        this.cookie.set('token', this.user.idToken)
+                        // document.location.href = 'https://teacher.slipmate.ml';
+                    }
+                } else {
+                    //NOT SEQ
+                    this.signOut();
+                    this.welcome = 'Please use your seq.org email address';
+                }
+            }
         });
 
         this.mobile = window.innerWidth < 768;
