@@ -17,7 +17,7 @@ import {CookieService} from "ngx-cookie-service";
 const config = new AuthServiceConfig([
     {
         id: GoogleLoginProvider.PROVIDER_ID,
-        provider: new GoogleLoginProvider('133453041482-q1f5t28tt0qf897sll1sel00minbm4m4.apps.googleusercontent.com')
+        provider: new GoogleLoginProvider('133453041482-ebq2hge5thtmvklqe9i35s25q6b1gc85.apps.googleusercontent.com')
     }
 ]);
 
