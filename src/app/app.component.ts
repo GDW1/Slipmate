@@ -39,6 +39,9 @@ export class AppComponent implements AfterViewInit, OnInit {
             this.user = user;
             this.loggedIn = (user != null);
         });
+        if (!this.loggedIn) {
+            this.signInWithGoogle()
+        }
     }
 
     getTitle() {
