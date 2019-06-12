@@ -159,6 +159,7 @@ exports.createPass = functions.https.onRequest((request, response) => {
         response.send("the from and to teacher cannot be the same")
     }
     if(teacherPass){
+        //TODO have teacherFromName and teacherFromID be inputed when the student accepts
         db.collection("blockedDay").where("teachID", "==", teacherToID).where("blockDay", "==", dayOfPass).get()
             .then(docs => {
             if(docs.empty){
@@ -166,8 +167,8 @@ exports.createPass = functions.https.onRequest((request, response) => {
                 const mailOptions = {
                     from: `${APP_NAME} <noreply@firebase.com>`,
                     to: (stuID + "@seq.org").toString(),
-                    subject: "You have recieved a Tutorial request from " + toTeacherName,
-                    text: "This teacher reconmends that you go to tutorial on" + dayOfPass
+                    subject: "You have recieved a Tutorial request from " + teacherToName,
+                    text: "This teacher reconmends that you go to tutorial on " + dayOfPass
                 };
                 mailTransport.sendMail(mailOptions, (error, info) => {
                     console.log(mailOptions);
