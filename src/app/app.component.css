@@ -32,108 +32,127 @@ body {
     color: black;
     text-align: center;
     vertical-align: center;
+
     flex: 1;
-    font-size: 50px;
-    text-decoration: none !important;
 }
 
 .pink {
     background-color: #FFA9C4;
-    padding: 0;
+    padding: 0 0.5em 0 0;
+    margin: 0;
+    font-size: 50px;
+    text-decoration: none !important;
     animation-name: unselect-pink;
     animation-duration: 0.3s;
 }
 
 .pink:hover {
-    background-color: lightgray;
+    padding: 0;
+    margin: 0 1em 0 0;
     animation-name: select-pink;
     animation-duration: 0.3s;
 }
 
 .yellow {
     background-color: #FFFF88;
-    margin: 0 0.5em 0 0;
-    padding: 0;
+    padding: 0 0.5em 0 0;
+    font-size: 50px;
+    text-decoration: none !important;
     animation-name: unselect-yellow;
     animation-duration: 0.3s;
 }
 
 .yellow:hover {
-    background-color: lightgray;
+    padding: 0;
     animation-name: select-yellow;
     animation-duration: 0.3s;
 }
 
 .white {
     background-color: #F3F3F3;
-    margin: 0 0.5em 0 0;
     padding: 1em;
+    font-size: 50px;
+    text-decoration: none !important;
     animation-name: unselect;
     animation-duration: 0.3s;
 }
 
 .white:hover {
     color: darkorange;
-    background-color: lightgray;
+    background-color: white;
+    padding: 0.8em;
+    font-size: 55px;
     animation-name: select;
     animation-duration: 0.3s;
 }
 
 @keyframes select-pink {
     from {
-        background-color: #FFA9C4;
+        padding: 0 0.5em 0 0;
+        margin: 0;
     }
     to {
-        background-color: lightgray;
+        padding: 0;
+        margin: 0 1em 0 0;
     }
 }
 
 @keyframes unselect-pink {
     from {
-        background-color: lightgray;
+        padding: 0;
+        margin: 0 1em 0 0;
     }
     to {
-        background-color: #FFA9C4;
+        padding: 0 0.5em 0 0;
+        margin: 0;
     }
 }
 
 @keyframes select-yellow {
     from {
-        background-color: #FFFF88;
+        padding: 0 0.5em 0 0;
     }
     to {
-        background-color: lightgray;
+        padding: 0;
     }
 }
 
 @keyframes unselect-yellow {
     from {
-        background-color: lightgray;
+        padding: 0;
     }
     to {
-        background-color: #FFFF88;
+        padding: 0 0.5em 0 0;
     }
 }
 
 @keyframes select {
     from {
         color: black;
-        background-color: #F3F3F3;
+        background-color: whitesmoke;
+        font-size: 50px;
+        padding: 1em;
     }
     to {
         color: darkorange;
-        background-color: lightgray;
+        background-color: white;
+        font-size: 55px;
+        padding: 0.8em;
     }
 }
 
 @keyframes unselect {
     from {
         color: darkorange;
-        background-color: lightgray;
+        background-color: white;
+        font-size: 55px;
+        padding: 0.8em;
     }
     to {
         color: black;
-        background-color: #F3F3F3;
+        background-color: whitesmoke;
+        font-size: 50px;
+        padding: 1em;
     }
 }
 
