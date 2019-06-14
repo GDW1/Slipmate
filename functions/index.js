@@ -82,13 +82,9 @@ exports.initializeStudent = functions.https.onRequest((request, response) => {
 exports.initializeTeacher = functions.https.onRequest((request, response) => {
     let name = request.get("teacher");
     let id = request.get("id");
-    let number_of_seats_sixth = request.get("nos6");
-    let number_of_seats_seventh = request.get("nos7");
     let data = {
         teachID: id.toString(),
         teachName: name.toString(),
-        seatsSeventh: (number_of_seats_sixth).toString(),
-        seatsSixth: (number_of_seats_seventh).toString()
     }
     db.collection("teacher").where("teachID", "==", id.toString()).get().then((docs) => {
         console.log("Inside the then statement")
@@ -156,7 +152,6 @@ exports.createPass = functions.https.onRequest((request, response) => {
         response.send("the from and to teacher cannot be the same")
     }
     if(teacherPass){
-        //TODO have teacherFromName and teacherFromID be inputed when the student accepts
         db.collection("blockedDay").where("teachID", "==", teacherToID).where("blockDay", "==", dayOfPass).get()
             .then(docs => {
                 if(docs.empty){
@@ -229,8 +224,6 @@ exports.createBlockedDay = functions.https.onRequest((request, response) => {
  * - TeacherID: the id of the teacher requesting the current passes
  * - today: the current day in the format -> ("month:day")
  */
-//TODO make it so that the id of the pass is also sent
-//TODO restest function with approvedPass == true
 exports.getOutgoingSlipsForTeacherToday = functions.https.onRequest((request, response) => {
     let teacherID = request.get("teacherID");
     let day = request.get("day");
@@ -241,6 +234,7 @@ exports.getOutgoingSlipsForTeacherToday = functions.https.onRequest((request, re
             passes = [];
             docs.forEach(doc => {
                 passes.push({
+                    id: doc.id,
                     toTeachID: doc.data().toTeachID,
                     toTeachName: doc.data().toTeachName,
                     fromTeacherName: doc.data().fromTeacherName,
@@ -263,11 +257,9 @@ exports.getOutgoingSlipsForTeacherToday = functions.https.onRequest((request, re
 /**
  * This function is meant to return all the passes that the teacher has incoming
  * This takes two inputs as headers
- * - TeacherID: the id of the teacher requesting the current passes
+ * - teacherID: the id of the teacher requesting the current passes
  * - today: the current day in the format -> ("month:day")
  */
-//TODO make it so that the id of the pass is also sent
-//TODO restest function with approvedPass == true
 exports.getIncomingSlipsForTeacherToday = functions.https.onRequest((request, response) => {
     let teacherID = request.get("teacherID");
     let day = request.get("day");
@@ -278,6 +270,7 @@ exports.getIncomingSlipsForTeacherToday = functions.https.onRequest((request, re
             passes = [];
             docs.forEach(doc => {
                 passes.push({
+                    id: doc.id,
                     toTeachID: doc.data().toTeachID,
                     toTeachName: doc.data().toTeachName,
                     fromTeacherName: doc.data().fromTeacherName,
@@ -300,8 +293,7 @@ exports.getIncomingSlipsForTeacherToday = functions.https.onRequest((request, re
 /**
  * This function will send an email to each teacher everyday at noon
  */
-//TODO Test this too
-exports.scheduledFunction = functions.https.onRequest((request, response) => {//functions.pubsub.schedule('* 12 * * *').onRun((context) => { //TODO make this a schdeuled function after testing
+exports.scheduledFunction = functions.https.onRequest((request, response) => {//functions.pubsub.schedule('* 12 * * *').onRun((context) => {
     db.collection("passes").where("approvedPass", "==", false).where("isTeacherPass", "==", false).get().then(docs => {
         if (docs.empty) {
             response.send("No requests"); //Take out when this becomes scheduled
@@ -313,7 +305,7 @@ exports.scheduledFunction = functions.https.onRequest((request, response) => {//
             })
             teacherNums = [...new Set(teacherNums)];
 
-            for (i = 0; i < teacherNums.length; i++) { //TODO check why this works ithout a decleration of vairable i
+            for (i = 0; i < teacherNums.length; i++) {
                 const mailOptions = {
                     from: `${APP_NAME} <noreply@firebase.com>`,
                     to: (teacherNums[i] + "@seq.org").toString(),
@@ -336,10 +328,10 @@ exports.scheduledFunction = functions.https.onRequest((request, response) => {//
     })
 });
 
-/* TODO !!!!Everything from this point on is untested!!!!*/
 /**
  * This function takes in the id of the teacher as a header and outputs an array of blocked days
  */
+
 exports.getBlockedDays = functions.https.onRequest((request, response) => {
     let teacherID = request.get("teacherID");
     db.collection("blockedDays").where("teachID", "==", teacherID).get().then(docs => {
@@ -348,7 +340,7 @@ exports.getBlockedDays = functions.https.onRequest((request, response) => {
         }else{
             let passes = []
             docs.forEach(doc => {
-                passes.push(doc.data().day);
+                passes.push(doc.data().blockDay);
             });
             response.send(passes)
         }
@@ -357,15 +349,14 @@ exports.getBlockedDays = functions.https.onRequest((request, response) => {
         throw err;
     })
 });
-
 /**
- * This function takes in the teacher id and returns the pending requests
+ * This function takes in the teacher id and returns the pending requests which they have to Approve
  */
 exports.getUnapprovedSlips = functions.https.onRequest((request, response) => {
     let teacherID = request.get("teacherID");
-    db.collection("passes").where("toTeachID", "==", teacherID).where("approvedPass", "==", false).get().then(docs => {
+    db.collection("passes").where("toTeachID", "==", teacherID).where("approvedPass", "==", false).where("isTeacherPass", "==", false).get().then(docs => {
         if(docs.empty){
-            response.send("no available passes");
+            response.send("no available passes");a
         }else{
             let passes = [];
             docs.forEach(doc => {
@@ -388,7 +379,6 @@ exports.getUnapprovedSlips = functions.https.onRequest((request, response) => {
         throw err;
     })
 });
-
 /**
  * This function takes in one teacher id and returns information about the teacher
  */
@@ -433,8 +423,8 @@ exports.getAllTeachers = functions.https.onRequest((request, response) => {
                 })
             });
             response.send(teachers);
-            return;
         }
+        return;
     }).catch(err => {
         throw err;
     })
@@ -445,7 +435,7 @@ exports.getAllTeachers = functions.https.onRequest((request, response) => {
  */
 exports.deleteSlip = functions.https.onRequest((request, response) => {
     let id = request.get("ID");
-    db.collection(passes).doc(id).delete().then(ref => { //TODO .delete() may not be the correct function
+    db.collection("passes").doc(id).delete().then(ref => {
         response.send("The pass has been deleted");
         return;
     }).catch(err => {
@@ -458,7 +448,7 @@ exports.deleteSlip = functions.https.onRequest((request, response) => {
  * this function takes in an array of blocked days as an array and adds them to the database.
  * If only one blocked day is being added I reconmend that the other create blocked dayFunction is used
  */
-exports.enterMultipleBlockedDays= functions.https.onRequest((request, response) => {
+exports.setMultipleBlockedDays= functions.https.onRequest((request, response) => {
     let blockedDays = JSON.parse(request.get("blockedDays"));
     if(blockedDays.length === 0){response.send("invalidData")}
     for(let i = 0; i < blockedDays.length; i++){
@@ -494,13 +484,13 @@ exports.deleteBlockedDays = functions.https.onRequest((request, response) => {
         }
     }
 });
-
 /**
  * This function takes multiple slip ids and deletes them from the database
  */
 exports.deleteMultipleSlips = functions.https.onRequest((request, response) => {
     let ids = JSON.parse(request.get("ids"))
     if(ids.length === 0){response.send("invalidData")}
+    let numberOfDeletions = [];
     for(var i = 0; i < ids.length; i++){
         if(i === (ids.length - 1)){
             db.collection("passes").doc(ids[i]).delete().then(ref => {
@@ -514,7 +504,6 @@ exports.deleteMultipleSlips = functions.https.onRequest((request, response) => {
         }
     }
 });
-
 //TODO check with aidan and Daniel if from teacher should be notified of their departing student
 // immediatly, at a time, or just in the portal
 /**
@@ -525,19 +514,19 @@ exports.deleteMultipleSlips = functions.https.onRequest((request, response) => {
  * - fromTeacherID: the id of the teacher that the student is leaving from
  * //- studentName: name of the student leaving// only if email is sent
  */
-exports.studentAcceptPass = functions.https.onRequest((response, request) => {
-    let passID = request.get("passID");
+exports.studentAcceptPass = functions.https.onRequest((request, response) => {
+    let id = request.get("ID");
     let studentID = request.get("studentID");
     let fromTeacher = request.get("fromTeacherID");
-    let studentName = request.get("studentName");
-    db.collection("passes").doc(passID).get().then(doc => {
-        if(doc.data().studentID !== studentID || doc.data().approvedPass === true){
-            throw new Error("Wrong student approving the pass");
+    console.log(id);
+    db.collection("passes").doc(id).get().then(doc => {
+        if(doc.data().studentID !== studentID || doc.data().approvedPass === true || doc.data().isTeacherPass === false){
+            response.send("Wrong student approving the pass");
         }else{
-            db.collection("passes").doc(passID).update({
+            db.collection("passes").doc(id).update({
                 fromTeachID: fromTeacher,
                 approvedPass: true
-            })
+            });
             /*
             * Leave space here for an email for from teacher
             */
@@ -550,7 +539,7 @@ exports.studentAcceptPass = functions.https.onRequest((response, request) => {
 });
 
 /**
- * This returns a list of passes that have been approved
+ * This returns a list of passes that have been approved for a student
  * It takes the following inputs as headers:
  * - studentID: the id of the student
  */
@@ -583,11 +572,11 @@ exports.getCurrentPassesForStudents = functions.https.onRequest((request, respon
 })
 
 /**
- * This function returns the slip from which are pending from a teacher
+ * This function returns the slip from which are pending from teachers
  */
 exports.getPendingPassesForStudents = functions.https.onRequest((request, response) => {
     let studentID = request.get("studentID");
-    db.collection("passes").where("studentID", "==", studentID).where("approvedPass", "==", false).get().then(docs => {
+    db.collection("passes").where("studentID", "==", studentID).where("approvedPass", "==", false).where("isTeacherPass", "==", true).get().then(docs => {
         if(docs.empty){
             response.send("no approved requests");
         }else{
@@ -624,7 +613,7 @@ exports.getStudent = functions.https.onRequest((request, response) => {
         }else{
             let student = [];
             docs.forEach(doc => {
-                student.append({
+                student.push({
                     stuID: doc.data().stuID,
                     stuName: doc.data().stuName,
                     teachSixth: doc.data().teachSixth,
@@ -633,6 +622,7 @@ exports.getStudent = functions.https.onRequest((request, response) => {
             });
             response.send(student)
         }
+        return;
     }).catch(err => {
         throw err;
     })
@@ -650,12 +640,12 @@ exports.getStudent = functions.https.onRequest((request, response) => {
  */
 exports.teacherApprovePass = functions.https.onRequest((request, response) => {
     let passID = request.get("passID");
-    let teacherID = request.get("studentID");
+    let teacherID = request.get("teacherID");
     //let fromTeacher = request.get("fromTeacherID");
     //let studentName = request.get("studentName");
     db.collection("passes").doc(passID).get().then(doc => {
-        if(doc.data().toTeachID !== teacherID || doc.data().approvedPass === true){
-            throw new Error("Wrong student approving the pass");
+        if(doc.data().toTeachID !== teacherID || doc.data().approvedPass === true || doc.data().isTeacherPass === true){
+            response.send("Wrong teacher approving the pass");
         }else{
             db.collection("passes").doc(passID).update({
                 approvedPass: true
@@ -671,6 +661,8 @@ exports.teacherApprovePass = functions.https.onRequest((request, response) => {
     })
 });
 
+/* TODO !!!!Everything from this point on is untested!!!!*/
+
 /**
  * This function is triggered when a teacher denies a pass. It will send an email as well
  * It takes the following inputs as headers:
@@ -681,3 +673,5 @@ exports.teacherDenyPass = functions.https.onRequest((request,response) => {
 
 })
 //exports.studentDenyPass = functions.https.onRequest((request,response) => {})
+//getSlipsUnapprovedByStudentByTeacher
+//
