@@ -1,6 +1,5 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {AuthService, GoogleLoginProvider, SocialUser} from 'angularx-social-login';
-import {CookieService} from "ngx-cookie-service";
 
 @Component({
     selector: 'app-root',
@@ -11,8 +10,7 @@ import {CookieService} from "ngx-cookie-service";
 export class AppComponent implements OnInit {
     title = 'Slipmate';
 
-    constructor(private authService: AuthService,
-                private cookie: CookieService) {
+    constructor(private authService: AuthService) {
     }
 
     private user: SocialUser;
