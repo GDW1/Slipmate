@@ -30,6 +30,9 @@ import {HelpComponent} from './help/help.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SocialLoginModule, AuthServiceConfig} from "angularx-social-login";
 import {GoogleLoginProvider} from "angularx-social-login";
+import {AngularFireModule} from "@angular/fire";
+import {environment} from "../environments/environment";
+import {AngularFireFunctionsModule} from "@angular/fire/functions";
 
 let config = new AuthServiceConfig([
     {
@@ -73,14 +76,19 @@ export function provideConfig() {
         ReactiveFormsModule,
         MatCheckboxModule,
         FormsModule,
-        SocialLoginModule
+        SocialLoginModule,
+        AngularFireModule.initializeApp(environment.firebase, 'Slipmate Teacher'),
+        AngularFireFunctionsModule
     ],
     providers: [
         {
             provide: AuthServiceConfig,
             useFactory: provideConfig
         },
-        {provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'check'}
+        {
+            provide: MAT_CHECKBOX_CLICK_ACTION,
+            useValue: 'check'
+        }
     ],
     bootstrap: [AppComponent]
 })

@@ -1,6 +1,6 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <div *ngIf="!loggedIn">
-<!--    <button mat-raised-button (click)="signInWithGoogle()">Login</button>-->
+    <button mat-raised-button (click)="signInWithGoogle()">Login</button>
 </div>
 <div class="container" *ngIf="loggedIn">
     <mat-toolbar color="primary" class="app-toolbar">
@@ -26,6 +26,7 @@
             <a mat-menu-item routerLink="settings">SettingsSettingsSettingsSettingsSettings</a>
             <a mat-menu-item routerLink="help">Help</a>
             <a mat-menu-item (click)="signOut()">Log Out</a>
+            <a mat-menu-item (click)="testCreate()">Create</a>
         </mat-menu>
     </mat-toolbar>
 
