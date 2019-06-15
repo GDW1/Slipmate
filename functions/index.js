@@ -386,7 +386,7 @@ exports.getUnapprovedSlips = functions.https.onRequest((request, response) => {
 exports.getTeacher = functions.https.onRequest((request, response) => {
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', "*").header('Access-Control-Allow-Methods', '*')
-            .header("Access-Control-Allow-Headers", "*")
+            .header("Access-Control-Allow-Headers", "*").set("Access-Control-Allow-Credentials", "*")
             .status(200).send("CORS");
         return;
     }
@@ -394,7 +394,7 @@ exports.getTeacher = functions.https.onRequest((request, response) => {
     db.collection("teacher").where("teachID","==", teacherID).get().then(docs => {
         if(docs.empty){
             response.header('Access-Control-Allow-Origin', "*").header('Access-Control-Allow-Methods', '*')
-                .header("Access-Control-Allow-Headers", "*");
+                .header("Access-Control-Allow-Headers", "*").set("Access-Control-Allow-Credentials", "*");
             response.send("no teacher with this ID")
         }else{
             let data = {};
@@ -407,13 +407,13 @@ exports.getTeacher = functions.https.onRequest((request, response) => {
                 }
             })
             response.header('Access-Control-Allow-Origin', "*").header('Access-Control-Allow-Methods', '*')
-                .header("Access-Control-Allow-Headers", "*");
+                .header("Access-Control-Allow-Headers", "*").set("Access-Control-Allow-Credentials", "*");
             response.send(data);
         }
         return;
     }).catch(err => {
         response.header('Access-Control-Allow-Origin', "*").header('Access-Control-Allow-Methods', '*')
-            .header("Access-Control-Allow-Headers", "*");
+            .header("Access-Control-Allow-Headers", "*").set("Access-Control-Allow-Credentials", "*");
         response.send("no teacher with this ID")
         throw err
     })
