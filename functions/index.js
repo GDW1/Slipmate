@@ -2,6 +2,7 @@ const admin = require('firebase-admin');
 const functions = require('firebase-functions');
 const nodemailer = require('nodemailer');
 var fs = require('fs');
+const cors = require('cors')({origin: true, allowedHeaders: "*"});
 
 /**Firebase Firestore initialization*/
 admin.initializeApp(functions.config().firebase);
@@ -383,9 +384,17 @@ exports.getUnapprovedSlips = functions.https.onRequest((request, response) => {
  * This function takes in one teacher id and returns information about the teacher
  */
 exports.getTeacher = functions.https.onRequest((request, response) => {
+    if (request.method === `OPTIONS`) {
+        response.header('Access-Control-Allow-Origin', "*").header('Access-Control-Allow-Methods', '*')
+            .header("Access-Control-Allow-Headers", "*")
+            .status(200).send("CORS");
+        return;
+    }
     let teacherID = request.get("teacherID");
     db.collection("teacher").where("teachID","==", teacherID).get().then(docs => {
-        if(docs.exist){
+        if(docs.empty){
+            response.header('Access-Control-Allow-Origin', "*").header('Access-Control-Allow-Methods', '*')
+                .header("Access-Control-Allow-Headers", "*");
             response.send("no teacher with this ID")
         }else{
             let data = {};
@@ -397,10 +406,15 @@ exports.getTeacher = functions.https.onRequest((request, response) => {
                     seatsSixth: doc.data().seatsSixth
                 }
             })
+            response.header('Access-Control-Allow-Origin', "*").header('Access-Control-Allow-Methods', '*')
+                .header("Access-Control-Allow-Headers", "*");
             response.send(data);
         }
         return;
     }).catch(err => {
+        response.header('Access-Control-Allow-Origin', "*").header('Access-Control-Allow-Methods', '*')
+            .header("Access-Control-Allow-Headers", "*");
+        response.send("no teacher with this ID")
         throw err
     })
 });
@@ -670,8 +684,9 @@ exports.teacherApprovePass = functions.https.onRequest((request, response) => {
  * - passID: the id of the pass being denied
  */
 exports.teacherDenyPass = functions.https.onRequest((request,response) => {
-
-})
+    let passID = request.get("ID");
+});
 //exports.studentDenyPass = functions.https.onRequest((request,response) => {})
 //getSlipsUnapprovedByStudentByTeacher
-//
+//exports.AcceptAllPasses
+//export.
