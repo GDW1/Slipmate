@@ -39,8 +39,8 @@ export class AppComponent implements AfterViewInit, OnInit {
     }
 
     testCreate() {
-        // this.backend.createPass(true, 'alu', 'blee', '796940', '08', '14');
-        this.backend.getTeacher('798932');
+        this.backend.createPass(true, 'alu', 'blee', '796940', '08', '14');
+        // this.backend.getTeacher('798932');
     }
 
     ngOnInit() {

@@ -10,68 +10,74 @@ export class ApiService {
     constructor(private fire: AngularFireFunctions) {
     }
 
-    initTeacher(teacherID: string, name: string) {
-        let fn = this.fire.functions.httpsCallable('initializeTeacher');
-        fn({
-            id: teacherID,
-            teacher: name
-        }).then(function(result) {
-            //TODO: check for error
-        })
+    private request(func: string, data: any): any {
+        let req = new XMLHttpRequest;
+        req.open('GET', 'https://cors-anywhere.herokuapp.com/https://us-central1-tutorial-pass-automator.cloudfunctions.net/' + func, false);
+        for (let i in data) {
+            req.setRequestHeader(i, data[i]);
+        }
+        req.send();
+        return req.response;
     }
 
-    createPass(isTeacherPass: boolean, teacherToID: string, teacherFromID: string, studentID: string, month: string, day: string) {
-        let fn = this.fire.functions.httpsCallable('createPass');
-        // let tt = this.getTeacher(teacherToID);
-        // let ft = this.getTeacher(teacherFromID);
-        fn({
+    initTeacher(teacherID: string, name: string): any {
+        return this.request('initializeTeacher', {
+            id: teacherID,
+            teacher: name
+        });
+    }
+
+    createPass(isTeacherPass: boolean, teacherToID: string, teacherFromID: string, studentID: string, month: string, day: string): any {
+        let tt = this.getTeacher(teacherToID);
+        let ft = this.getTeacher(teacherFromID);
+        return this.request('createPass', {
             isTeacherPass: isTeacherPass,
             toTeachID: teacherToID,
             fromTeachID: teacherFromID,
-            // toTeachName: tt.name,
-            // fromTeachName: ft.name,
-            toTeachName: 'Alyssa Lu',
-            fromTeachName: 'Brianna Lee',
+            toTeachName: tt.name,
+            fromTeachName: ft.name,
             studentID: studentID,
-            day: (month.toString() + ':' + day.toString())
-        }).then(function(result) {
-            //TODO: check for error
-            console.log(result.data)
-        })
+            day: (month + ':' + day)
+        });
     }
 
-    getAllTeachers() {
-
+    getAllTeachers(): any {
+        return this.request('getAllTeachers', {});
     }
 
     getTeacher(id: string): any {
-        // let fn = this.fire.functions.httpsCallable('getTeacher');
-        // fn({
-        //     id: id
-        // }).then(function(result) {
-        //     return result.data
-        // })
-        let req = new XMLHttpRequest;
-        req.open("GET", "https://us-central1-tutorial-pass-automator.cloudfunctions.net/getTeacher", false);
-        req.setRequestHeader("teacherID", id);
-        req.send();
-        console.log("done");
-        console.log(req.response)
+        return this.request('getTeacher', { teacherID: id });
     }
 
-    deleteSlip() {
-
+    createBlockedDay(id: string, month: string, day: string): any {
+        return this.request('createBlockedDay', { teacherID: id, blockedDay: (month + ':' + day)});
     }
 
-    getSlip() {
+    getOutgoingSlips(id: string, month: string, day: string): any {
+        return this.request('getOutgoingSlipsForTeacherToday', { teacherID: id, day: (month + ':' + day)});
+    }
 
+    getIncomingSlipsForTeacherToday(id: string, month: string, day: string): any {
+        return this.request('getIncomingSlipsForTeacherToday', { teacherID: id, day: (month + ':' + day)});
+    }
+
+    getBlockedDays(id: string): any {
+        return this.request('getBlockedDays', { teacherID: id });
+    }
+
+    getUnapprovedSlips(id: string): any {
+        return this.request('getUnapprovedSlips', { teacherID: id });
+    }
+
+    deleteSlip(slipID: string): any {
+        return this.request('deleteSlip', { ID: slipID });
+    }
+
+    getSlip(slipID: string): any {
+        return this.request('getSlip', { ID: slipID });
     }
 
     getCurrentSlip() {
-
-    }
-
-    createBlockedDay() {
 
     }
 
@@ -83,16 +89,12 @@ export class ApiService {
 
     }
 
-    getBlockedDays() {
-
-    }
-
     acceptSlip() {
 
     }
 
-    getStudent() {
-
+    getStudent(stuID: string): any {
+        return this.request('getStudent', { studentID: stuID });
     }
 
 }
