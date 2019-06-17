@@ -1,8 +1,8 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<div *ngIf="!loggedIn">
-    <button mat-raised-button (click)="signInWithGoogle()">Login</button>
+<div *ngIf="!this.loginService.loggedIn">
+    <button mat-raised-button (click)="this.loginService.signInWithGoogle()">Login</button>
 </div>
-<div class="container" *ngIf="loggedIn">
+<div class="container" *ngIf="this.loginService.loggedIn">
     <mat-toolbar color="primary" class="app-toolbar">
         <button mat-icon-button (click)="sidenav.toggle()" style="margin-right: 1em; margin-bottom: 2px">
             <mat-icon style="margin-bottom: 1px">menu</mat-icon>
@@ -16,47 +16,46 @@
         <span class="spacer"></span>
         <span>{{this.getTitle() | titlecase}}</span>
         <span class="spacer"></span>
-        <span style="margin-right: 1em">Hello, {{user.name.split(' ')[0]}}!</span>
+        <span style="margin-right: 1em">Hello, {{this.loginService.user.name.split(' ')[0]}}!</span>
         <button mat-mini-fab [matMenuTriggerFor]="usermenu" style="overflow-y: hidden; overflow-x: hidden">
-            <img src="{{user.photoUrl}}" width="100%" style="margin-top: -0.575em" alt="Profile">
+            <img src="{{this.loginService.user.photoUrl}}" width="100%" style="margin-top: -0.575em" alt="Profile">
         </button>
         <mat-menu #usermenu style="border-radius: 10em">
-            <span class="name">{{user.name}}</span>
+            <span class="name">{{this.loginService.user.name}}</span>
             <mat-divider></mat-divider>
             <a mat-menu-item routerLink="settings">Settings</a>
             <a mat-menu-item routerLink="help">Help</a>
-            <a mat-menu-item (click)="signOut()">Log Out</a>
-            <a mat-menu-item (click)="testCreate()">Create</a>
+            <a mat-menu-item (click)="this.loginService.signOut()">Log Out</a>
         </mat-menu>
     </mat-toolbar>
 
     <mat-sidenav-container class="sidenav-container">
         <mat-sidenav #sidenav disableClose mode="side" opened fixedTopGap="56" role="navigation"
-                     style="margin-right: 0px">
+                     style="margin-right: 0">
             <mat-nav-list>
-                <a mat-list-item routerLink="today" [ngClass]="{ active: isActive('today')}">
+                <a mat-list-item routerLink="today" [ngClass]="{ active: isActive('today') }">
                     <mat-icon class="sn-icon">event</mat-icon>
-                    <span class="sn-text">Today</span>
+                    <span class="sn-text" [ngClass]="{ active: isActive('today') }">Today</span>
                 </a>
-                <a mat-list-item routerLink="requests" [ngClass]="{ active: isActive('requests')}">
+                <a mat-list-item routerLink="requests" [ngClass]="{ active: isActive('requests') }">
                     <mat-icon class="sn-icon">dns</mat-icon>
-                    <span class="sn-text">Requests</span>
+                    <span class="sn-text" [ngClass]="{ active: isActive('requests') }">Requests</span>
                 </a>
-                <a mat-list-item routerLink="students" [ngClass]="{ active: isActive('students')}">
+                <a mat-list-item routerLink="students" [ngClass]="{ active: isActive('students') }">
                     <mat-icon class="sn-icon">people</mat-icon>
-                    <span class="sn-text">Students</span>
+                    <span class="sn-text" [ngClass]="{ active: isActive('students') }">Students</span>
                 </a>
-                <a mat-list-item routerLink="calendar" [ngClass]="{ active: isActive('calendar')}">
+                <a mat-list-item routerLink="calendar" [ngClass]="{ active: isActive('calendar') }">
                     <mat-icon class="sn-icon">date_range</mat-icon>
-                    <span class="sn-text">Calendar</span>
+                    <span class="sn-text" [ngClass]="{ active: isActive('calendar') }">Calendar</span>
                 </a>
-                <a mat-list-item routerLink="create" [ngClass]="{ active: isActive('create')}">
+                <a mat-list-item routerLink="create" [ngClass]="{ active: isActive('create') }">
                     <mat-icon class="sn-icon">chrome_reader_mode</mat-icon>
-                    <span class="sn-text">Create</span>
+                    <span class="sn-text" [ngClass]="{ active: isActive('create') }">Create</span>
                 </a>
             </mat-nav-list>
         </mat-sidenav>
-        <mat-sidenav-content role="main" class="bg-light" style="margin-left: 0px">
+        <mat-sidenav-content role="main" class="bg-light" style="margin-left: 0">
             <router-outlet></router-outlet>
         </mat-sidenav-content>
     </mat-sidenav-container>

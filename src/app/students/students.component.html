@@ -1,3 +1,46 @@
-<p>
-  students works!
-</p>
+<div style="padding: 100px" *ngIf="arriving.length">
+    <div class="card-container" *ngFor="let a of arriving">
+        <mat-card class="card">
+            <mat-card-title class="pad">{{a}}</mat-card-title>
+            <mat-card-content style="padding-left: 1em;">
+                Hello
+            </mat-card-content>
+            <mat-card-actions style="overflow: auto">
+                <div class="button-bar" style="float: right">
+                    <button mat-stroked-button color="warn">
+                        Deny
+                    </button>
+                    <button mat-raised-button style="background-color: limegreen">
+                        <span class="mat-button-wrapper" style="color: white">Allow</span>
+                    </button>
+                </div>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>
+
+<div style="padding: 100px; alignment: center" *ngIf="!arriving.length">
+    <mat-card class="card">
+        <mat-card-title style="padding: 0.5em;">No students attending your tutorial today!</mat-card-title>
+    </mat-card>
+</div>
+
+
+<div style="padding: 100px" *ngIf="leaving.length">
+    <div class="card-container" *ngFor="let l of leaving">
+        <mat-card class="card">
+            <mat-card-title class="pad">{{l}}</mat-card-title>
+            <mat-card-content style="padding-left: 1em;">
+                Hello
+            </mat-card-content>
+            <mat-card-actions style="overflow: auto">
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>
+
+<div style="padding: 100px; alignment: center" *ngIf="!leaving.length">
+    <mat-card class="card">
+        <mat-card-title style="padding: 0.5em;">No students leaving your tutorial today!</mat-card-title>
+    </mat-card>
+</div>

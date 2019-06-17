@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
-import { AngularFireFunctions } from '@angular/fire/functions';
+import Card from "./card";
+import {LoginService} from "./login.service";
 
 @Injectable({
     providedIn: 'root'
@@ -7,7 +8,7 @@ import { AngularFireFunctions } from '@angular/fire/functions';
 
 export class ApiService {
 
-    constructor(private fire: AngularFireFunctions) {
+    constructor(private loginService: LoginService) {
     }
 
     private request(func: string, data: any): any {
@@ -20,11 +21,16 @@ export class ApiService {
         return req.response;
     }
 
-    initTeacher(teacherID: string, name: string): any {
-        return this.request('initializeTeacher', {
-            id: teacherID,
-            teacher: name
-        });
+    private month(m: string): string {
+        let months = ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        return months[parseInt(m) - 1];
+    }
+
+    private daySuffix(day: string): string {
+        let d = parseInt(day) % 10;
+        let suffixes = ['th', 'st', 'nd', 'rd'];
+        if (d > 3) d = 0;
+        return suffixes[d];
     }
 
     createPass(isTeacherPass: boolean, teacherToID: string, teacherFromID: string, studentID: string, month: string, day: string): any {
@@ -38,6 +44,13 @@ export class ApiService {
             fromTeachName: ft.name,
             studentID: studentID,
             day: (month + ':' + day)
+        });
+    }
+
+    initTeacher(teacherID: string, name: string): any {
+        return this.request('initializeTeacher', {
+            id: teacherID,
+            teacher: name
         });
     }
 
@@ -57,7 +70,7 @@ export class ApiService {
         return this.request('getOutgoingSlipsForTeacherToday', { teacherID: id, day: (month + ':' + day)});
     }
 
-    getIncomingSlipsForTeacherToday(id: string, month: string, day: string): any {
+    getIncomingSlips(id: string, month: string, day: string): any {
         return this.request('getIncomingSlipsForTeacherToday', { teacherID: id, day: (month + ':' + day)});
     }
 
@@ -77,24 +90,52 @@ export class ApiService {
         return this.request('getSlip', { ID: slipID });
     }
 
-    getCurrentSlip() {
-
-    }
-
-    deleteBlockedDay() {
-
-    }
-
-    isBlockedDay() {
-
-    }
-
-    acceptSlip() {
-
-    }
-
     getStudent(stuID: string): any {
         return this.request('getStudent', { studentID: stuID });
+    }
+
+    teacherApprovePass(passID: string, teacherID: string) {
+        return this.request('teacherApprovePass', {
+            passID: passID,
+            teacherID: teacherID
+        })
+    }
+
+    teacherDenyPass(passID: string, teacherID: string) {
+        return this.request('teacherDenyPass', {
+            passID: passID,
+            teacherID: teacherID
+        })
+    }
+
+
+
+    bottleCards(dataArr: any): Card[] {
+        if (!dataArr[0].hasOwnProperty('id')) return [];
+        let cArr = [];
+        for (let c in dataArr) {
+            cArr.concat(this.bottleCard(c));
+        }
+        return cArr;
+    }
+
+    bottleCard(data: any): Card {
+        if (!data.hasOwnProperty('id')) return;
+        let c = new Card;
+        c.name = this.getStudent(data.studentID).name;
+        c.toTeach = data.toTeachName;
+        c.fromTeach = data.fromTeach;
+        c.slipID = data.id;
+        c.isTeacherPass = data.isTeacherPass;
+        c.approvedPass = data.approvedPass;
+        c.denied = data.denied;
+
+        let day = data.day.split(':')[1];
+        c.date = this.month(data.day.split(':')[0]) + day + this.daySuffix(day);
+
+        c.showButtons = !((data.denied || data.approvedPass || data.isTeacherPass) && (this.loginService.user.email.split('@')[0]) === data.toTeachID);
+
+        return c;
     }
 
 }

@@ -30,9 +30,7 @@ import {HelpComponent} from './help/help.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SocialLoginModule, AuthServiceConfig} from "angularx-social-login";
 import {GoogleLoginProvider} from "angularx-social-login";
-import {AngularFireModule} from "@angular/fire";
-import {environment} from "../environments/environment";
-import {AngularFireFunctionsModule} from "@angular/fire/functions";
+import { CardComponent } from './card/card.component';
 
 let config = new AuthServiceConfig([
     {
@@ -54,7 +52,8 @@ export function provideConfig() {
         CreateComponent,
         CalendarComponent,
         SettingsComponent,
-        HelpComponent
+        HelpComponent,
+        CardComponent
     ],
     imports: [
         BrowserModule,
@@ -76,9 +75,7 @@ export function provideConfig() {
         ReactiveFormsModule,
         MatCheckboxModule,
         FormsModule,
-        SocialLoginModule,
-        AngularFireModule.initializeApp(environment.firebase, 'Slipmate Teacher'),
-        AngularFireFunctionsModule
+        SocialLoginModule
     ],
     providers: [
         {
