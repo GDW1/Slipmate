@@ -2,7 +2,6 @@ const admin = require('firebase-admin');
 const functions = require('firebase-functions');
 const nodemailer = require('nodemailer');
 var fs = require('fs');
-const cors = require('cors')({origin: true, allowedHeaders: "*"});
 
 /**Firebase Firestore initialization*/
 admin.initializeApp(functions.config().firebase);
@@ -505,6 +504,9 @@ exports.getTeacher = functions.https.onRequest((request, response) => {
         origin = "https://teacher.slipmate.ml"
     }else{
         origin = "https://student.slipmate.ml"
+    }
+    if(request.get("origin") !== "https://teacher.slipmate.ml" && request.get("origin") !== "https://student.slipmate.ml"){
+        response.send("This is not an approved origin")
     }
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
