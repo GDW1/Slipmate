@@ -421,7 +421,6 @@ exports.scheduledFunction = functions.https.onRequest((request, response) => {//
 /**
  * This function takes in the id of the teacher as a header and outputs an array of blocked days
  */
-
 exports.getBlockedDays = functions.https.onRequest((request, response) => {
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
@@ -451,6 +450,7 @@ exports.getBlockedDays = functions.https.onRequest((request, response) => {
         throw err;
     })
 });
+
 /**
  * This function takes in the teacher id and returns the pending requests which they have to Approve
  */
@@ -495,6 +495,7 @@ exports.getUnapprovedSlips = functions.https.onRequest((request, response) => {
         throw err;
     })
 });
+
 /**
  * This function takes in one teacher id and returns information about the teacher
  */
@@ -507,6 +508,7 @@ exports.getTeacher = functions.https.onRequest((request, response) => {
     }
     if(request.get("origin") !== "https://teacher.slipmate.ml" && request.get("origin") !== "https://student.slipmate.ml"){
         response.send("This is not an approved origin")
+        return;
     }
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
@@ -694,6 +696,7 @@ exports.deleteBlockedDays = functions.https.onRequest((request, response) => {
         }
     }
 });
+
 /**
  * This function takes multiple slip ids and deletes them from the database
  */
@@ -734,6 +737,7 @@ exports.deleteMultipleSlips = functions.https.onRequest((request, response) => {
         }
     }
 });
+
 //TODO check with aidan and Daniel if from teacher should be notified of their departing student
 // immediatly, at a time, or just in the portal
 /**
@@ -994,6 +998,7 @@ exports.teacherDenyPass = functions.https.onRequest((request,response) => {
         throw err;
     })
 });
+
 /**
  * This function denies a pass that the student made
  *
