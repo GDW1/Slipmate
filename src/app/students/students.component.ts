@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import Card from "../card";
 import {ApiService} from "../api.service";
+import Card from "../card";
 
 @Component({
     selector: 'app-students',
@@ -12,12 +12,12 @@ export class StudentsComponent implements OnInit {
     constructor(private api: ApiService) {
     }
 
-    public leaving: Card[];
-    public arriving: Card[];
+    public leaving: Card[]; //= [{name: 'Aidan'}, { name: 'Ben' }];
+    public arriving: Card[]; //= [{name: 'Aidan'}, { name: 'Ben' }];
 
     ngOnInit() {
-        this.leaving = this.api.bottleCards(this.api.getOutgoingSlips('798932', '08', '14'))
-        this.arriving = this.api.bottleCards(this.api.getIncomingSlips('798932', '08', '14'))
+        this.leaving = this.api.bottleCards(this.api.getOutgoingSlipsToday('798932', '08', '14'))
+        this.arriving = this.api.bottleCards(this.api.getIncomingSlipsToday('798932', '08', '14'))
     }
 
 }

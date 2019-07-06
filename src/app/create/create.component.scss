@@ -1,9 +1,19 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
 .step-container {
     padding: 100px;
     alignment: center;
     margin: auto;
-    alignment: center;
     max-width: 900px;
+}
+
+::ng-deep .mat-step-header .mat-step-icon-selected {
+    background-color: #FFC107;
+}
+
+::ng-deep .mat-step-header .mat-step-icon-state-edit {
+    background-color: #FFC107;
 }
 
 .step {

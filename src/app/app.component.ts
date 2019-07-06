@@ -2,6 +2,7 @@ import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {MatListItem, MatSidenavContainer} from "@angular/material";
 import {Router} from "@angular/router";
 import {LoginService} from "./login.service";
+import {ApiService} from "./api.service";
 
 @Component({
     selector: 'app-root',
@@ -15,6 +16,7 @@ export class AppComponent implements AfterViewInit {
     @ViewChild(MatListItem, {static: true}) sidenavLink: MatListItem;
 
     constructor(private router: Router,
+                private api: ApiService,
                 private loginService: LoginService) {
     }
 
@@ -25,7 +27,7 @@ export class AppComponent implements AfterViewInit {
     }
 
     getTitle() {
-        return this.router.url.substring(9);
+        return this.router.url.substring(1);
     }
 
     isActive(path: string): boolean {

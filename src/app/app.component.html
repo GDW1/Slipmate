@@ -1,17 +1,22 @@
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<div *ngIf="!this.loginService.loggedIn">
-    <button mat-raised-button (click)="this.loginService.signInWithGoogle()">Login</button>
+<div *ngIf="!loginService.loggedIn" style="height: 100vh;">
+    <div style="display: flex; margin-top: 47vh">
+        <span class="spacer"></span>
+        <button mat-raised-button color="primary" (click)="this.loginService.signInWithGoogle()">Sign in</button>
+        <span class="spacer"></span>
+    </div>
 </div>
-<div class="container" *ngIf="this.loginService.loggedIn">
+
+
+<div class="container" *ngIf="loginService.loggedIn">
     <mat-toolbar color="primary" class="app-toolbar">
         <button mat-icon-button (click)="sidenav.toggle()" style="margin-right: 1em; margin-bottom: 2px">
             <mat-icon style="margin-bottom: 1px">menu</mat-icon>
         </button>
         <span style="margin-bottom: -2px; margin-left: 0.1em">
-            <a style="font-family: 'psans-med', sans-serif; font-size: 20pt; color: white; text-decoration: none !important;"
-               routerLink="today">Slip</a>
-            <a style="font-family: 'psans-light', sans-serif; font-size: 20pt; color: white; text-decoration: none !important;"
-               routerLink="today">mate</a>
+            <a style="font-size: 20pt; color: white; text-decoration: none !important;" routerLink="today">
+                <span style="font-family: 'psans-med', sans-serif;">Slip</span>
+                <span style="font-family: 'psans-light', sans-serif">mate</span>
+            </a>
         </span>
         <span class="spacer"></span>
         <span>{{this.getTitle() | titlecase}}</span>
@@ -26,6 +31,7 @@
             <a mat-menu-item routerLink="settings">Settings</a>
             <a mat-menu-item routerLink="help">Help</a>
             <a mat-menu-item (click)="this.loginService.signOut()">Log Out</a>
+            <a mat-menu-item (click)="this.api.getTeacher('798932')">Test getTeacher()</a>
         </mat-menu>
     </mat-toolbar>
 

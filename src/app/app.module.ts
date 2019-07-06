@@ -12,7 +12,7 @@ import {
     MatInputModule,
     MatListModule,
     MatMenuModule,
-    MatNativeDateModule,
+    MatNativeDateModule, MatProgressSpinnerModule,
     MatSidenavModule,
     MatStepperModule,
     MatToolbarModule
@@ -30,7 +30,6 @@ import {HelpComponent} from './help/help.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SocialLoginModule, AuthServiceConfig} from "angularx-social-login";
 import {GoogleLoginProvider} from "angularx-social-login";
-import { CardComponent } from './card/card.component';
 
 let config = new AuthServiceConfig([
     {
@@ -52,8 +51,7 @@ export function provideConfig() {
         CreateComponent,
         CalendarComponent,
         SettingsComponent,
-        HelpComponent,
-        CardComponent
+        HelpComponent
     ],
     imports: [
         BrowserModule,
@@ -75,16 +73,13 @@ export function provideConfig() {
         ReactiveFormsModule,
         MatCheckboxModule,
         FormsModule,
-        SocialLoginModule
+        SocialLoginModule,
+        MatProgressSpinnerModule
     ],
     providers: [
         {
             provide: AuthServiceConfig,
             useFactory: provideConfig
-        },
-        {
-            provide: MAT_CHECKBOX_CLICK_ACTION,
-            useValue: 'check'
         }
     ],
     bootstrap: [AppComponent]
