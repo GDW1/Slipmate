@@ -220,6 +220,7 @@ exports.createPass = functions.https.onRequest((request, response) => {
                                             email = true
                                         }
                                     })
+                                    let datacreate = db.collection("passes").add(data);
                                     if(email){
                                         const mailOptions = {
                                             from: `${APP_NAME} <noreply@firebase.com>`,

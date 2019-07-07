@@ -18,35 +18,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/functions/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="553">
-              <caret line="211" column="66" selection-start-line="211" selection-start-column="66" selection-end-line="211" selection-end-column="66" />
-              <folding>
-                <element signature="e#157#195#0" />
-                <element signature="e#275#309#0" />
-                <element signature="e#359#489#0" />
-                <element signature="e#411#486#0" />
-                <element signature="e#492#535#0" />
-                <element signature="e#566#899#0" />
-                <element signature="e#1017#1355#0" />
-                <element signature="e#1839#3679#0" />
-                <element signature="e#1913#2318#0" />
-                <element signature="e#2322#3653#0" />
-                <element signature="e#2559#2598#0" />
-                <element signature="e#2631#2769#0" />
-                <element signature="e#3044#3199#0" />
-                <element signature="e#3694#3720#0" />
-                <element signature="e#3728#4067#0" />
-                <element signature="e#4185#4511#0" />
-                <element signature="e#4598#4694#0" />
-                <element signature="e#4783#6598#0" />
-                <element signature="e#4857#5250#0" />
-                <element signature="e#5254#6572#0" />
-                <element signature="e#5490#5529#0" />
-                <element signature="e#5562#5700#0" />
-                <element signature="e#5975#6130#0" />
-                <element signature="e#6613#6639#0" />
-                <element signature="e#6647#7271#0" />
-              </folding>
+            <state relative-caret-position="265">
+              <caret line="222" column="87" selection-start-line="222" selection-start-column="87" selection-end-line="222" selection-end-column="87" />
             </state>
           </provider>
         </entry>
@@ -186,7 +159,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="64144000" />
+    <option name="totallyTimeSpent" value="64225000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -270,35 +243,8 @@
     <entry file="file://$PROJECT_DIR$/.firebase/hosting.cHVibGlj.cache" />
     <entry file="file://$PROJECT_DIR$/functions/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="553">
-          <caret line="211" column="66" selection-start-line="211" selection-start-column="66" selection-end-line="211" selection-end-column="66" />
-          <folding>
-            <element signature="e#157#195#0" />
-            <element signature="e#275#309#0" />
-            <element signature="e#359#489#0" />
-            <element signature="e#411#486#0" />
-            <element signature="e#492#535#0" />
-            <element signature="e#566#899#0" />
-            <element signature="e#1017#1355#0" />
-            <element signature="e#1839#3679#0" />
-            <element signature="e#1913#2318#0" />
-            <element signature="e#2322#3653#0" />
-            <element signature="e#2559#2598#0" />
-            <element signature="e#2631#2769#0" />
-            <element signature="e#3044#3199#0" />
-            <element signature="e#3694#3720#0" />
-            <element signature="e#3728#4067#0" />
-            <element signature="e#4185#4511#0" />
-            <element signature="e#4598#4694#0" />
-            <element signature="e#4783#6598#0" />
-            <element signature="e#4857#5250#0" />
-            <element signature="e#5254#6572#0" />
-            <element signature="e#5490#5529#0" />
-            <element signature="e#5562#5700#0" />
-            <element signature="e#5975#6130#0" />
-            <element signature="e#6613#6639#0" />
-            <element signature="e#6647#7271#0" />
-          </folding>
+        <state relative-caret-position="265">
+          <caret line="222" column="87" selection-start-line="222" selection-start-column="87" selection-end-line="222" selection-end-column="87" />
         </state>
       </provider>
     </entry>
