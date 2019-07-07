@@ -10,7 +10,7 @@ export class ApiService {
 
     constructor(private loginService: LoginService) {}
 
-    private request(func: string, data: any): Promise<any> {
+    private async request(func: string, data: any): Promise<any> {
         let req = new XMLHttpRequest;
         req.open('GET', 'https://cors-anywhere.herokuapp.com/https://us-central1-tutorial-pass-automator.cloudfunctions.net/' + func, false);
         for (let i in data) {
