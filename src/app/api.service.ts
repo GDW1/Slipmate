@@ -151,7 +151,6 @@ export class ApiService {
     bottleCard(data: any): Card {
         try {
             if (data == null) return;
-            if (!data.hasOwnProperty('slipID')) return;
             let c = new Card;
             c.name = data.studentName;
             c.toTeach = data.toTeachName;
