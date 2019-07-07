@@ -12,8 +12,8 @@ export class StudentsComponent implements OnInit {
     constructor(private api: ApiService) {
     }
 
-    public leaving: Card[]; //= [{name: 'Aidan'}, { name: 'Ben' }];
-    public arriving: Card[]; //= [{name: 'Aidan'}, { name: 'Ben' }];
+    public leaving: Card[];
+    public arriving: Card[];
 
     ngOnInit() {
         let date = new Date();

@@ -10,7 +10,7 @@ export class ApiService {
 
     constructor(private loginService: LoginService) {}
 
-    private async request(func: string, data: any): Promise<any> {
+    private request(func: string, data: any): Promise<any> {
         let req = new XMLHttpRequest;
         req.open('GET', 'https://cors-anywhere.herokuapp.com/https://us-central1-tutorial-pass-automator.cloudfunctions.net/' + func, false);
         for (let i in data) {
@@ -50,7 +50,7 @@ export class ApiService {
             studentID: studentID,
             day: (month + ':' + day),
             reason: reason
-        });
+        })
     }
 
     initTeacher(teacherID: string, name: string): any {
@@ -134,8 +134,6 @@ export class ApiService {
             teacherID: teacherID
         })
     }
-
-
 
     bottleCards(dataArr: any): Card[] {
         try {

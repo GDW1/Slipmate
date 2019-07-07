@@ -65,8 +65,7 @@
                     <p *ngIf="gotError">An error occurred while processing your request. Please try again.</p>
                     <p style="padding: 1em">{{response}}</p>
                     <div>
-                        <button mat-stroked-button matStepperPrevious style="margin-right: 1em">Back</button>
-                        <button mat-stroked-button (click)="stepper.reset()">Create Another</button>
+                        <button mat-stroked-button (click)="stepper.reset();">Create Another</button>
                     </div>
                 </div>
             </mat-step>

@@ -53,27 +53,21 @@ export class CreateComponent implements OnInit {
     }
 
     submit() {
-        this.loading = true;
         this.loadReason();
+        this.loading = true;
+        this.ngZone.run(() => {});
 
         if (this.studentID.trim() === '' || this.ttID.trim() === '' || this.ftID.trim() === '' || this.day === '' || this.month === '') {
             this.response = 'Error: One or more of the inputs is empty. You may have made a type somewhere. Try re-entering the information.';
             console.log(this.studentID, this.month, this.day, this.ttID, this.ftID);
             this.gotError = true;
+            this.loading = false;
         } else {
-            this.startAsync(text => this.response = text);
+            this.response = this.api.createPass(true, this.ttID, this.ftID, this.studentID, this.month, this.day, this.reason);
+            this.loading = false;
         }
-        this.loading = false;
+
         this.ngZone.run(() => {});
-    }
-
-    startAsync = async callback => {
-        let b = await this.api.createPass(true, this.ttID, this.ftID, this.studentID, this.month, this.day, this.reason);
-        callback(b);
-    };
-
-    changed() {
-        this.thirdFormGroup.disable();
     }
 
     ngOnInit() {

@@ -41,23 +41,23 @@
             <mat-nav-list>
                 <a mat-list-item routerLink="today" [ngClass]="{ active: isActive('today') }">
                     <mat-icon class="sn-icon">event</mat-icon>
-                    <span class="sn-text" [ngClass]="{ active: isActive('today') }">Today</span>
+                    <span class="sn-text" [ngClass]="{ activeT: isActive('today') }">Today</span>
                 </a>
                 <a mat-list-item routerLink="requests" [ngClass]="{ active: isActive('requests') }">
                     <mat-icon class="sn-icon">dns</mat-icon>
-                    <span class="sn-text" [ngClass]="{ active: isActive('requests') }">Requests</span>
+                    <span class="sn-text" [ngClass]="{ activeT: isActive('requests') }">Requests</span>
                 </a>
                 <a mat-list-item routerLink="students" [ngClass]="{ active: isActive('students') }">
                     <mat-icon class="sn-icon">people</mat-icon>
-                    <span class="sn-text" [ngClass]="{ active: isActive('students') }">Students</span>
+                    <span class="sn-text" [ngClass]="{ activeT: isActive('students') }">Students</span>
                 </a>
                 <a mat-list-item routerLink="calendar" [ngClass]="{ active: isActive('calendar') }">
                     <mat-icon class="sn-icon">date_range</mat-icon>
-                    <span class="sn-text" [ngClass]="{ active: isActive('calendar') }">Calendar</span>
+                    <span class="sn-text" [ngClass]="{ activeT: isActive('calendar') }">Calendar</span>
                 </a>
                 <a mat-list-item routerLink="create" [ngClass]="{ active: isActive('create') }">
                     <mat-icon class="sn-icon">chrome_reader_mode</mat-icon>
-                    <span class="sn-text" [ngClass]="{ active: isActive('create') }">Create</span>
+                    <span class="sn-text" [ngClass]="{ activeT: isActive('create') }">Create</span>
                 </a>
             </mat-nav-list>
         </mat-sidenav>
