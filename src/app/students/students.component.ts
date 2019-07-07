@@ -16,8 +16,23 @@ export class StudentsComponent implements OnInit {
     public arriving: Card[]; //= [{name: 'Aidan'}, { name: 'Ben' }];
 
     ngOnInit() {
-        this.leaving = this.api.bottleCards(this.api.getOutgoingSlipsToday('798932', '08', '14'))
-        this.arriving = this.api.bottleCards(this.api.getIncomingSlipsToday('798932', '08', '14'))
+        let date = new Date()
+        let monthNum = date.getMonth()
+        let monthString = "";
+        if(monthNum + 1 < 10){
+            monthString = "0" + (monthNum+1).toString();
+        }else{
+            monthString = (monthNum+1).toString()
+        }
+        let dayNum = date.getDate()
+        let dayString = "";
+        if(dayNum < 10){
+            dayString = "0" + (dayNum).toString();
+        }else{
+            dayString = dayNum.toString()
+        }
+        this.leaving = this.api.bottleCards(this.api.getOutgoingSlipsToday('798932', monthString, dayString))
+        this.arriving = this.api.bottleCards(this.api.getIncomingSlipsToday('798932', monthString, dayString))
     }
 
 }
