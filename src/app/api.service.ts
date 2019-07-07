@@ -141,7 +141,8 @@ export class ApiService {
         try {
             let cArr = [];
             for (let c in dataArr) {
-                cArr.concat(this.bottleCard(c));
+                let val = this.bottleCard(dataArr[c]);
+                cArr.push(val);
             }
             return cArr;
         } catch {
@@ -165,10 +166,10 @@ export class ApiService {
             c.date = this.month(data.day.split(':')[0]) + day + this.daySuffix(day);
 
             c.showButtons = !((data.denied || data.approvedPass || data.isTeacherPass) && (this.loginService.user.email.split('@')[0]) === data.toTeachID);
-
             return c;
-        } catch {
-            return;
+        } catch(err) {
+            console.log(err.toString())
+            return err.toString();
         }
     }
 
