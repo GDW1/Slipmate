@@ -42,7 +42,8 @@ exports.initializeStudent = functions.https.onRequest((request, response) => {
         stuID: id.toString(),
         stuName: name.toString(),
         teachSixth: teacher6th.toString(),
-        teachSeventh: teacher7th.toString()
+        teachSeventh: teacher7th.toString(),
+        emails: true
     }
     console.log(id.toString() + "@seq.org");
     db.collection("students").where("stuID", "==", id.toString()).get().then((docs) => {
@@ -103,6 +104,7 @@ exports.initializeTeacher = functions.https.onRequest((request, response) => {
     let data = {
         teachID: id.toString(),
         teachName: name.toString(),
+        emails: true
     }
     db.collection("teacher").where("teachID", "==", id.toString()).get().then((docs) => {
         console.log("Inside the then statement")
@@ -176,7 +178,6 @@ exports.createPass = functions.https.onRequest((request, response) => {
     let reasonForPass = request.get("reason");
     console.log("is a teacher pass: " + teacherPass);
     let data = {
-        id: doc.id,
         toTeachID: teacherToID,
         toTeachName: teacherToName,
         fromTeacherName: teacherFromName,
@@ -195,22 +196,41 @@ exports.createPass = functions.https.onRequest((request, response) => {
         db.collection("blockedDay").where("teachID", "==", teacherToID).where("blockDay", "==", dayOfPass).get()
             .then(docs => {
                 if(docs.empty){
-                    let datacreate = db.collection("passes").add(data);
-                    const mailOptions = {
-                        from: `${APP_NAME} <noreply@firebase.com>`,
-                        to: (stuID + "@seq.org").toString(),
-                        subject: "You have recieved a Tutorial request from " + teacherToName,
-                        text: "This teacher reconmends that you go to tutorial on " + dayOfPass
-                    };
-                    mailTransport.sendMail(mailOptions, (error, info) => {
-                        console.log(mailOptions);
-                        console.log(info);
-                        console.log('Message sent: ' + info.response);
-                    });
-                    response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
-                        .header("Access-Control-Allow-Headers", "Content-Type, isTeacherPass, toTeacherID, fromTeachID, fromTeacherID, toTeachName, studentID, day")
-                        .header("Access-Control-Allow-Credentials", 'true')
-                    response.send("message sent to student ")
+                    db.collection("students").where("student", "==", stuID).get().then(students => {
+                        if(students.empty){
+                            response.send("no students with this ID");
+                            return
+                        }else{
+                            let email = false
+                            students.forEach(student => {
+                                if(student.data().emails === true){
+                                    email = true
+                                }
+                            })
+                            if(email){
+                                const mailOptions = {
+                                    from: `${APP_NAME} <noreply@firebase.com>`,
+                                    to: (stuID + "@seq.org").toString(),
+                                    subject: "You have recieved a Tutorial request from " + teacherToName,
+                                    text: "This teacher reconmends that you go to tutorial on " + dayOfPass
+                                };
+                                mailTransport.sendMail(mailOptions, (error, info) => {
+                                    console.log(mailOptions);
+                                    console.log(info);
+                                    console.log('Message sent: ' + info.response);
+                                });
+                                response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
+                                    .header("Access-Control-Allow-Headers", "Content-Type, isTeacherPass, toTeacherID, fromTeachID, fromTeacherID, toTeachName, studentID, day")
+                                    .header("Access-Control-Allow-Credentials", 'true')
+                                response.send("message sent to student ")
+                            }else{
+                                response.send("Pass created but no email send")
+                            }
+                        }
+                        return
+                    }).catch(err => {
+                        throw err
+                    })
                     //var template = fs.readFileSync('./emailFormats/cTeacherInitialEmail.html',{encoding:'utf-8'});
                 }else{
                     response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
@@ -383,34 +403,75 @@ exports.getIncomingSlipsForTeacherToday = functions.https.onRequest((request, re
 /**
  * This function will send an email to each teacher everyday at noon
  */
-exports.scheduledFunction = functions.https.onRequest((request, response) => {//functions.pubsub.schedule('* 12 * * *').onRun((context) => {
+exports.scheduledFunction = functions.https.onRequest((request, response) => {
     db.collection("passes").where("approvedPass", "==", false).where("isTeacherPass", "==", false).get().then(docs => {
         if (docs.empty) {
             response.send("No requests"); //Take out when this becomes scheduled
         } else {
-            let teacherNums = [];
-            let lastDocID = ""
-            docs.forEach(doc => {
-                teacherNums.push(doc.data().toTeachID);
-            })
-            teacherNums = [...new Set(teacherNums)];
+            db.collection("teacher").where("emails", "==", false).get().then(teachers => {
+                if (teachers.empty) {
+                    let teacherNums = [];
+                    docs.forEach(doc => {
+                        teacherNums.push(doc.data().toTeachID);
+                    })
+                    teacherNums = [...new Set(teacherNums)];
+                    for (let i = 0; i < teacherNums.length; i++) {
+                        const mailOptions = {
+                            from: `${APP_NAME} <noreply@firebase.com>`,
+                            to: (teacherNums[i] + "@seq.org").toString(),
+                            subject: "You have pending requests today",
+                            text: "You have pending request from students, to approve or deny them go to slipmate.ml"
+                        };
+                        mailTransport.sendMail(mailOptions, (error, info) => {
+                            console.log(mailOptions);
+                            console.log(info);
+                            console.log('Message sent: ' + info.response);
+                        });
+                        if (i === teacherNums.length - 1) {
+                            response.send(teacherNums)
+                            return
+                        }
+                    }
+                    return;
+                } else {
+                    let ids = [];
+                    teachers.forEach(teacher => {
+                        ids.push(teacher.data().teachID)
+                    });
+                    console.log("ids " + ids);
+                    let teacherNums = [];
+                    docs.forEach(doc => {
+                        if (!ids.includes(doc.data().toTeachID)) {
+                            teacherNums.push(doc.data().toTeachID);
+                        }
+                    })
+                    if(teacherNums.length === 0){
+                        response.send("finished with 0 ids")
+                        return;
+                    }
+                    teacherNums = [...new Set(teacherNums)];
+                    for (let i = 0; i < teacherNums.length; i++) {
+                        const mailOptions = {
+                            from: `${APP_NAME} <noreply@firebase.com>`,
+                            to: (teacherNums[i] + "@seq.org").toString(),
+                            subject: "You have pending requests today",
+                            text: "You have pending request from students, to approve or deny them go to slipmate.ml"
+                        };
+                        mailTransport.sendMail(mailOptions, (error, info) => {
+                            console.log(mailOptions);
+                            console.log(info);
+                            console.log('Message sent: ' + info.response);
+                        });
+                        if (i === teacherNums.length - 1) {
+                            response.send(teacherNums)
 
-            for (i = 0; i < teacherNums.length; i++) {
-                const mailOptions = {
-                    from: `${APP_NAME} <noreply@firebase.com>`,
-                    to: (teacherNums[i] + "@seq.org").toString(),
-                    subject: "You have pending requests today",
-                    text: "You have pending request from students, to approve or deny them go to slipmate.ml"
-                };
-                mailTransport.sendMail(mailOptions, (error, info) => {
-                    console.log(mailOptions);
-                    console.log(info);
-                    console.log('Message sent: ' + info.response);
-                });
-                if (i === teacherNums.length - 1) {
-                    response.send(teacherNums)//Take out when this becomes scheduled
+                        }
+                    }
+                    return
                 }
-            }
+            }).catch(err => {
+                throw err;
+            })
         }
         return
     }).catch(err => {
@@ -500,6 +561,7 @@ exports.getUnapprovedSlips = functions.https.onRequest((request, response) => {
  * This function takes in one teacher id and returns information about the teacher
  */
 exports.getTeacher = functions.https.onRequest((request, response) => {
+    let googleAuth = request.get("id_token");
     let origin = "";
     if(request.get("origin") === "https://teacher.slipmate.ml"){
         origin = "https://teacher.slipmate.ml"
@@ -523,6 +585,7 @@ exports.getTeacher = functions.https.onRequest((request, response) => {
                 .header("Access-Control-Allow-Headers", "Content-Type, teacherid")
                 .header("Access-Control-Allow-Credentials", 'true')
             response.send("no teacher with this ID")
+            return
         }else{
             let data = {};
             docs.forEach(doc => {
@@ -720,7 +783,6 @@ exports.deleteMultipleSlips = functions.https.onRequest((request, response) => {
             .header("Access-Control-Allow-Credentials", 'true')
         response.send("invalidData")
     }
-    let numberOfDeletions = [];
     for(var i = 0; i < ids.length; i++){
         if(i === (ids.length - 1)){
             db.collection("passes").doc(ids[i]).delete().then(ref => {
@@ -1001,7 +1063,6 @@ exports.teacherDenyPass = functions.https.onRequest((request,response) => {
 
 /**
  * This function denies a pass that the student made
- *
  */
 exports.studentDenyPass = functions.https.onRequest((request, response) => {
     if (request.method === `OPTIONS`) {
@@ -1138,3 +1199,81 @@ exports.TeacherAcceptMultiplePasses = functions.https.onRequest((request, respon
         }
     }
 });
+
+//TODO write a function that emails the student on the day of their tutorial
+exports.sendDayOfReminder = functions.https.onRequest((request, response) => {
+   let day = new Date();
+   let dateKey = "";
+   if((day.getMonth()+1) < 10){
+       dateKey = "0" + (day.getMonth() + 1).toString() + ":" + (day.getDate()).toString();
+   }else {
+       dateKey = (day.getMonth() + 1).toString() + ":" + (day.getDate()).toString();
+   }
+   db.collection("passes").where("day", "==", dateKey).where("approvedPass", "==", true).where("denied", "==", false).get().then(docs => {
+           db.collection("students").where("emails", "==", false).get().then(students => {
+               let prohibitedids= [];
+               students.forEach(student => {
+                   prohibitedids.push(student.data().stuID);
+               })
+               let ids = []
+               docs.forEach(doc => {
+                   if(!prohibitedids.includes(doc.data().studentID)){
+                       ids.push(doc.data().studentID);
+                       const mailOptions = {
+                           from: `${APP_NAME} <noreply@firebase.com>`,
+                           to: (doc.data().studentID + "@seq.org").toString(),
+                           subject: "You have a tutorial session today",
+                           text: "you can see all your requests at slipmate.ml"
+                       };
+                       mailTransport.sendMail(mailOptions, (error, info) => {
+                           console.log(mailOptions);
+                           console.log(info);
+                           console.log('Message sent: ' + info.response);
+                       });
+                   }
+               });
+               response.send("Datekey: " +dateKey+ "finished: " + ids);
+               return
+           }).catch(err => {
+               throw err
+           });
+           return;
+   }).catch(err => {
+       throw err
+   })
+});
+
+//TODO write a functions that gets all incoming slips ever for a teacher
+exports.getAllIncomingPasses = functions.https.onRequest((request, response) => {
+    if (request.method === `OPTIONS`) {
+        response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
+            .header("Access-Control-Allow-Headers", "Content-Type, ID, teacherID")
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+        return;
+    }
+    let teachID = request.get("teachID")
+    db.collection("passes").where("toTeachID", "==", teachID).where("approvedPass", "==", true)
+        .where("denied", "==", false).get().then(docs => {
+            let passes = [];
+            docs.forEach(doc => {
+                passes.push({
+                    id: doc.id,
+                    toTeachID: doc.data().toTeachID,
+                    toTeachName: doc.data().toTeachName,
+                    fromTeacherName: doc.data().fromTeacherName,
+                    fromTeachID: doc.data().fromTeachID,
+                    studentID: doc.data().studentID,
+                    day: doc.data().day,
+                    isTeacherPass: doc.data().isTeacherPass,
+                    approvedPass: doc.data().approvedPass,
+                    reason: doc.data().reason,
+                })
+            });
+            response.send(passes);
+            return;
+    }).catch(err => {
+        throw err;
+    })
+})
+//TODO write a function that opts in or out of upcoming emails for teachers
+//TODO write a function that opts in or out of upcoming emails for students
