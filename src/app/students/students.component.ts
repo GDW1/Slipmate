@@ -31,8 +31,12 @@ export class StudentsComponent implements OnInit {
         }else{
             dayString = dayNum.toString();
         }
-        this.leaving = this.api.bottleCards(this.api.getOutgoingSlipsToday('798932', monthString, dayString));
-        this.arriving = this.api.bottleCards(this.api.getIncomingSlipsToday('798932', monthString, dayString));
+        this.leaving = this.api.getOutgoingSlipsToday('798932', monthString, dayString).then(val => {
+            this.leaving = this.api.bottleCards(JSON.parse(val));
+        })
+        this.arriving = this.api.getIncomingSlipsToday('798932', monthString, dayString).then(val => {
+            this.arriving = this.api.bottleCards(JSON.parse(val));
+        })
     }
 
 }
