@@ -590,6 +590,7 @@ exports.getTeacher = functions.https.onRequest((request, response) => {
             let data = {};
             docs.forEach(doc => {
                 data = {
+                    id: doc.id,
                     teachID: doc.data().teachID,
                     teachName: doc.data().teachName,
                     seatsSeventh: doc.data().seatsSeventh,
@@ -958,6 +959,7 @@ exports.getStudent = functions.https.onRequest((request, response) => {
             let student = [];
             docs.forEach(doc => {
                 student.push({
+                    id: doc.id,
                     stuID: doc.data().stuID,
                     stuName: doc.data().stuName,
                     teachSixth: doc.data().teachSixth,
@@ -1200,7 +1202,9 @@ exports.TeacherAcceptMultiplePasses = functions.https.onRequest((request, respon
     }
 });
 
-//TODO write a function that emails the student on the day of their tutorial
+/**
+ * This function sends all the nessessary emails on the day they should be sent
+ */
 exports.sendDayOfReminder = functions.https.onRequest((request, response) => {
    let day = new Date();
    let dateKey = "";
@@ -1243,7 +1247,6 @@ exports.sendDayOfReminder = functions.https.onRequest((request, response) => {
    })
 });
 
-//TODO write a functions that gets all incoming slips ever for a teacher
 exports.getAllIncomingPasses = functions.https.onRequest((request, response) => {
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
@@ -1269,11 +1272,90 @@ exports.getAllIncomingPasses = functions.https.onRequest((request, response) => 
                     reason: doc.data().reason,
                 })
             });
+            response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
+                .header("Access-Control-Allow-Headers", "Content-Type, ID, teacherID")
+                .header("Access-Control-Allow-Credentials", 'true')
             response.send(passes);
             return;
     }).catch(err => {
         throw err;
     })
 })
-//TODO write a function that opts in or out of upcoming emails for teachers
-//TODO write a function that opts in or out of upcoming emails for students
+
+/**
+ * Takes in the teacher id and opts in or out of emails
+ * docID: internalTeacherID
+ * currentStatus: the current status of whether to email
+ */
+exports.teacherOptIn = functions.https.onRequest((request, response) => {
+    if (request.method === `OPTIONS`) {
+        response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
+            .header("Access-Control-Allow-Headers", "Content-Type, docID, currentStatus")
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+        return;
+    }
+    db.collection("teacher").doc(request.get("docID")).update({emails: (!(request.get("currentStatus") === 'true'))}).then(ref =>{
+        response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
+                .header("Access-Control-Allow-Headers", "Content-Type, docID, currentStatus")
+                .header("Access-Control-Allow-Credentials", 'true').status(200).send("The selected teacher is not opted in or out");
+        return
+    }).catch(err => {
+        throw err
+    })
+
+})
+
+/**
+ * Takes in the teacher id and opts in or out of emails
+ * docID: the id of the teacher opting in or out
+ * currentStatus: the current status of whether to email
+ */
+exports.studentOptIn = functions.https.onRequest((request, response) => {
+    if (request.method === `OPTIONS`) {
+        response.header('Access-Control-Allow-Origin', "https://student.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
+            .header("Access-Control-Allow-Headers", "Content-Type, docID, currentStatus")
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+        return;
+    }
+    db.collection("students").doc(request.get("docID")).update({emails: (!(request.get("currentStatus") === 'true'))}).then(ref =>{
+        response.header('Access-Control-Allow-Origin', "https://student.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
+            .header("Access-Control-Allow-Headers", "Content-Type, docID, currentStatus")
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("The selected student is not opted in or out");
+        return
+    }).catch(err => {
+        throw err
+    })
+
+})
+
+/**
+ *
+ * teachID: the id of the teacher getting the information
+ */
+exports.teacherIsOpted = functions.https.onRequest((request, response) => {
+    if (request.method === `OPTIONS`) {
+        response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
+            .header("Access-Control-Allow-Headers", "Content-Type, teachid")
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+        return;
+    }
+    db.collection("teacher").where("teachID", "==", request.get("teachID")).get().then(docs => {
+        if(docs.empty){
+            response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
+                .header("Access-Control-Allow-Headers", "Content-Type, teacherid")
+                .header("Access-Control-Allow-Credentials", 'true').status(200).send("No teacher with this ID");
+            return;
+        }else{
+            let ret = "";
+            docs.forEach(doc => {
+                ret = doc.data().emails;
+            })
+            response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
+                .header("Access-Control-Allow-Headers", "Content-Type, teacherid")
+                .header("Access-Control-Allow-Credentials", 'true').status(200).send(ret);
+            return;
+        }
+    }).catch(err =>{
+        throw err
+    })
+})
