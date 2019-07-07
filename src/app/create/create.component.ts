@@ -49,7 +49,7 @@ export class CreateComponent implements OnInit {
     }
 
     loadReason() {
-        this.reason = document.forms[1].elements['reason'].value;
+        this.reason = document.forms[3].elements['reason'].value;
     }
 
     submit() {

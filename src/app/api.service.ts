@@ -37,14 +37,16 @@ export class ApiService {
     createPass(isTeacherPass: boolean, teacherToID: string, teacherFromID: string, studentID: string, month: string, day: string, reason: string): any {
         let tt = this.getTeacher(teacherToID);
         let ft = this.getTeacher(teacherFromID);
+        let ttName = '';
+        let ftName = '';
+        if (!tt.hasOwnProperty('name')) ttName = 'null';
+        if (!ft.hasOwnProperty('name')) ftName = 'null';
         return this.request('createPass', {
             isTeacherPass: isTeacherPass,
             toTeachID: teacherToID,
             fromTeachID: teacherFromID,
-            // toTeachName: tt.name,
-            // fromTeachName: ft.name,
-            toTeachName: 'ToTeacher',
-            fromTeachName: 'FromTeacher',
+            toTeachName: ttName,
+            fromTeachName: ftName,
             studentID: studentID,
             day: (month + ':' + day),
             reason: reason
@@ -63,39 +65,60 @@ export class ApiService {
     }
 
     getTeacher(id: string): any {
-        return this.request('getTeacher', { teacherID: id });
+        return this.request('getTeacher', {
+            teacherID: id
+        });
     }
 
     createBlockedDay(id: string, month: string, day: string): any {
-        return this.request('createBlockedDay', { teacherID: id, blockedDay: (month + ':' + day)});
+        return this.request('createBlockedDay', {
+            teacherID: id,
+            blockedDay: (month + ':' + day)
+        });
     }
 
     getOutgoingSlipsToday(id: string, month: string, day: string): any {
-        return this.request('getOutgoingSlipsForTeacherToday', { teacherID: id, day: (month + ':' + day)});
+        return this.request('getOutgoingSlipsForTeacherToday', {
+            teacherID: id,
+            day: (month + ':' + day)
+        });
     }
 
     getIncomingSlipsToday(id: string, month: string, day: string): any {
-        return this.request('getIncomingSlipsForTeacherToday', { teacherID: id, day: (month + ':' + day)});
+        return this.request('getIncomingSlipsForTeacherToday', {
+            teacherID: id,
+            day: (month + ':' + day)
+        });
     }
 
     getBlockedDays(id: string): any {
-        return this.request('getBlockedDays', { teacherID: id });
+        return this.request('getBlockedDays', {
+            teacherID: id
+        });
     }
 
     getUnapprovedSlips(id: string): any {
-        return this.request('getUnapprovedSlips', { teacherID: id });
+        return this.request('getUnapprovedSlips', {
+            teacherID: id
+        });
     }
 
     deleteSlip(slipID: string): any {
-        return this.request('deleteSlip', { ID: slipID });
+        return this.request('deleteSlip', {
+            ID: slipID
+        });
     }
 
     getSlip(slipID: string): any {
-        return this.request('getSlip', { ID: slipID });
+        return this.request('getSlip', {
+            ID: slipID
+        });
     }
 
     getStudent(stuID: string): any {
-        return this.request('getStudent', { studentID: stuID });
+        return this.request('getStudent', {
+            studentID: stuID
+        });
     }
 
     teacherApprovePass(passID: string, teacherID: string) {
@@ -130,7 +153,7 @@ export class ApiService {
         try {
             if (data == null) return;
             let c = new Card;
-            c.name = this.getStudent(data.studentID).name;
+            c.name = data.studentName;
             c.toTeach = data.toTeachName;
             c.fromTeach = data.fromTeach;
             c.slipID = data.id;
