@@ -10,7 +10,7 @@ export class ApiService {
 
     constructor(private loginService: LoginService) {}
 
-    private request(func: string, data: any): Promise<any> {
+    private async request(func: string, data: any): Promise<any> {
         let req = new XMLHttpRequest;
         req.open('GET', 'https://cors-anywhere.herokuapp.com/https://us-central1-tutorial-pass-automator.cloudfunctions.net/' + func, false);
         for (let i in data) {
@@ -151,6 +151,7 @@ export class ApiService {
     bottleCard(data: any): Card {
         try {
             if (data == null) return;
+            if (!data.hasOwnProperty('slipID')) return;
             let c = new Card;
             c.name = data.studentName;
             c.toTeach = data.toTeachName;
@@ -166,7 +167,7 @@ export class ApiService {
             c.showButtons = !((data.denied || data.approvedPass || data.isTeacherPass) && (this.loginService.user.email.split('@')[0]) === data.toTeachID);
             return c;
         } catch(err) {
-            console.log(err.toString())
+            console.log(err.toString());
             return err.toString();
         }
     }

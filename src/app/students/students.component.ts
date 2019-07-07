@@ -33,7 +33,7 @@ export class StudentsComponent implements OnInit {
         }
         this.leaving = this.api.getOutgoingSlipsToday('798932', monthString, dayString).then(val => {
             this.leaving = this.api.bottleCards(JSON.parse(val));
-        })
+        });
         this.arriving = this.api.getIncomingSlipsToday('798932', monthString, dayString).then(val => {
             this.arriving = this.api.bottleCards(JSON.parse(val));
         })
