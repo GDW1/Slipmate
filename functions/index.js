@@ -164,7 +164,7 @@ exports.createPass = functions.https.onRequest((request, response) => {
     }
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
-            .header("Access-Control-Allow-Headers", "Content-Type, fromTeachName, isTeacherPass, toTeachID, fromTeachID, fromTeachID, toTeachName, studentID, day, reason")
+            .header("Access-Control-Allow-Headers", "Content-Type, isTeacherPass, toTeacherID, fromTeachID, fromTeacherID, toTeachName, studentID, day, reason")
             .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
         return;
     }
@@ -209,7 +209,7 @@ exports.createPass = functions.https.onRequest((request, response) => {
                 db.collection("blockedDay").where("teachID", "==", teacherToID).where("blockDay", "==", dayOfPass).get()
                     .then(docs => {
                         if(docs.empty){
-                            db.collection("students").where("stuID", "==", stuID).get().then(students => {
+                            db.collection("students").where("student", "==", stuID).get().then(students => {
                                 if(students.empty){
                                     response.send("no students with this ID");
                                     return
@@ -220,7 +220,6 @@ exports.createPass = functions.https.onRequest((request, response) => {
                                             email = true
                                         }
                                     })
-                                    let datacreate = db.collection("passes").add(data);
                                     if(email){
                                         const mailOptions = {
                                             from: `${APP_NAME} <noreply@firebase.com>`,
@@ -330,7 +329,7 @@ exports.createBlockedDay = functions.https.onRequest((request, response) => {
 exports.getOutgoingSlipsForTeacherToday = functions.https.onRequest((request, response) => {
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
-            .header("Access-Control-Allow-Headers", "Content-Type, teacherid, day, fromteachname")
+            .header("Access-Control-Allow-Headers", "Content-Type, teacherid, day")
             .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
         return;
     }
@@ -339,7 +338,7 @@ exports.getOutgoingSlipsForTeacherToday = functions.https.onRequest((request, re
     db.collection("passes").where("fromTeachID", "==", teacherID).where("day", "==", day).where("approvedPass", "==", true).where("denied", "==", false).get().then(docs => {
         if (docs.empty){
             response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
-                .header("Access-Control-Allow-Headers", "Content-Type, teacherid, day, fromteachname")
+                .header("Access-Control-Allow-Headers", "Content-Type, teacherid, day")
                 .header("Access-Control-Allow-Credentials", 'true')
             response.send("no outgoing passes today")
         }else{
@@ -361,7 +360,7 @@ exports.getOutgoingSlipsForTeacherToday = functions.https.onRequest((request, re
             })
             console.log(passes)
             response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
-                .header("Access-Control-Allow-Headers", "Content-Type, teacherid, day, fromteachname")
+                .header("Access-Control-Allow-Headers", "Content-Type, teacherid, day")
                 .header("Access-Control-Allow-Credentials", 'true')
             response.send(passes)
         }
@@ -596,8 +595,8 @@ exports.getTeacher = functions.https.onRequest((request, response) => {
     }
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
-                .header("Access-Control-Allow-Headers", "Content-Type, teacherid")
-                .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Headers", "Content-Type, teacherid")
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
         return;
     }
     let teacherID = request.get("teacherID");
@@ -1143,34 +1142,34 @@ exports.getTeacherSlipsUnapprovedByStudent = functions.https.onRequest((request,
     let teacherID = request.get("teacherID");
     db.collection("passes").where("toTeachID", "==", teacherID).where("isTeacherPass", "==", false)
         .where("denied", "==", false).where("approvedPass", "==", false).get().then(docs => {
-            if(docs.empty){
-                response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
-                    .header("Access-Control-Allow-Headers", "Content-Type, studentID")
-                    .header("Access-Control-Allow-Credentials", 'true')
-                response.send("There are no unapproved Slips")
-            }else{
-                let passes = [];
-                docs.forEach(doc => {
-                    passes.push({
-                        studentName: doc.data().studentName,
-                        id: doc.id,
-                        toTeachID: doc.data().toTeachID,
-                        toTeachName: doc.data().toTeachName,
-                        fromTeacherName: doc.data().fromTeacherName,
-                        fromTeachID: doc.data().fromTeachID,
-                        studentID: doc.data().studentID,
-                        day: doc.data().day,
-                        isTeacherPass: doc.data().isTeacherPass,
-                        approvedPass: doc.data().approvedPass,
-                        reason: doc.data().reason,
-                    })
-                });
-                response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
-                    .header("Access-Control-Allow-Headers", "Content-Type, studentID")
-                    .header("Access-Control-Allow-Credentials", 'true')
-                response.send(passes);
-            }
-            return null;
+        if(docs.empty){
+            response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
+                .header("Access-Control-Allow-Headers", "Content-Type, studentID")
+                .header("Access-Control-Allow-Credentials", 'true')
+            response.send("There are no unapproved Slips")
+        }else{
+            let passes = [];
+            docs.forEach(doc => {
+                passes.push({
+                    studentName: doc.data().studentName,
+                    id: doc.id,
+                    toTeachID: doc.data().toTeachID,
+                    toTeachName: doc.data().toTeachName,
+                    fromTeacherName: doc.data().fromTeacherName,
+                    fromTeachID: doc.data().fromTeachID,
+                    studentID: doc.data().studentID,
+                    day: doc.data().day,
+                    isTeacherPass: doc.data().isTeacherPass,
+                    approvedPass: doc.data().approvedPass,
+                    reason: doc.data().reason,
+                })
+            });
+            response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
+                .header("Access-Control-Allow-Headers", "Content-Type, studentID")
+                .header("Access-Control-Allow-Credentials", 'true')
+            response.send(passes);
+        }
+        return null;
     }).catch(err => {
         throw err;
     });
@@ -1231,45 +1230,45 @@ exports.TeacherAcceptMultiplePasses = functions.https.onRequest((request, respon
  * This function sends all the nessessary emails on the day they should be sent
  */
 exports.sendDayOfReminder = functions.https.onRequest((request, response) => {
-   let day = new Date();
-   let dateKey = "";
-   if((day.getMonth()+1) < 10){
-       dateKey = "0" + (day.getMonth() + 1).toString() + ":" + (day.getDate()).toString();
-   }else {
-       dateKey = (day.getMonth() + 1).toString() + ":" + (day.getDate()).toString();
-   }
-   db.collection("passes").where("day", "==", dateKey).where("approvedPass", "==", true).where("denied", "==", false).get().then(docs => {
-           db.collection("students").where("emails", "==", false).get().then(students => {
-               let prohibitedids= [];
-               students.forEach(student => {
-                   prohibitedids.push(student.data().stuID);
-               })
-               let ids = []
-               docs.forEach(doc => {
-                   if(!prohibitedids.includes(doc.data().studentID)){
-                       ids.push(doc.data().studentID);
-                       const mailOptions = {
-                           from: `${APP_NAME} <noreply@firebase.com>`,
-                           to: (doc.data().studentID + "@seq.org").toString(),
-                           subject: "You have a tutorial session today",
-                           text: "you can see all your requests at slipmate.ml"
-                       };
-                       mailTransport.sendMail(mailOptions, (error, info) => {
-                           console.log(mailOptions);
-                           console.log(info);
-                           console.log('Message sent: ' + info.response);
-                       });
-                   }
-               });
-               response.send("Datekey: " +dateKey+ "finished: " + ids);
-               return
-           }).catch(err => {
-               throw err
-           });
-           return;
-   }).catch(err => {
-       throw err
-   })
+    let day = new Date();
+    let dateKey = "";
+    if((day.getMonth()+1) < 10){
+        dateKey = "0" + (day.getMonth() + 1).toString() + ":" + (day.getDate()).toString();
+    }else {
+        dateKey = (day.getMonth() + 1).toString() + ":" + (day.getDate()).toString();
+    }
+    db.collection("passes").where("day", "==", dateKey).where("approvedPass", "==", true).where("denied", "==", false).get().then(docs => {
+        db.collection("students").where("emails", "==", false).get().then(students => {
+            let prohibitedids= [];
+            students.forEach(student => {
+                prohibitedids.push(student.data().stuID);
+            })
+            let ids = []
+            docs.forEach(doc => {
+                if(!prohibitedids.includes(doc.data().studentID)){
+                    ids.push(doc.data().studentID);
+                    const mailOptions = {
+                        from: `${APP_NAME} <noreply@firebase.com>`,
+                        to: (doc.data().studentID + "@seq.org").toString(),
+                        subject: "You have a tutorial session today",
+                        text: "you can see all your requests at slipmate.ml"
+                    };
+                    mailTransport.sendMail(mailOptions, (error, info) => {
+                        console.log(mailOptions);
+                        console.log(info);
+                        console.log('Message sent: ' + info.response);
+                    });
+                }
+            });
+            response.send("Datekey: " +dateKey+ "finished: " + ids);
+            return
+        }).catch(err => {
+            throw err
+        });
+        return;
+    }).catch(err => {
+        throw err
+    })
 });
 
 exports.getAllIncomingPasses = functions.https.onRequest((request, response) => {
@@ -1282,27 +1281,27 @@ exports.getAllIncomingPasses = functions.https.onRequest((request, response) => 
     let teachID = request.get("teachID")
     db.collection("passes").where("toTeachID", "==", teachID).where("approvedPass", "==", true)
         .where("denied", "==", false).get().then(docs => {
-            let passes = [];
-            docs.forEach(doc => {
-                passes.push({
-                    studentName: doc.data().studentName,
-                    id: doc.id,
-                    toTeachID: doc.data().toTeachID,
-                    toTeachName: doc.data().toTeachName,
-                    fromTeacherName: doc.data().fromTeacherName,
-                    fromTeachID: doc.data().fromTeachID,
-                    studentID: doc.data().studentID,
-                    day: doc.data().day,
-                    isTeacherPass: doc.data().isTeacherPass,
-                    approvedPass: doc.data().approvedPass,
-                    reason: doc.data().reason,
-                })
-            });
-            response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
-                .header("Access-Control-Allow-Headers", "Content-Type, ID, teacherID")
-                .header("Access-Control-Allow-Credentials", 'true')
-            response.send(passes);
-            return;
+        let passes = [];
+        docs.forEach(doc => {
+            passes.push({
+                studentName: doc.data().studentName,
+                id: doc.id,
+                toTeachID: doc.data().toTeachID,
+                toTeachName: doc.data().toTeachName,
+                fromTeacherName: doc.data().fromTeacherName,
+                fromTeachID: doc.data().fromTeachID,
+                studentID: doc.data().studentID,
+                day: doc.data().day,
+                isTeacherPass: doc.data().isTeacherPass,
+                approvedPass: doc.data().approvedPass,
+                reason: doc.data().reason,
+            })
+        });
+        response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
+            .header("Access-Control-Allow-Headers", "Content-Type, ID, teacherID")
+            .header("Access-Control-Allow-Credentials", 'true')
+        response.send(passes);
+        return;
     }).catch(err => {
         throw err;
     })
@@ -1322,8 +1321,8 @@ exports.teacherOptIn = functions.https.onRequest((request, response) => {
     }
     db.collection("teacher").doc(request.get("docID")).update({emails: (!(request.get("currentStatus") === 'true'))}).then(ref =>{
         response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
-                .header("Access-Control-Allow-Headers", "Content-Type, docID, currentStatus")
-                .header("Access-Control-Allow-Credentials", 'true').status(200).send("The selected teacher is not opted in or out");
+            .header("Access-Control-Allow-Headers", "Content-Type, docID, currentStatus")
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("The selected teacher is not opted in or out");
         return
     }).catch(err => {
         throw err
