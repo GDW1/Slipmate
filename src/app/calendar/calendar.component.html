@@ -1,3 +1,30 @@
-<p>
-  calendar works!
-</p>
+<div id="desc">
+  <h3>Day Blocker:</h3>
+  <p>Use this screen to block days that you cannot do tutorial</p>
+</div>
+<div class="step-container yellow-theme">
+  <mat-card class="step">
+    <mat-vertical-stepper  #stepper>
+      <mat-step [stepControl]="FirstFormGroup">
+        <form [formGroup]="FirstFormGroup">
+          <ng-template matStepLabel>Date</ng-template>
+          <mat-form-field>
+            <input matInput [matDatepicker]="picker" name="date" placeholder="Date" formControlName="firstCtrl" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <div>
+            <button mat-stroked-button matStepperPrevious style="margin-right: 1em">Back</button>
+            <button mat-raised-button matStepperNext style="background-color: dodgerblue; color: white" type="button" (click)="submitCalendarDate()">Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Finish</ng-template>
+          <div>
+            <button mat-stroked-button (click)="stepper.reset();">Create Another</button>
+          </div>
+      </mat-step>
+    </mat-vertical-stepper>
+  </mat-card>
+</div>
