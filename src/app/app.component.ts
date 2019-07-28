@@ -30,6 +30,10 @@ export class AppComponent implements AfterViewInit {
         return this.router.url.substring(1);
     }
 
+    test() {
+        console.log(this.api.isBlockedDay('798932', "08:05"));
+    }
+
     isActive(path: string): boolean {
         return this.router.url.substring(1) === path;
     }

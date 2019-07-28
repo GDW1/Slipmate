@@ -97,6 +97,19 @@ export class ApiService {
         });
     }
 
+    isBlockedDay(id: string, date: string): boolean {
+        let r = this.getBlockedDays(id);
+        console.log(r.__zone_symbol__value);
+        let a: [string] = JSON.parse(r.__zone_symbol__value);
+        for (let i = 0; i < a.length; i++) {
+            console.log(a[i]);
+            if (a[i] === date) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     getUnapprovedSlips(id: string): any {
         return this.request('getUnapprovedSlips', {
             teacherID: id
@@ -160,10 +173,10 @@ export class ApiService {
             c.approvedPass = data.approvedPass;
             c.denied = data.denied;
 
-            let day = data.day.split(':')[1];
-            c.date = this.month(data.day.split(':')[0]) + day + this.daySuffix(day);
+            let day = parseInt(data.day.split(':')[1]);
+            c.date = this.month(data.day.split(':')[0]) + ' ' + day.toString() + this.daySuffix(day.toString());
 
-            c.showButtons = !((data.denied || data.approvedPass || data.isTeacherPass) && (this.loginService.user.email.split('@')[0]) === data.toTeachID);
+            c.showButtons = !((data.denied || data.approvedPass || data.isTeacherPass) && (this.loginService.smID) === data.toTeachID);
             return c;
         } catch(err) {
             console.log(err.toString());

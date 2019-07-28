@@ -19,24 +19,29 @@ export class StudentsComponent implements OnInit {
         let date = new Date();
         let monthNum = date.getMonth();
         let monthString = "";
-        if(monthNum + 1 < 10){
+
+        if (monthNum + 1 < 10){
             monthString = "0" + (monthNum+1).toString();
-        }else{
+        } else {
             monthString = (monthNum+1).toString();
         }
+
         let dayNum = date.getDate();
         let dayString = "";
-        if(dayNum < 10){
+
+        if (dayNum < 10){
             dayString = "0" + (dayNum).toString();
-        }else{
+        } else {
             dayString = dayNum.toString();
         }
-        this.leaving = this.api.getOutgoingSlipsToday('798932', monthString, dayString).then(val => {
-            this.leaving = this.api.bottleCards(JSON.parse(val));
-        });
+
         this.arriving = this.api.getIncomingSlipsToday('798932', monthString, dayString).then(val => {
-            this.arriving = this.api.bottleCards(JSON.parse(val));
-        })
+            this.arriving = this.api.bottleCards(JSON.parse(val.__zone_symbol__value));
+        });
+
+        this.leaving = this.api.getOutgoingSlipsToday('798932', monthString, dayString).then(val => {
+            this.leaving = this.api.bottleCards(JSON.parse(val.__zone_symbol__value));
+        });
     }
 
 }

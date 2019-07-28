@@ -1,6 +1,5 @@
 <div style="margin: 100px 120px 20px; font-family: psans-bold, sans-serif; font-size: 24px">
-    Requests to attend
-    
+    Students attending
 </div>
 
 <div style="margin: 0 100px 100px; padding-top: 0;" *ngIf="arriving.length">
@@ -23,18 +22,24 @@
 </div>
 
 <div style="margin: 100px 120px 20px; font-family: psans-bold, sans-serif; font-size: 24px">
-    Requests to leave
+    Students leaving
 </div>
 
 <div style="margin: 0 100px 100px;" *ngIf="leaving.length">
     <div class="card-container" *ngFor="let l of leaving">
-        <mat-card class="card">
-            <mat-card-title class="pad">{{l.name}}</mat-card-title>
+        <mat-card class="card" *ngIf="!l.denied && l.approvedPass">
+            <mat-card-title class="pad" style="font-family: psans-bold">{{l.name}}</mat-card-title>
             <mat-card-content style="padding-left: 1em;">
-                Hello
+                <div style="display: inline-flex; width: 100%">
+                    <div style="flex: 1"></div>
+                    <div style="flex: 1"></div>
+
+                    <p style="flex: 1">Date: {{l.date}}</p>
+                </div>
             </mat-card-content>
             <mat-card-actions style="overflow: auto">
             </mat-card-actions>
+            <p style="color: lightgray; font-size: 12px">{{l.slipID}}</p>
         </mat-card>
     </div>
 </div>

@@ -36,7 +36,7 @@ $dodger-blue: (
 );
 
 $light-theme-primary: mat-palette($dodger-blue);
-$light-theme-accent: mat-palette($mat-pink);
+$light-theme-accent: mat-palette($mat-yellow);
 $light-theme-warn: mat-palette($mat-red);
 
 $light-theme: mat-light-theme($light-theme-primary, $light-theme-accent, $light-theme-warn);

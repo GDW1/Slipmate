@@ -12,7 +12,7 @@ export class LoginService {
           this.loggedIn = (user != null);
 
           if (this.loggedIn) {
-
+            this.smID = user.email.split('@')[0];
           }
       });
   }
@@ -28,4 +28,5 @@ export class LoginService {
 
     public user: SocialUser;
     public loggedIn: boolean;
+    public smID: string;
 }

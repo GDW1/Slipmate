@@ -79,9 +79,7 @@ export class CreateComponent implements OnInit {
         });
         this.thirdFormGroup = this.formBuilder.group({
             utCtrl: ['', Validators.required],
-            ttCtrl: ['', Validators.required],
-            checkOne: [false, Validators.required],
-            checkTwo: [false, Validators.required]
+            ttCtrl: ['', Validators.required]
         });
         this.fourthFormGroup = this.formBuilder.group({
             reasonCtrl: ['', Validators.required]
