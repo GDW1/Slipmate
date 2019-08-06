@@ -15,26 +15,35 @@
                 <mat-list-item>Welcome to Slipmate!</mat-list-item>
                 <mat-list-item style="height: max-content">
                     <p style="max-width: 200px;">
-                        Please log in using your
-                        <span style="font-family: psans-bold, sans-serif;">seq.org</span>
+                        Once redirected, please log in using your
+                        <span style="font-family: psans-bold, sans-serif;">@seq.org</span>
                         email address.
                     </p>
                 </mat-list-item>
                 <mat-list-item style="height: max-content">
                     <p style="max-width: 200px;">
-                        Our system will determine whether you are a student or teacher and automatically redirect you to the respective online portal.
+                        Please select your respective portal. You will not be allowed to log in to the incorrect portal, so there's no need to try it.
                     </p>
                 </mat-list-item>
             </mat-list>
         </mat-sidenav>
         <mat-sidenav-content style="background-color: lightgray">
-            <div class="card-container" style="margin-top: 25vh">
-                <mat-card class="card link pink" (click)="signIn()">
+            <div class="card-container" style="margin-top: 10vh">
+                <mat-card class="card link pink" (click)="redirectS()">
                     <mat-card class="card link yellow">
                         <mat-card class="card link white">
                             <mat-card-content style="padding: 1em 1em 1.2em;">
-                                {{this.sign}}
-                                <img src="../assets/images/google.png" *ngIf="signImg" height="80" style="margin-bottom: -23px">
+                                Student Portal
+                            </mat-card-content>
+                        </mat-card>
+                    </mat-card>
+                </mat-card>
+                <div style="height: 10vh;"></div>
+                <mat-card class="card link pink" (click)="redirectT()">
+                    <mat-card class="card link yellow">
+                        <mat-card class="card link white">
+                            <mat-card-content style="padding: 1em 1em 1.2em;">
+                                Teacher Portal
                             </mat-card-content>
                         </mat-card>
                     </mat-card>

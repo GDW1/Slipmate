@@ -33,6 +33,14 @@ export class AppComponent implements OnInit {
         document.location.href = '';
     }
 
+    redirectS() {
+        document.location.href = 'https://student.slipmate.ml';
+    }
+
+    redirectT() {
+        document.location.href = 'https://teacher.slipmate.ml';
+    }
+
     ngOnInit() {
         this.authService.authState.subscribe((user) => {
             this.user = user;

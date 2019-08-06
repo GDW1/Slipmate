@@ -37,33 +37,35 @@ body {
 
 .pink {
     background-color: #FFA9C4;
-    padding: 0 0.5em 0 0;
-    margin: 0;
     font-size: 50px;
     text-decoration: none !important;
-    animation-name: unselect-pink;
-    animation-duration: 0.3s;
-}
-
-.pink:hover {
     padding: 0;
     margin: 0 1em 0 0;
     animation-name: select-pink;
     animation-duration: 0.3s;
+    box-shadow: 5px 10px 8px #888888;
+}
+
+.pink:hover {
+    padding: 0 0.5em 0 0;
+    margin: 0 0 -0.1em;
+    animation-name: unselect-pink;
+    animation-duration: 0.3s;
+    box-shadow: 3px 6px 8px #888888;
 }
 
 .yellow {
     background-color: #FFFF88;
-    padding: 0 0.5em 0 0;
     font-size: 50px;
     text-decoration: none !important;
-    animation-name: unselect-yellow;
+    padding: 0;
+    animation-name: select-yellow;
     animation-duration: 0.3s;
 }
 
 .yellow:hover {
-    padding: 0;
-    animation-name: select-yellow;
+    padding: 0 0.5em 0 0;
+    animation-name: unselect-yellow;
     animation-duration: 0.3s;
 }
 
@@ -88,11 +90,13 @@ body {
 @keyframes select-pink {
     from {
         padding: 0 0.5em 0 0;
-        margin: 0;
+        margin: 0 0 -0.1em;
+        box-shadow: 3px 6px 8px #888888;
     }
     to {
         padding: 0;
         margin: 0 1em 0 0;
+        box-shadow: 5px 10px 8px #888888;
     }
 }
 
@@ -100,10 +104,12 @@ body {
     from {
         padding: 0;
         margin: 0 1em 0 0;
+        box-shadow: 5px 10px 8px #888888;
     }
     to {
         padding: 0 0.5em 0 0;
-        margin: 0;
+        margin: 0 0 -0.1em;
+        box-shadow: 3px 6px 8px #888888;
     }
 }
 
