@@ -26,12 +26,12 @@
         <span class="spacer"></span>
         <span>{{this.getTitle() | titlecase}}</span>
         <span class="spacer"></span>
-        <span style="margin-right: 1em">Hello, {{this.loginService.user.name.split(' ')[0]}}!</span>
+        <span style="margin-right: 1em">Hello, {{this.loginService.name.split(' ')[0]}}!</span>
         <button mat-mini-fab [matMenuTriggerFor]="usermenu" style="overflow-y: hidden; overflow-x: hidden">
             <img src="{{this.loginService.user.photoUrl}}" width="100%" style="margin-top: -0.575em" alt="Profile">
         </button>
         <mat-menu #usermenu style="border-radius: 10em">
-            <span class="name">{{this.loginService.user.name}}</span>
+            <span class="name">{{this.loginService.name}}</span>
             <mat-divider></mat-divider>
             <a mat-menu-item routerLink="settings">Settings</a>
             <a mat-menu-item routerLink="help">Help</a>
