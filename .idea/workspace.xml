@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2177111d-2d9b-4550-969d-9a0f52393feb" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/functions/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/functions/index.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -18,8 +19,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/functions/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="366">
-              <caret line="1368" column="35" lean-forward="true" selection-start-line="1368" selection-start-column="35" selection-end-line="1368" selection-end-column="35" />
+            <state relative-caret-position="381">
+              <caret line="1373" column="25" lean-forward="true" selection-start-line="1373" selection-start-column="25" selection-end-line="1373" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -155,12 +156,13 @@
       <workItem from="1561311302124" duration="153000" />
       <workItem from="1561323544149" duration="2072000" />
       <workItem from="1562462074776" duration="3052000" />
-      <workItem from="1563988053430" duration="16000" />
+      <workItem from="1563988053430" duration="159000" />
+      <workItem from="1565219162185" duration="4813000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="64241000" />
+    <option name="totallyTimeSpent" value="69197000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -173,7 +175,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24593128" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -244,8 +245,8 @@
     <entry file="file://$PROJECT_DIR$/.firebase/hosting.cHVibGlj.cache" />
     <entry file="file://$PROJECT_DIR$/functions/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="366">
-          <caret line="1368" column="35" lean-forward="true" selection-start-line="1368" selection-start-column="35" selection-end-line="1368" selection-end-column="35" />
+        <state relative-caret-position="381">
+          <caret line="1373" column="25" lean-forward="true" selection-start-line="1373" selection-start-column="25" selection-end-line="1373" selection-end-column="25" />
         </state>
       </provider>
     </entry>

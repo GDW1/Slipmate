@@ -31,7 +31,7 @@ exports.initializeStudent = functions.https.onRequest((request, response) => {
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', "https://student.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, student, id, t6id, t7id")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
     let name = request.get("student");
@@ -52,7 +52,7 @@ exports.initializeStudent = functions.https.onRequest((request, response) => {
             response.header('Access-Control-Allow-Origin', "https://student.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, student, id, t6id, t7id")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send("Account was already created")
+            response.send("ERROR: 1: Account was already created")
             throw new Error("done")
         }else{
             let dataset = db.collection("students").add(data)
@@ -76,7 +76,7 @@ exports.initializeStudent = functions.https.onRequest((request, response) => {
             response.header('Access-Control-Allow-Origin', "https://student.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, student, id, t6id, t7id")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send((id.toString() +"@seq.org"));
+            response.send("ERROR: 0: " + (id.toString() +"@seq.org"));
         }
         return null
     }).catch(err => {
@@ -96,7 +96,7 @@ exports.initializeTeacher = functions.https.onRequest((request, response) => {
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, teacher, id")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
     let name = request.get("teacher");
@@ -112,7 +112,7 @@ exports.initializeTeacher = functions.https.onRequest((request, response) => {
             response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, teacher, id")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send("Account was already created")
+            response.send("ERROR: 1: Account was already created")
             throw new Error("done")
         }else{
             let dataset = db.collection("teacher").add(data)
@@ -136,7 +136,7 @@ exports.initializeTeacher = functions.https.onRequest((request, response) => {
             response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, teacher, id")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send((id.toString() +"@seq.org"));
+            response.send("ERROR: 0: " + (id.toString() +"@seq.org"));
         }
         return null
     }).catch(err => {
@@ -165,7 +165,7 @@ exports.createPass = functions.https.onRequest((request, response) => {
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, isTeacherPass, toTeacherID, fromTeachID, fromTeacherID, toTeachName, studentID, day, reason")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
     let teacherPass = (request.get("isTeacherPass") === 'true');
@@ -182,7 +182,7 @@ exports.createPass = functions.https.onRequest((request, response) => {
             response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, isTeacherPass, toTeacherID, fromTeachID, fromTeacherID, toTeachName, studentID, day")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send("This student is not valid");
+            response.send("ERROR: 1: This student is not valid");
 
         }else{
             let name = "";
@@ -211,7 +211,7 @@ exports.createPass = functions.https.onRequest((request, response) => {
                         if(docs.empty){
                             db.collection("students").where("student", "==", stuID).get().then(students => {
                                 if(students.empty){
-                                    response.send("no students with this ID");
+                                    response.send("ERROR: 1: no students with this ID");
                                     return
                                 }else{
                                     let email = false
@@ -235,9 +235,9 @@ exports.createPass = functions.https.onRequest((request, response) => {
                                         response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
                                             .header("Access-Control-Allow-Headers", "Content-Type, isTeacherPass, toTeacherID, fromTeachID, fromTeacherID, toTeachName, studentID, day")
                                             .header("Access-Control-Allow-Credentials", 'true')
-                                        response.send("message sent to student ")
+                                        response.send("ERROR: 0: message sent to student ")
                                     }else{
-                                        response.send("Pass created but no email send")
+                                        response.send("ERROR: 0:Pass created but no email send")
                                     }
                                 }
                                 return
@@ -249,7 +249,7 @@ exports.createPass = functions.https.onRequest((request, response) => {
                             response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
                                 .header("Access-Control-Allow-Headers", "Content-Type, isTeacherPass, toTeacherID, fromTeachID, fromTeacherID, toTeachName, studentID, day")
                                 .header("Access-Control-Allow-Credentials", 'true')
-                            response.send("This day is blocked");
+                            response.send("ERROR: 1: This day is blocked");
                         }
                         return null;
                     }).catch(err => {
@@ -263,12 +263,12 @@ exports.createPass = functions.https.onRequest((request, response) => {
                             response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
                                 .header("Access-Control-Allow-Headers", "Content-Type, isTeacherPass, toTeacherID, fromTeachID, fromTeacherID, toTeachName, studentID, day")
                                 .header("Access-Control-Allow-Credentials", 'true')
-                            response.send("a pass has been created can will be sent to the selected teacher at the next email signal")
+                            response.send("ERROR: 0: a pass has been created can will be sent to the selected teacher at the next email signal")
                         }else{
                             response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
                                 .header("Access-Control-Allow-Headers", "Content-Type, isTeacherPass, toTeacherID, fromTeachID, fromTeacherID, toTeachName, studentID, day")
                                 .header("Access-Control-Allow-Credentials", 'true')
-                            response.send("This day is blocked");
+                            response.send("ERROR: 1: This day is blocked");
                         }
                         return;
                     }).catch(err => {
@@ -292,7 +292,7 @@ exports.createBlockedDay = functions.https.onRequest((request, response) => {
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, teacherid, blockedday")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 2: CORS");
         return;
     }
     let teacherID = request.get("teacherID");
@@ -306,13 +306,13 @@ exports.createBlockedDay = functions.https.onRequest((request, response) => {
             response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, teacherid, blockedday")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send("there is no teacher with id: " + teacherID.toString());
+            response.send("ERROR: 1: there is no teacher with id: " + teacherID.toString());
         }else{
             db.collection("blockedDays").add(data);
             response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, teacherid, blockedday")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send("blocked day inserted into teacher: " + teacherID.toString());
+            response.send("ERROR: 0: blocked day inserted into teacher: " + teacherID.toString());
         }
         return null
     }).catch(err => {
@@ -340,7 +340,7 @@ exports.getOutgoingSlipsForTeacherToday = functions.https.onRequest((request, re
             response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, teacherid, day")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send("no outgoing passes today")
+            response.send("ERROR: 0: no outgoing passes today")
         }else{
             passes = [];
             docs.forEach(doc => {
@@ -390,7 +390,7 @@ exports.getIncomingSlipsForTeacherToday = functions.https.onRequest((request, re
             response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, teacherid, day")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send("no incoming passes today")
+            response.send("ERROR: 0: no incoming passes today")
         }else{
             passes = [];
             docs.forEach(doc => {
@@ -426,7 +426,7 @@ exports.getIncomingSlipsForTeacherToday = functions.https.onRequest((request, re
 exports.scheduledFunction = functions.https.onRequest((request, response) => {
     db.collection("passes").where("approvedPass", "==", false).where("isTeacherPass", "==", false).get().then(docs => {
         if (docs.empty) {
-            response.send("No requests"); //Take out when this becomes scheduled
+            response.send("ERROR: 1: No requests"); //Take out when this becomes scheduled
         } else {
             db.collection("teacher").where("emails", "==", false).get().then(teachers => {
                 if (teachers.empty) {
@@ -448,7 +448,7 @@ exports.scheduledFunction = functions.https.onRequest((request, response) => {
                             console.log('Message sent: ' + info.response);
                         });
                         if (i === teacherNums.length - 1) {
-                            response.send(teacherNums)
+                            response.send("ERROR: 0: " + teacherNums)
                             return
                         }
                     }
@@ -483,7 +483,7 @@ exports.scheduledFunction = functions.https.onRequest((request, response) => {
                             console.log('Message sent: ' + info.response);
                         });
                         if (i === teacherNums.length - 1) {
-                            response.send(teacherNums)
+                            response.send("ERROR: 2: " + teacherNums)
 
                         }
                     }
@@ -506,7 +506,7 @@ exports.getBlockedDays = functions.https.onRequest((request, response) => {
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, teacherid, day")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
     let teacherID = request.get("teacherID");
@@ -515,7 +515,7 @@ exports.getBlockedDays = functions.https.onRequest((request, response) => {
             response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, teacherid, day")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send("no blocked days");
+            response.send("ERROR; 0: no blocked days");
         }else{
             let passes = []
             docs.forEach(doc => {
@@ -539,7 +539,7 @@ exports.getUnapprovedSlips = functions.https.onRequest((request, response) => {
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, teacherid")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
     let teacherID = request.get("teacherID");
@@ -548,7 +548,7 @@ exports.getUnapprovedSlips = functions.https.onRequest((request, response) => {
             response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, teacherid")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send("no available passes");
+            response.send("ERROR: 0: no available passes");
         }else{
             let passes = [];
             docs.forEach(doc => {
@@ -596,7 +596,7 @@ exports.getTeacher = functions.https.onRequest((request, response) => {
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, teacherid")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3 :CORS");
         return;
     }
     let teacherID = request.get("teacherID");
@@ -605,7 +605,7 @@ exports.getTeacher = functions.https.onRequest((request, response) => {
             response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, teacherid")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send("no teacher with this ID")
+            response.send("ERROR: 1: no teacher with this ID")
             return
         }else{
             let data = {};
@@ -628,7 +628,7 @@ exports.getTeacher = functions.https.onRequest((request, response) => {
         response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, teacherid")
             .header("Access-Control-Allow-Credentials", 'true')
-        response.send("no teacher with this ID")
+        response.send("Error: 2: caught exception")
         throw err
     })
 });
@@ -646,7 +646,7 @@ exports.getAllTeachers = functions.https.onRequest((request, response) => {
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
     db.collection("teacher").get().then(docs => {
@@ -654,7 +654,7 @@ exports.getAllTeachers = functions.https.onRequest((request, response) => {
             response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send("no teachers in the database")
+            response.send("ERROR: 1: no teachers in the database")
         }else{
             let teachers = [];
             docs.forEach(doc => {
@@ -689,7 +689,7 @@ exports.deleteSlip = functions.https.onRequest((request, response) => {
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, id")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
     let id = request.get("ID");
@@ -697,13 +697,13 @@ exports.deleteSlip = functions.https.onRequest((request, response) => {
         response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, id")
             .header("Access-Control-Allow-Credentials", 'true')
-        response.send("The pass has been deleted at the reference:" + ref);
+        response.send("ERROR: 0: The pass has been deleted at the reference:" + ref);
         return;
     }).catch(err => {
         response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, id")
             .header("Access-Control-Allow-Credentials", 'true')
-        response.send("the pass does not exist");
+        response.send("ERROR: 1: the pass does not exist");
         throw err;
     })
 });
@@ -721,7 +721,7 @@ exports.setMultipleBlockedDays= functions.https.onRequest((request, response) =>
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, blockedDays")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
     let blockedDays = JSON.parse(request.get("blockedDays"));
@@ -729,7 +729,7 @@ exports.setMultipleBlockedDays= functions.https.onRequest((request, response) =>
         response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, blockedDays")
             .header("Access-Control-Allow-Credentials", 'true')
-        response.send("invalidData")
+        response.send("ERROR: 2: invalidData")
     }
     for(let i = 0; i < blockedDays.length; i++){
         if(i === (blockedDays - 1)){
@@ -737,7 +737,7 @@ exports.setMultipleBlockedDays= functions.https.onRequest((request, response) =>
                 response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                     .header("Access-Control-Allow-Headers", "Content-Type, teacherid")
                     .header("Access-Control-Allow-Credentials", 'true')
-                response.send("blocked days should have been added");
+                response.send("ERROR: 1: blocked days should have been added");
                 return;
             }).catch(err => {
                 throw err;
@@ -755,7 +755,7 @@ exports.deleteBlockedDays = functions.https.onRequest((request, response) => {
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, ids")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
     let ids = JSON.parse(request.get("ids"))
@@ -763,7 +763,7 @@ exports.deleteBlockedDays = functions.https.onRequest((request, response) => {
         response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, ids")
             .header("Access-Control-Allow-Credentials", 'true')
-        response.send("invalidData")
+        response.send("ERROR: 2: invalidData")
     }
     for(var i = 0; i < ids.length; i++){
         if(i === (ids.length - 1)){
@@ -771,7 +771,7 @@ exports.deleteBlockedDays = functions.https.onRequest((request, response) => {
                 response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                     .header("Access-Control-Allow-Headers", "Content-Type, ids")
                     .header("Access-Control-Allow-Credentials", 'true')
-                response.send("Blocked days should be deleted")
+                response.send("ERROR: 0: Blocked days should be deleted")
                 return;
             }).catch(err => {
                 throw err;
@@ -795,7 +795,7 @@ exports.deleteMultipleSlips = functions.https.onRequest((request, response) => {
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, id")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
     let ids = JSON.parse(request.get("ids"))
@@ -803,7 +803,7 @@ exports.deleteMultipleSlips = functions.https.onRequest((request, response) => {
         response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, id")
             .header("Access-Control-Allow-Credentials", 'true')
-        response.send("invalidData")
+        response.send("ERROR: 2: invalidData")
     }
     for(var i = 0; i < ids.length; i++){
         if(i === (ids.length - 1)){
@@ -811,7 +811,7 @@ exports.deleteMultipleSlips = functions.https.onRequest((request, response) => {
                 response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
                     .header("Access-Control-Allow-Headers", "Content-Type, id")
                     .header("Access-Control-Allow-Credentials", 'true')
-                response.send("Blocked days should be deleted")
+                response.send("ERROR: 0: Blocked days should be deleted")
                 return;
             }).catch(err => {
                 throw err;
@@ -836,7 +836,7 @@ exports.studentAcceptPass = functions.https.onRequest((request, response) => {
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', "https://student.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, ID")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
     let id = request.get("ID");
@@ -845,7 +845,7 @@ exports.studentAcceptPass = functions.https.onRequest((request, response) => {
     console.log(id);
     db.collection("passes").doc(id).get().then(doc => {
         if(doc.data().studentID !== studentID || doc.data().approvedPass === true || doc.data().isTeacherPass === false || doc.data().denied === true) {
-            response.send("Wrong student approving the pass");
+            response.send("ERROR: 1: Wrong student approving the pass");
         }else{
             db.collection("passes").doc(id).update({
                 fromTeachID: fromTeacher,
@@ -857,7 +857,7 @@ exports.studentAcceptPass = functions.https.onRequest((request, response) => {
             response.header('Access-Control-Allow-Origin', "https://student.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, ID")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send("finished")
+            response.send("ERROR: 0: finished")
         }
         return;
     }).catch(err => {
@@ -874,7 +874,7 @@ exports.getCurrentPassesForStudents = functions.https.onRequest((request, respon
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', "https://student.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, studentID")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
     let studentID = request.get("studentID");
@@ -883,7 +883,7 @@ exports.getCurrentPassesForStudents = functions.https.onRequest((request, respon
             response.header('Access-Control-Allow-Origin', "https://student.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, studentID")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send("no approved requests");
+            response.send("ERROR: 0: no approved requests");
         }else{
             let passes = []
             docs.forEach(doc => {
@@ -918,7 +918,7 @@ exports.getPendingPassesForStudents = functions.https.onRequest((request, respon
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', "https://student.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, studentID")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
     let studentID = request.get("studentID");
@@ -927,7 +927,7 @@ exports.getPendingPassesForStudents = functions.https.onRequest((request, respon
             response.header('Access-Control-Allow-Origin', "https://student.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, studentID")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send("no approved requests");
+            response.send("ERROR: 0: no approved requests");
         }else{
             let passes = []
             docs.forEach(doc => {
@@ -968,7 +968,7 @@ exports.getStudent = functions.https.onRequest((request, response) => {
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, studentID")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
     let id = request.get("studentID");
@@ -977,7 +977,7 @@ exports.getStudent = functions.https.onRequest((request, response) => {
             response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, studentID")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send("there is no student with this id")
+            response.send("ERROR: 1: there is no student with this id")
         }else{
             let student = [];
             docs.forEach(doc => {
@@ -1014,7 +1014,7 @@ exports.teacherApprovePass = functions.https.onRequest((request, response) => {
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, passID, teacherID")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
     let passID = request.get("passID");
@@ -1026,7 +1026,7 @@ exports.teacherApprovePass = functions.https.onRequest((request, response) => {
             response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, passID, teacherID")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send("Pass has either been approved already, denied already, is a pass by the teacher, or is not assigned to this teacher");
+            response.send("ERROR: 1: Pass has either been approved already, denied already, is a pass by the teacher, or is not assigned to this teacher");
         }else{
             db.collection("passes").doc(passID).update({
                 approvedPass: true
@@ -1037,7 +1037,7 @@ exports.teacherApprovePass = functions.https.onRequest((request, response) => {
             response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, passID, teacherID")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send("finished")
+            response.send("ERROR: 0: finished")
         }
         return;
     }).catch(err => {
@@ -1057,7 +1057,7 @@ exports.teacherDenyPass = functions.https.onRequest((request,response) => {
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, ID, teacherID")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
     let passID = request.get("ID");
@@ -1067,7 +1067,7 @@ exports.teacherDenyPass = functions.https.onRequest((request,response) => {
             response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, ID, teacherID")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send("Pass has either been approved already, denied already, is a pass by the teacher, or is not assigned to this teacher");
+            response.send("ERROR: 1: Pass has either been approved already, denied already, is a pass by the teacher, or is not assigned to this teacher");
         }else{
             db.collection("passes").doc(passID).update({
                 denied: true
@@ -1078,7 +1078,7 @@ exports.teacherDenyPass = functions.https.onRequest((request,response) => {
             response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, ID, teacherID")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send("finished")
+            response.send("ERROR: 0: finished")
         }
         return;
     }).catch(err => {
@@ -1093,7 +1093,7 @@ exports.studentDenyPass = functions.https.onRequest((request, response) => {
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', "https://student.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, studentID")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
     let id = request.get("ID");
@@ -1104,7 +1104,7 @@ exports.studentDenyPass = functions.https.onRequest((request, response) => {
             response.header('Access-Control-Allow-Origin', "https://student.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, studentID")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send("Wrong student approving the pass");
+            response.send("ERROR: 1: Wrong student approving the pass");
         }else{
             db.collection("passes").doc(id).update({
                 denied: true
@@ -1115,7 +1115,7 @@ exports.studentDenyPass = functions.https.onRequest((request, response) => {
             response.header('Access-Control-Allow-Origin', "https://student.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, studentID")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send("finished")
+            response.send("ERROR: 0: finished")
         }
         return;
     }).catch(err => {
@@ -1136,7 +1136,7 @@ exports.getTeacherSlipsUnapprovedByStudent = functions.https.onRequest((request,
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, studentID")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
     let teacherID = request.get("teacherID");
@@ -1146,7 +1146,7 @@ exports.getTeacherSlipsUnapprovedByStudent = functions.https.onRequest((request,
             response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, studentID")
                 .header("Access-Control-Allow-Credentials", 'true')
-            response.send("There are no unapproved Slips")
+            response.send("ERROR: 0: There are no unapproved Slips")
         }else{
             let passes = [];
             docs.forEach(doc => {
@@ -1183,7 +1183,7 @@ exports.TeacherAcceptMultiplePasses = functions.https.onRequest((request, respon
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, ID, teacherID")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
     let passes = JSON.parse(request.get("passIDs"));
@@ -1192,7 +1192,7 @@ exports.TeacherAcceptMultiplePasses = functions.https.onRequest((request, respon
         if(i === (passes.length-1)){
             db.collection("passes").doc(passes[i]).get().then(doc => {
                 if(doc.data().toTeachID !== teacherID || doc.data().approvedPass === true || doc.data().isTeacherPass === true || doc.data().denied === true){
-                    throw new Error("this passID does not exist")
+                    throw new Error("ERROR: 1: this passID does not exist")
                 }else{
                     db.collection("passes").doc(passes[i]).update({
                         approvedPass: true
@@ -1208,7 +1208,7 @@ exports.TeacherAcceptMultiplePasses = functions.https.onRequest((request, respon
                     response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                         .header("Access-Control-Allow-Headers", "Content-Type, ID, teacherID")
                         .header("Access-Control-Allow-Credentials", 'true')
-                    response.send("Pass has either been approved already, denied already, is a pass by the teacher, or is not assigned to this teacher");
+                    response.send("ERROR: 1: Pass has either been approved already, denied already, is a pass by the teacher, or is not assigned to this teacher");
                 }else{
                     db.collection("passes").doc(passes[i]).update({
                         approvedPass: true
@@ -1216,7 +1216,7 @@ exports.TeacherAcceptMultiplePasses = functions.https.onRequest((request, respon
                     response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                         .header("Access-Control-Allow-Headers", "Content-Type, ID, teacherID")
                         .header("Access-Control-Allow-Credentials", 'true')
-                    response.send("finished")
+                    response.send("ERROR: 0: finished")
                 }
                 return;
             }).catch(err => {
@@ -1260,7 +1260,7 @@ exports.sendDayOfReminder = functions.https.onRequest((request, response) => {
                     });
                 }
             });
-            response.send("Datekey: " +dateKey+ "finished: " + ids);
+            response.send("ERROR: 0: Datekey: " +dateKey+ "finished: " + ids);
             return
         }).catch(err => {
             throw err
@@ -1275,7 +1275,7 @@ exports.getAllIncomingPasses = functions.https.onRequest((request, response) => 
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, ID, teacherID")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
     let teachID = request.get("teachID")
@@ -1316,13 +1316,13 @@ exports.teacherOptIn = functions.https.onRequest((request, response) => {
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, docID, currentStatus")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
     db.collection("teacher").doc(request.get("docID")).update({emails: (!(request.get("currentStatus") === 'true'))}).then(ref =>{
         response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, docID, currentStatus")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("The selected teacher is not opted in or out");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 0: The selected teacher is not opted in or out");
         return
     }).catch(err => {
         throw err
@@ -1339,13 +1339,13 @@ exports.studentOptIn = functions.https.onRequest((request, response) => {
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', "https://student.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, docID, currentStatus")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
     db.collection("students").doc(request.get("docID")).update({emails: (!(request.get("currentStatus") === 'true'))}).then(ref =>{
         response.header('Access-Control-Allow-Origin', "https://student.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, docID, currentStatus")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("The selected student is not opted in or out");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 0: The selected student is not opted in or out");
         return
     }).catch(err => {
         throw err
@@ -1361,14 +1361,14 @@ exports.teacherIsOpted = functions.https.onRequest((request, response) => {
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, teachid")
-            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
     db.collection("teacher").where("teachID", "==", request.get("teachID")).get().then(docs => {
         if(docs.empty){
             response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, teacherid")
-                .header("Access-Control-Allow-Credentials", 'true').status(200).send("No teacher with this ID");
+                .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 0: No teacher with this ID");
             return;
         }else{
             let ret = "";
