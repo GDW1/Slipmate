@@ -519,7 +519,7 @@ exports.getBlockedDays = functions.https.onRequest((request, response) => {
         }else{
             let passes = []
             docs.forEach(doc => {
-                passes.push(doc.data().blockDay);
+                passes.push([doc.data().blockDay, doc.id]);
             });
             response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
                 .header("Access-Control-Allow-Headers", "Content-Type, teacherid, day")
