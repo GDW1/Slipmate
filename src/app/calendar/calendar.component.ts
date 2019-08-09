@@ -13,7 +13,8 @@ export class CalendarComponent implements OnInit {
   private month: any;
   private day: any;
   private response: any;
-
+  private blockedDays: object[];
+  private months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
   constructor(private formBuilder: FormBuilder,
               private api: ApiService,
               private ngZone: NgZone,
@@ -24,6 +25,13 @@ export class CalendarComponent implements OnInit {
     this.FirstFormGroup = this.formBuilder.group({
       firstCtrl: ['', Validators.required]
     });
+    this.InhabitBlockedDays();
+  }
+
+  InhabitBlockedDays(){
+    this.api.getBlockedDays(this.loginService.user.email.split('@')[0]).then(val =>
+      this.blockedDays = (JSON.parse(val))
+    )
   }
 
   submitCalendarDate() {
@@ -44,5 +52,14 @@ export class CalendarComponent implements OnInit {
       this.response = this.api.createBlockedDay(this.loginService.user.email.split('@')[0], this.month, this.day);
     }
 
+  }
+  convertDate(date: string){
+    let month = this.months[parseInt(date.split(":")[0])]
+    let day = parseInt(date.split(":")[1])
+    return month + " " + day
+  }
+
+  remove(day: string) {
+    
   }
 }
