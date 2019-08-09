@@ -1385,5 +1385,94 @@ exports.teacherIsOpted = functions.https.onRequest((request, response) => {
     })
 })
 
+
+exports.getAllIncomingPassesUnconditional = functions.https.onRequest((request, response) => {
+    if (request.method === `OPTIONS`) {
+        response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
+            .header("Access-Control-Allow-Headers", "Content-Type, teacherid, day")
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+        return;
+    }
+    let teacherID = request.get("teacherID");
+    let day = request.get("day");
+    db.collection("passes").where("toTeachID", "==", teacherID).where("day", "==", day).get().then(docs => {
+        if (docs.empty){
+            response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
+                .header("Access-Control-Allow-Headers", "Content-Type, teacherid, day")
+                .header("Access-Control-Allow-Credentials", 'true')
+            response.send("ERROR: 0: no incoming passes today")
+        }else{
+            passes = [];
+            docs.forEach(doc => {
+                passes.push({
+                    studentName: doc.data().studentName,
+                    id: doc.id,
+                    toTeachID: doc.data().toTeachID,
+                    toTeachName: doc.data().toTeachName,
+                    fromTeacherName: doc.data().fromTeacherName,
+                    fromTeachID: doc.data().fromTeachID,
+                    studentID: doc.data().studentID,
+                    day: doc.data().day,
+                    isTeacherPass: doc.data().isTeacherPass,
+                    approvedPass: doc.data().approvedPass,
+                    reason: doc.data().reason,
+                });
+            })
+            console.log(passes)
+            response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
+                .header("Access-Control-Allow-Headers", "Content-Type, teacherid, day")
+                .header("Access-Control-Allow-Credentials", 'true')
+            response.send(passes)
+        }
+        return;
+    }).catch(err => {
+        throw err;
+    })
+})
+
+
+exports.getAllOutgoingPassesUnconditional = functions.https.onRequest((request, response) => {
+    if (request.method === `OPTIONS`) {
+        response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
+            .header("Access-Control-Allow-Headers", "Content-Type, teacherid, day")
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("CORS");
+        return;
+    }
+    let teacherID = request.get("teacherID");
+    let day = request.get("day");
+    db.collection("passes").where("fromTeachID", "==", teacherID).where("day", "==", day).get().then(docs => {
+        if (docs.empty){
+            response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
+                .header("Access-Control-Allow-Headers", "Content-Type, teacherid, day")
+                .header("Access-Control-Allow-Credentials", 'true')
+            response.send("ERROR: 0: no incoming passes today")
+        }else{
+            passes = [];
+            docs.forEach(doc => {
+                passes.push({
+                    studentName: doc.data().studentName,
+                    id: doc.id,
+                    toTeachID: doc.data().toTeachID,
+                    toTeachName: doc.data().toTeachName,
+                    fromTeacherName: doc.data().fromTeacherName,
+                    fromTeachID: doc.data().fromTeachID,
+                    studentID: doc.data().studentID,
+                    day: doc.data().day,
+                    isTeacherPass: doc.data().isTeacherPass,
+                    approvedPass: doc.data().approvedPass,
+                    reason: doc.data().reason,
+                });
+            })
+            console.log(passes)
+            response.header('Access-Control-Allow-Origin', "https://teacher.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
+                .header("Access-Control-Allow-Headers", "Content-Type, teacherid, day")
+                .header("Access-Control-Allow-Credentials", 'true')
+            response.send(passes)
+        }
+        return;
+    }).catch(err => {
+        throw err;
+    })
+})
 //TODO make sure that when a day is blocked that students are notified and their tutorial is cancelled
 //TODO return all passes for a teacher on a day
