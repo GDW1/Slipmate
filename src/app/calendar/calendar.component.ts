@@ -60,6 +60,6 @@ export class CalendarComponent implements OnInit {
   }
 
   remove(day: string) {
-    
+    this.api.deleteBlockedDay(day, this.loginService.user.email.split('@')[0])
   }
 }
