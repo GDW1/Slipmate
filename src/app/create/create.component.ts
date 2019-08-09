@@ -39,7 +39,7 @@ export class CreateComponent implements OnInit {
         let date = document.forms[1].elements['date'].value;
         this.month = date.split('/')[0];
         this.day = date.split('/')[1];
-        if (parseInt(this.month) < 10) this.month = '0' + this.month;
+        if (parseInt(this.month) < 10) { this.month = '0' + this.month; }
         if (parseInt(this.day) < 10) this.day = '0' + this.day;
     }
 
@@ -58,6 +58,7 @@ export class CreateComponent implements OnInit {
         this.ngZone.run(() => {});
 
         if (this.studentID.trim() === '' || this.ttID.trim() === '' || this.ftID.trim() === '' || this.day === '' || this.month === '') {
+            // tslint:disable-next-line:max-line-length
             this.response = 'Error: One or more of the inputs is empty. You may have made a type somewhere. Try re-entering the information.';
             console.log(this.studentID, this.month, this.day, this.ttID, this.ftID);
             this.gotError = true;

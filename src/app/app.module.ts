@@ -14,7 +14,7 @@ import {
     MatMenuModule,
     MatNativeDateModule, MatProgressSpinnerModule,
     MatSidenavModule,
-    MatStepperModule,
+    MatStepperModule, MatTableModule,
     MatToolbarModule
 } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -74,7 +74,8 @@ export function provideConfig() {
         MatCheckboxModule,
         FormsModule,
         SocialLoginModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        MatTableModule
     ],
     providers: [
         {
