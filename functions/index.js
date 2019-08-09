@@ -1384,3 +1384,6 @@ exports.teacherIsOpted = functions.https.onRequest((request, response) => {
         throw err
     })
 })
+
+//TODO make sure that when a day is blocked that students are notified and their tutorial is cancelled
+//TODO return all passes for a teacher on a day
