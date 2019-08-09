@@ -32,14 +32,28 @@
 <div style="background-color: #ffffff;padding: 10px;margin: 10px;border-radius: 15px;box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);margin-right: 3em;margin-left: 3em;">
   <h2 class="py-4">Blocked Days</h2>
   <hr>
-  <table class="table-days">
-    <tbody>
-    <tr *ngFor="let day of this.blockedDays; let i = index"><div style="margin: 5px;">
-      <td style="font-size: 1.1em; vertical-align: center">{{this.convertDate(day.toString())}}</td>
-      <td><button mat-raised-button type="button" style="background-color: dodgerblue; color: white; float: right" (click)="this.remove(day.toString())">Remove</button></td>
-    </div>
+  <mat-table #table [dataSource]="dataSource">
+<!--    <tbody>-->
+<!--    <tr *ngFor="let day of this.blockedDays; let i = index"><div style="margin: 5px;">-->
+<!--      <td style="font-size: 1.1em; vertical-align: center">{{this.convertDate(day[0].toString())}}</td>-->
+<!--      <td><button mat-raised-button type="button" style="background-color: dodgerblue; color: white; float: right" (click)="this.remove(day[1].toString())">Remove</button></td>-->
+<!--    </div>-->
+<!--    </tr>-->
+<!--    </tbody>-->
+    <!-- Position Column -->
+    <ng-container matColumnDef="day">
+      <mat-header-cell *matHeaderCellDef> Day </mat-header-cell>
+      <mat-cell *matCellDef="let data"> {{data.day.toString()}} </mat-cell>
 
-    </tr>
-    </tbody>
-  </table>
+    </ng-container>
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> Remove </mat-header-cell>
+<!--      <mat-cell *matCellDef="let data"> {{data.id.toString()}} </mat-cell>-->
+      <mat-cell *matCellDef="let data"> <button mat-raised-button type="button" style="background-color: dodgerblue; color: white; float: right" (click)="this.remove(data.id.toString())">Remove</button></mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+  </mat-table>
 </div>

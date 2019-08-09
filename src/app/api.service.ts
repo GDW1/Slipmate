@@ -171,10 +171,9 @@ export class ApiService {
         }
     }
 
-    deleteBlockedDay(day: string, teacherid: string) {
+    deleteBlockedDay(day: string) {
         return this.request('deleteBlockedDays', {
-            teacherID: teacherid,
-            day: day
+            ids: day
         })
     }
 }
