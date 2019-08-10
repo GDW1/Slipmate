@@ -6,7 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./today.component.scss']
 })
 export class TodayComponent implements OnInit {
-
+  private numberOfIncoming: number;
+  private numberOfOutgoing: number;
+  
   constructor() { }
 
   ngOnInit() {
