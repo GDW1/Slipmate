@@ -26,6 +26,13 @@
     flex: 1;
 }
 
+mat-spinner.load{
+    display:none;
+}
+router-outlet + mat-spinner.load{
+    display: block;
+}
+
 .sn-text {
     padding-left: 1.2em;
     padding-right: 1em;

@@ -1,21 +1,34 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ApiService} from "../api.service";
 import Card from "../card";
+import {LoginService} from "../login.service";
 
 @Component({
     selector: 'app-students',
     templateUrl: './students.component.html',
     styleUrls: ['./students.component.scss']
 })
-export class StudentsComponent implements OnInit {
+export class StudentsComponent implements OnInit, AfterViewInit {
 
-    constructor(private api: ApiService) {
+    constructor(private api: ApiService,
+                private loginService: LoginService) {
     }
 
     public leaving: Card[];
     public arriving: Card[];
+    public loadedA = false;
+    public loadedL = false;
 
     ngOnInit() {
+        this.loadedA = false;
+        this.loadedL = false;
+    }
+
+    async ngAfterViewInit() {
+        setTimeout(() => { this.doAPICall(); }, 10);
+    }
+
+    async doAPICall() {
         let date = new Date();
         let monthNum = date.getMonth();
         let monthString = "";
@@ -35,12 +48,28 @@ export class StudentsComponent implements OnInit {
             dayString = dayNum.toString();
         }
 
-        this.arriving = this.api.getIncomingSlipsToday('798932', monthString, dayString).then(val => {
-            this.arriving = this.api.bottleCards(JSON.parse(val.__zone_symbol__value));
+        this.api.getIncomingSlips('798932', monthString, dayString).then(val => {
+            console.log(val);
+            try {
+                this.arriving = this.api.bottleCards(JSON.parse(val));
+            } catch(e) {
+                console.log(e);
+                this.arriving = [];
+            }
+            this.loadedA = true;
+            console.log('lA');
         });
 
-        this.leaving = this.api.getOutgoingSlipsToday('798932', monthString, dayString).then(val => {
-            this.leaving = this.api.bottleCards(JSON.parse(val.__zone_symbol__value));
+        this.api.getOutgoingSlips('798932', monthString, dayString).then(val => {
+            console.log(val);
+            try {
+                this.leaving = this.api.bottleCards(JSON.parse(val));
+            } catch(e) {
+                console.log(e);
+                this.leaving = [];
+            }
+            this.loadedL = true;
+            console.log('lL');
         });
     }
 

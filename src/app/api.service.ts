@@ -34,7 +34,7 @@ export class ApiService {
         return suffixes[d];
     }
 
-    createPass(isTeacherPass: boolean, teacherToID: string, teacherFromID: string, studentID: string, month: string, day: string, reason: string): any {
+    async createPass(isTeacherPass: boolean, teacherToID: string, teacherFromID: string, studentID: string, month: string, day: string, reason: string): Promise<any> {
         let tt = this.getTeacher(teacherToID);
         let ft = this.getTeacher(teacherFromID);
         let ttName = '';
@@ -53,52 +53,52 @@ export class ApiService {
         })
     }
 
-    initTeacher(teacherID: string, name: string): any {
+    async initTeacher(teacherID: string, name: string): Promise<any> {
         return this.request('initializeTeacher', {
             id: teacherID,
             teacher: name
         });
     }
 
-    getAllTeachers(): any {
+    async getAllTeachers(): Promise<any> {
         return this.request('getAllTeachers', {});
     }
 
-    getTeacher(id: string): any {
+    async getTeacher(id: string): Promise<any> {
         return this.request('getTeacher', {
             teacherID: id
         });
     }
 
-    createBlockedDay(id: string, month: string, day: string): any {
+    async createBlockedDay(id: string, month: string, day: string): Promise<any> {
         return this.request('createBlockedDay', {
             teacherID: id,
             blockedDay: (month + ':' + day)
         });
     }
 
-    getOutgoingSlipsToday(id: string, month: string, day: string): any {
-        return this.request('getOutgoingSlipsForTeacherToday', {
+    async getOutgoingSlips(id: string, month: string, day: string): Promise<any> {
+        return await this.request('getOutgoingSlipsForTeacherToday', {
             teacherID: id,
             day: (month + ':' + day)
         });
     }
 
-    getIncomingSlipsToday(id: string, month: string, day: string): any {
-        return this.request('getIncomingSlipsForTeacherToday', {
+    async getIncomingSlips(id: string, month: string, day: string): Promise<any> {
+        return await this.request('getIncomingSlipsForTeacherToday', {
             teacherID: id,
             day: (month + ':' + day)
         });
     }
 
-    getBlockedDays(id: string): any {
+    async getBlockedDays(id: string): Promise<any> {
         return this.request('getBlockedDays', {
             teacherID: id
         });
     }
 
-    isBlockedDay(id: string, date: string): boolean {
-        let r = this.getBlockedDays(id);
+    async isBlockedDay(id: string, date: string): Promise<boolean> {
+        let r = await this.getBlockedDays(id);
         console.log(r.__zone_symbol__value);
         let a: [string] = JSON.parse(r.__zone_symbol__value);
         for (let i = 0; i < a.length; i++) {
@@ -110,38 +110,38 @@ export class ApiService {
         return false;
     }
 
-    getUnapprovedSlips(id: string): any {
+    async getUnapprovedSlips(id: string): Promise<any> {
         return this.request('getUnapprovedSlips', {
             teacherID: id
         });
     }
 
-    deleteSlip(slipID: string): any {
+    async deleteSlip(slipID: string): Promise<any> {
         return this.request('deleteSlip', {
             ID: slipID
         });
     }
 
-    getSlip(slipID: string): any {
+    async getSlip(slipID: string): Promise<any> {
         return this.request('getSlip', {
             ID: slipID
         });
     }
 
-    getStudent(stuID: string): any {
+    async getStudent(stuID: string): Promise<any> {
         return this.request('getStudent', {
             studentID: stuID
         });
     }
 
-    teacherApprovePass(passID: string, teacherID: string) {
+    async teacherApprovePass(passID: string, teacherID: string) {
         return this.request('teacherApprovePass', {
             passID: passID,
             teacherID: teacherID
         })
     }
 
-    teacherDenyPass(passID: string, teacherID: string) {
+    async teacherDenyPass(passID: string, teacherID: string) {
         return this.request('teacherDenyPass', {
             passID: passID,
             teacherID: teacherID
@@ -168,6 +168,7 @@ export class ApiService {
             c.name = data.studentName;
             c.toTeach = data.toTeachName;
             c.fromTeach = data.fromTeach;
+            c.toTeachID = data.toTeachID;
             c.slipID = data.id;
             c.isTeacherPass = data.isTeacherPass;
             c.approvedPass = data.approvedPass;

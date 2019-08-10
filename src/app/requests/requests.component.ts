@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RequestsComponent implements OnInit {
 
+    approved = false;
+    denied = false;
+
     requests = ['Aidan Sacco',
         'Guy Wilks',
         'Daniel Longo',
@@ -16,7 +19,7 @@ export class RequestsComponent implements OnInit {
         'Connor Spackman',
         'Cameron Snyder',
         'Edward Newell',
-        'Dana Leland']
+        'Dana Leland'];
 
     constructor() {
     }
