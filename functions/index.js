@@ -1343,7 +1343,10 @@ exports.studentOptIn = functions.https.onRequest((request, response) => {
             .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
-    db.collection("students").doc(request.get("docID")).update({emails: (!(request.get("currentStatus") === 'true'))}).then(ref =>{
+    db.collection("students").where("stuID", "==", request.get("id")).get().then(docs =>{
+        docs.forEach(val => {
+            db.collection("students").doc(val.id).update({emails: (!(request.get("currentStatus") === 'true'))});
+        })
         response.header('Access-Control-Allow-Origin', "https://student.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, docID, currentStatus")
             .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 0: The selected student is not opted in or out");
@@ -1603,3 +1606,35 @@ exports.scheduledDeleteAll = functions.https.onRequest((request, response) => {
 
 //TODO make sure that when a day is blocked that students are notified and their tutorial is cancelled
 //TODO return all passes for a teacher on a day
+
+/**
+ *
+ * teachID: the id of the teacher getting the information
+ */
+exports.studentIsOpted = functions.https.onRequest((request, response) => {
+    if (request.method === `OPTIONS`) {
+        response.header('Access-Control-Allow-Origin', "https://student.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
+            .header("Access-Control-Allow-Headers", "Content-Type, id")
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
+        return;
+    }
+    db.collection("students").where("stuID", "==", request.get("id")).get().then(docs => {
+        if(docs.empty){
+            response.header('Access-Control-Allow-Origin', "https://student.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
+                .header("Access-Control-Allow-Headers", "Content-Type, id")
+                .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 0: No teacher with this ID");
+            return;
+        }else{
+            let ret = "";
+            docs.forEach(doc => {
+                ret = doc.data().emails;
+            })
+            response.header('Access-Control-Allow-Origin', "https://student.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
+                .header("Access-Control-Allow-Headers", "Content-Type, id")
+                .header("Access-Control-Allow-Credentials", 'true').status(200).send(ret);
+            return;
+        }
+    }).catch(err =>{
+        throw err
+    })
+})
