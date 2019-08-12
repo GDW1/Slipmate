@@ -16,15 +16,57 @@ export class TodayComponent implements OnInit {
   private incomingPasses: any;
   private outgoingPasses: any;
   private dataSource = new MatTableDataSource(this.stus);
-
+  private isBlocked = false;
+  private styleTag: string = "visible"
+  private redStyle: string = "hidden"
   constructor(
       private api: ApiService,
       private loginService: LoginService,
   ){}
 
   async ngOnInit() {
-    this.loadNumberOfIncoming().then((val) => this.incomingPasses = JSON.parse(val.toString())).then(() => this.loadData());
-    this.loadNumberOfOutgoing().then((val) => this.outgoingPasses = JSON.parse(val.toString())).then(() => this.loadData());
+    // @ts-ignore
+    await this.checkBlocked().then(val => this.isBlocked = val)
+    if(!this.isBlocked) {
+      this.loadNumberOfIncoming().then((val) => this.incomingPasses = JSON.parse(val.toString())).then(() => this.loadData());
+      this.loadNumberOfOutgoing().then((val) => this.outgoingPasses = JSON.parse(val.toString())).then(() => this.loadData());
+    }else{
+      this.styleTag = this.redStyle
+      this.redStyle = "visible"
+    }
+    console.log(this.isBlocked)
+  }
+
+  checkBlocked(){
+    var promise = new Promise((resolve) => {
+      setTimeout(() => {
+        let month = ""
+        if(((new Date()).getMonth() + 1) < 10){
+          month = "0" + ((new Date()).getMonth() + 1).toString()
+        }else{
+          month = ((new Date()).getMonth() + 1).toString()
+        }
+        let day = ""
+        if(((new Date()).getDate()) < 10){
+          day = "0" + ((new Date()).getDate()).toString()
+        }else{
+          day = ((new Date()).getDate()).toString()
+        }
+        let dateStamp = month + ":" + day
+        console.log("DATE: " + dateStamp)
+        this.api.getBlockedDays(this.loginService.user.email.split('@')[0]).then(val => {
+          let jsonD = JSON.parse(val.toString())
+          for(let i = 0; i < jsonD.length; i++){
+            if(jsonD[i][0] === dateStamp){
+              console.log("FOUND")
+              resolve(true);
+            }
+          }
+          resolve(false);
+        })
+      })
+    })
+    return promise
   }
 
   loadNumberOfIncoming(){

@@ -1,6 +1,6 @@
 
 <h1 class="heading" style="margin: 1.3em;">Today</h1>
-<div>
+<div [ngStyle]="{'visibility': styleTag}">
   <div style="margin: 1.2em">
 
     <mat-card style="margin-left: 1.2em; margin-top: 1.2em; width: 45%; float: left; padding-top: 2%;padding-bottom: 2%;">
@@ -40,4 +40,10 @@
     </mat-card>
 
   </div>
+</div>
+
+<div [ngStyle]="{'visibility': redStyle}" style="width: 90%; margin-left: 1.2em; float: left;">
+  <mat-card style="width: 100%">
+    <h2 style="text-align: center">Today is a blocked day</h2>
+  </mat-card>
 </div>
