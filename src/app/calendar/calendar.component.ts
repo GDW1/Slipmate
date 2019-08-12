@@ -73,8 +73,9 @@ export class CalendarComponent implements OnInit {
     }
     this.InhabitBlockedDays()
   }
+
   convertDate(date: string){
-    let month = this.months[parseInt(date.split(":")[0])]
+    let month = this.months[parseInt(date.split(":")[0])-1]
     let day = parseInt(date.split(":")[1])
     return month + " " + day
   }
