@@ -1,38 +1,19 @@
 <div style="padding: 100px" *ngIf="requests.length">
     <div class="card-container" *ngFor="let r of requests">
         <mat-card class="card">
-            <mat-card-title style="font-family: psans-med, sans-serif; font-size: 32px; padding: 0.25em 0.5em 0.5em;">{{r}}</mat-card-title>
-            <mat-card-content style="padding-left: 1em; margin-bottom: 0;">
-                <div style="display: inline-flex; width: 100%; margin: 0 0 0 1em">
-                    <div style="flex: 4; padding: 0 0.5em;">
-                        <span style="font-size: 24px; color: navy;">Date:</span>
-                        <p style="font-size: 18px; margin-bottom: 0.125em">Monday,</p>
-                        <p style="font-size: 18px; margin-top: 0.125em">August 12th</p>
-                    </div>
-                    <div style="flex: 6; padding: 0 0.5em">
-                        <span style="font-size: 24px; color: navy;">From:</span>
-                        <p style="font-size: 18px;">Joshua Gelb</p>
-                    </div>
-                    <div style="flex: 6; padding: 0 0.5em">
-                        <span style="font-size: 24px; color: navy; margin-left: 0;">Reason:</span>
-                        <p style="font-size: 18px;">Homework Makeup</p>
-                    </div>
-                    <div style="flex: 4; padding: 0 0.5em">
-                        <span style="font-size: 24px; color: navy;">Status:</span>
-                        <p *ngIf="approved && !denied" style="font-size: 18px; color: limegreen;">Approved</p>
-                        <p *ngIf="denied" style="font-size: 18px; color: red;">Denied</p>
-                        <p *ngIf="!approved && !denied" style="font-size: 18px;">Pending</p>
-                    </div>
-                </div>
+            <mat-card-title class="pad">{{r}}</mat-card-title>
+            <mat-card-content style="padding-left: 1em;">
+                Hello
             </mat-card-content>
             <mat-card-actions style="overflow: auto">
-                <div style="float: right; width: 100%; margin: 0 1em -0.25em;">
-                    <button mat-raised-button style="float: right; background-color: limegreen">
-                        <span class="mat-button-wrapper" style="color: white; font-size: 16px">Allow</span>
+                <div class="button-bar" style="float: right">
+                    <button mat-stroked-button color="warn">
+                        Deny
                     </button>
-                    <button mat-stroked-button color="warn" style="margin-right: 1em; float: right;">Deny</button>
+                    <button mat-raised-button style="background-color: limegreen">
+                        <span class="mat-button-wrapper" style="color: white">Allow</span>
+                    </button>
                 </div>
-                <p style="color: lightgray; margin: -1em 0 0.25em 0.5em; padding: 0; font-size: 14px">xj65sl9dF</p>
             </mat-card-actions>
         </mat-card>
     </div>

@@ -1,68 +1,46 @@
-<div *ngIf="!(loadedL && loadedA)" style="width: 100%; alignment: center; text-align: center;">
-    <div style="display: inline-flex; alignment: center;">
-        <mat-card style="margin-top: 100px; padding:1em; alignment: center; flex: 1" class="card">
-            <div style="display: flex; padding: 1em; width: 100%">
-                <div style="flex: 1; display: inline-flex">
-                    <mat-spinner></mat-spinner>
-                    <span style="height: 100%; font-size: 20pt; flex: 1; padding-left: 2em; padding-top: 10%;">Please wait</span>
-                </div>
-            </div>
+<div style="margin: 100px 120px 20px; font-family: psans-bold, sans-serif; font-size: 24px">
+    Requests to attend
+    
+</div>
+
+<div style="margin: 0 100px 100px; padding-top: 0;" *ngIf="arriving.length">
+    <div class="card-container" *ngFor="let a of arriving">
+        <mat-card class="card">
+            <mat-card-title class="pad">{{a.name}}</mat-card-title>
+            <mat-card-content style="padding-left: 1em;">
+                Hello
+            </mat-card-content>
+            <mat-card-actions style="overflow: auto">
+            </mat-card-actions>
         </mat-card>
     </div>
 </div>
 
-<div *ngIf="loadedL && loadedA">
-    <div style="margin: 100px 120px 20px; font-family: psans-bold, sans-serif; font-size: 24px">
-        Students attending
-    </div>
+<div style="margin: 0 100px 100px; alignment: center" *ngIf="!arriving.length">
+    <mat-card class="card">
+        <mat-card-title style="padding: 0.5em;">No current requests to attend your tutorial</mat-card-title>
+    </mat-card>
+</div>
 
-    <div style="margin: 0 100px 100px; padding-top: 0;" *ngIf="arriving.length">
-        <div class="card-container" *ngFor="let a of arriving">
-            <mat-card class="card">
-                <mat-card-title class="pad">{{a.name}}</mat-card-title>
-                <mat-card-content style="padding-left: 1em;">
-                    Hello
-                </mat-card-content>
-                <mat-card-actions style="overflow: auto">
-                </mat-card-actions>
-            </mat-card>
-        </div>
-    </div>
+<div style="margin: 100px 120px 20px; font-family: psans-bold, sans-serif; font-size: 24px">
+    Requests to leave
+</div>
 
-    <div style="margin: 0 100px 100px; alignment: center" *ngIf="!arriving.length">
+<div style="margin: 0 100px 100px;" *ngIf="leaving.length">
+    <div class="card-container" *ngFor="let l of leaving">
         <mat-card class="card">
-            <mat-card-title style="padding: 0.5em;">No current requests to attend your tutorial</mat-card-title>
+            <mat-card-title class="pad">{{l.name}}</mat-card-title>
+            <mat-card-content style="padding-left: 1em;">
+                Hello
+            </mat-card-content>
+            <mat-card-actions style="overflow: auto">
+            </mat-card-actions>
         </mat-card>
     </div>
+</div>
 
-    <div style="margin: 100px 120px 20px; font-family: psans-bold, sans-serif; font-size: 24px">
-        Students leaving
-    </div>
-
-    <div style="margin: 0 100px 100px;" *ngIf="leaving.length">
-        <div class="card-container" *ngFor="let l of leaving">
-
-            <mat-card class="card" *ngIf="!l.denied && l.approvedPass">
-                <mat-card-title class="pad" style="font-family: psans-bold, sans-serif">{{l.name}}</mat-card-title>
-                <mat-card-content style="padding-left: 1em;">
-                    <div style="display: inline-flex; width: 100%">
-                        <div style="flex: 1"></div>
-                        <div style="flex: 1"></div>
-
-                        <p style="flex: 1">Date: {{l.date}}</p>
-                    </div>
-                </mat-card-content>
-                <mat-card-actions style="overflow: auto">
-                </mat-card-actions>
-                <p style="color: lightgray; font-size: 12px">{{l.slipID}}</p>
-            </mat-card>
-
-        </div>
-    </div>
-
-    <div style="margin: 0 100px 100px; alignment: center" *ngIf="!leaving.length">
-        <mat-card class="card">
-            <mat-card-title style="padding: 0.5em;">No current requests to leave your tutorial</mat-card-title>
-        </mat-card>
-    </div>
+<div style="margin: 0 100px 100px; alignment: center" *ngIf="!leaving.length">
+    <mat-card class="card">
+        <mat-card-title style="padding: 0.5em;">No current requests to leave your tutorial</mat-card-title>
+    </mat-card>
 </div>

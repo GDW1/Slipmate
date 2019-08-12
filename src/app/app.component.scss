@@ -26,19 +26,12 @@
     flex: 1;
 }
 
-mat-spinner.load{
-    display:none;
-}
-router-outlet + mat-spinner.load{
-    display: block;
-}
-
 .sn-text {
     padding-left: 1.2em;
     padding-right: 1em;
     color: #585858;
-    font-weight: normal;
-    font-size: 14pt;
+    font-weight: bold;
+    font-size: 13pt;
 }
 
 .sn-icon {
@@ -60,16 +53,4 @@ router-outlet + mat-spinner.load{
     font-family: psans-bold, sans-serif;
     padding-top: 1em;
     margin-right: 0;
-}
-
-.logo {
-    background: linear-gradient(90deg, #ff6622, #ff6622, #bbbbbb, #ff6622, #ff6622);
-    background-size: 400% 100%;
-
-    animation: Logo 2s ease-in infinite;
-}
-
-@keyframes Logo {
-    0%{background-position:95% 50%}
-    100%{background-position:0% 50%}
 }

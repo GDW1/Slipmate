@@ -1,6 +1,6 @@
 <div class="step-container yellow-theme">
     <mat-card class="step">
-        <mat-vertical-stepper #stepper>
+        <mat-vertical-stepper  #stepper>
             <mat-step [stepControl]="firstFormGroup">
                 <form [formGroup]="firstFormGroup">
                     <ng-template matStepLabel>Student</ng-template>
@@ -8,7 +8,7 @@
                         <input matInput name="studentID" placeholder="Student ID" formControlName="firstCtrl" data-lpignore="true" required>
                     </mat-form-field>
                     <div>
-                        <button mat-raised-button matStepperNext style="background-color: dodgerblue; color: white" type="submit">Next</button>
+                        <button mat-raised-button matStepperNext style="background-color: dodgerblue; color: white" type="submit" (click)="loadSID()">Next</button>
                     </div>
                 </form>
             </mat-step>
@@ -22,7 +22,7 @@
                     </mat-form-field>
                     <div>
                         <button mat-stroked-button matStepperPrevious style="margin-right: 1em">Back</button>
-                        <button mat-raised-button matStepperNext style="background-color: dodgerblue; color: white" type="submit">Next</button>
+                        <button mat-raised-button matStepperNext style="background-color: dodgerblue; color: white" type="submit" (click)="loadDate()">Next</button>
                     </div>
                 </form>
             </mat-step>
@@ -32,15 +32,17 @@
                     <p style="padding-left: 1em; margin-bottom: 0">Enter first part of teacher e-mail (first initial, full last name)</p>
                     <div style="padding: 1em">
                         <mat-form-field style="padding-right: 1em">
-                            <input matInput name="fromTeachID" placeholder="6/7th period teacher" data-lpignore="true" formControlName="utCtrl" required>
+                            <input matInput name="fromTeachID" [attr.disabled]="this.fromMe" placeholder="Usual teacher" data-lpignore="true" formControlName="utCtrl" required>
                         </mat-form-field>
+                        <mat-checkbox formControlName="checkOne" [attr.disabled]="this.toMe" style="margin-right: 6em">Me</mat-checkbox>
                         <mat-form-field style="padding-right: 1em">
                             <input matInput name="toTeachID" placeholder="Tutorial teacher" data-lpignore="true" formControlName="ttCtrl" required>
                         </mat-form-field>
+                        <mat-checkbox formControlName="checkTwo">Me</mat-checkbox>
                     </div>
                     <div>
                         <button mat-stroked-button matStepperPrevious style="margin-right: 1em">Back</button>
-                        <button mat-raised-button matStepperNext style="background-color: dodgerblue; color: white" type="submit">Next</button>
+                        <button mat-raised-button matStepperNext style="background-color: dodgerblue; color: white" (click)="loadTeachers()" type="submit">Next</button>
                     </div>
                 </form>
             </mat-step>
@@ -59,9 +61,6 @@
             </mat-step>
             <mat-step>
                 <ng-template matStepLabel>Finish</ng-template>
-                <div *ngIf="loading">
-                    <mat-spinner></mat-spinner>
-                </div>
                 <div *ngIf="!loading">
                     <p *ngIf="gotError">An error occurred while processing your request. Please try again.</p>
                     <p style="padding: 1em">{{this.response}}</p>
