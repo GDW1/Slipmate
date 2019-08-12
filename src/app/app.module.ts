@@ -3,7 +3,6 @@ import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
 import {
-    MAT_CHECKBOX_CLICK_ACTION,
     MatButtonModule,
     MatCardModule, MatCheckboxModule,
     MatDatepickerModule,

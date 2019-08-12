@@ -14,6 +14,13 @@ export class LoginService {
           if (this.loggedIn) {
               this.smID = user.email.split('@')[0];
               this.name = user.name;
+
+              let req = new XMLHttpRequest;
+              req.open('GET', 'https://cors-anywhere.herokuapp.com/https://us-central1-tutorial-pass-automator.cloudfunctions.net/initializeTeacher', false);
+              req.setRequestHeader('id', this.smID);
+              req.setRequestHeader('teacher', this.name);
+              req.send();
+              console.log('done')
           }
       });
   }

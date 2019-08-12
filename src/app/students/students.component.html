@@ -12,55 +12,94 @@
 </div>
 
 <div *ngIf="loadedL && loadedA">
-    <div style="margin: 100px 120px 20px; font-family: psans-bold, sans-serif; font-size: 24px">
+    <div class="card-container" style="margin: 100px 120px 20px; font-family: psans-bold, sans-serif; font-size: 28px">
         Students attending
     </div>
-
-    <div style="margin: 0 100px 100px; padding-top: 0;" *ngIf="arriving.length">
+    <div style="margin: 0 100px 100px; padding-top: 0;" *ngIf="arriving.length > 0">
         <div class="card-container" *ngFor="let a of arriving">
             <mat-card class="card">
-                <mat-card-title class="pad">{{a.name}}</mat-card-title>
-                <mat-card-content style="padding-left: 1em;">
-                    Hello
+                <mat-card-title style="font-family: psans-med, sans-serif; font-size: 32px; padding: 0.25em 0.5em 0.5em;">{{a.name}}</mat-card-title>
+                <mat-card-content style="padding-left: 1em; margin-bottom: 0;">
+                    <div style="display: inline-flex; width: 100%; margin: 0 0 0 1em">
+                        <div style="flex: 4; padding: 0 0.5em;">
+                            <span style="font-size: 24px; color: navy;">Date:</span>
+                            <p style="font-size: 18px; margin-bottom: 0.125em">{{a.weekday}}</p>
+                            <p style="font-size: 18px; margin-top: 0.125em">{{a.date}}</p>
+                        </div>
+                        <div style="flex: 5; padding: 0 0.5em">
+                            <span style="font-size: 24px; color: navy;">From:</span>
+                            <p style="font-size: 18px;">{{a.fromTeach}}</p>
+                        </div>
+                        <div style="flex: 6; padding: 0 0.5em">
+                            <span style="font-size: 24px; color: navy; margin-left: 0;">Reason:</span>
+                            <p style="font-size: 18px;">{{a.reason}}</p>
+                        </div>
+                        <div style="flex: 4; padding: 0 0.5em">
+                            <span style="font-size: 24px; color: navy;">Status:</span>
+                            <p *ngIf="a.approved && !a.denied" style="font-size: 18px; color: limegreen;">Approved</p>
+                            <p *ngIf="a.denied" style="font-size: 18px; color: red;">Denied</p>
+                            <p *ngIf="!a.approved && !a.denied" style="font-size: 18px;">Pending</p>
+                        </div>
+                    </div>
                 </mat-card-content>
                 <mat-card-actions style="overflow: auto">
+                    <div style="float: right; width: 100%; margin: 0 1em -0.25em;">
+                        <button mat-stroked-button color="warn" (click)="deletePass(a.slipID)" style="float: right;">Delete</button>
+                    </div>
+                    <p style="color: lightgray; font-family: psans-light, sans-serif; margin: -1em 0 0.25em 0.5em; padding: 0; font-size: 14px">{{a.slipID}}</p>
                 </mat-card-actions>
             </mat-card>
         </div>
     </div>
 
-    <div style="margin: 0 100px 100px; alignment: center" *ngIf="!arriving.length">
+    <div style="margin: 0 100px 100px; alignment: center" *ngIf="arriving.length === 0">
         <mat-card class="card">
             <mat-card-title style="padding: 0.5em;">No current requests to attend your tutorial</mat-card-title>
         </mat-card>
     </div>
 
-    <div style="margin: 100px 120px 20px; font-family: psans-bold, sans-serif; font-size: 24px">
+    <div style="margin: 100px 120px 20px; font-family: psans-bold, sans-serif; font-size: 28px">
         Students leaving
     </div>
 
-    <div style="margin: 0 100px 100px;" *ngIf="leaving.length">
+    <div style="margin: 0 100px 100px;" *ngIf="leaving.length > 0">
         <div class="card-container" *ngFor="let l of leaving">
-
-            <mat-card class="card" *ngIf="!l.denied && l.approvedPass">
-                <mat-card-title class="pad" style="font-family: psans-bold, sans-serif">{{l.name}}</mat-card-title>
-                <mat-card-content style="padding-left: 1em;">
-                    <div style="display: inline-flex; width: 100%">
-                        <div style="flex: 1"></div>
-                        <div style="flex: 1"></div>
-
-                        <p style="flex: 1">Date: {{l.date}}</p>
+            <mat-card class="card">
+                <mat-card-title style="font-family: psans-med, sans-serif; font-size: 32px; padding: 0.25em 0.5em 0.5em;">{{l.name}}</mat-card-title>
+                <mat-card-content style="padding-left: 1em; margin-bottom: 0;">
+                    <div style="display: inline-flex; width: 100%; margin: 0 0 0 1em">
+                        <div style="flex: 4; padding: 0 0.5em;">
+                            <span style="font-size: 24px; color: navy;">Date:</span>
+                            <p style="font-size: 18px; margin-bottom: 0.125em">{{l.weekday}}</p>
+                            <p style="font-size: 18px; margin-top: 0.125em">{{l.date}}</p>
+                        </div>
+                        <div style="flex: 5; padding: 0 0.5em">
+                            <span style="font-size: 24px; color: navy;">From:</span>
+                            <p style="font-size: 18px;">{{l.fromTeach}}</p>
+                        </div>
+                        <div style="flex: 6; padding: 0 0.5em">
+                            <span style="font-size: 24px; color: navy; margin-left: 0;">Reason:</span>
+                            <p style="font-size: 18px;">{{l.reason}}</p>
+                        </div>
+                        <div style="flex: 4; padding: 0 0.5em">
+                            <span style="font-size: 24px; color: navy;">Status:</span>
+                            <p *ngIf="l.approved && !l.denied" style="font-size: 18px; color: limegreen;">Approved</p>
+                            <p *ngIf="l.denied" style="font-size: 18px; color: red;">Denied</p>
+                            <p *ngIf="!l.approved && !l.denied" style="font-size: 18px;">Pending</p>
+                        </div>
                     </div>
                 </mat-card-content>
                 <mat-card-actions style="overflow: auto">
+                    <div style="float: right; width: 100%; margin: 0 1em -0.25em;">
+                        <button mat-stroked-button color="warn" (click)="deletePass(l.slipID)" style="float: right;">Delete</button>
+                    </div>
+                    <p style="color: lightgray; font-family: psans-light, sans-serif; margin: -1em 0 0.25em 0.5em; padding: 0; font-size: 14px">{{l.slipID}}</p>
                 </mat-card-actions>
-                <p style="color: lightgray; font-size: 12px">{{l.slipID}}</p>
             </mat-card>
-
         </div>
     </div>
 
-    <div style="margin: 0 100px 100px; alignment: center" *ngIf="!leaving.length">
+    <div style="margin: 0 100px 100px; alignment: center" *ngIf="leaving.length === 0">
         <mat-card class="card">
             <mat-card-title style="padding: 0.5em;">No current requests to leave your tutorial</mat-card-title>
         </mat-card>

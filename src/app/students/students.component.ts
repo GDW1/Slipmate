@@ -48,29 +48,44 @@ export class StudentsComponent implements OnInit, AfterViewInit {
             dayString = dayNum.toString();
         }
 
-        this.api.getIncomingSlips('798932', monthString, dayString).then(val => {
-            console.log(val);
+        this.api.getIncomingSlipsUnconditional(this.loginService.smID, monthString, dayString).then(val => {
             try {
-                this.arriving = this.api.bottleCards(JSON.parse(val));
+                let temp = this.api.bottleCards(JSON.parse(val));
+                this.arriving = temp.filter(function(card) {
+                    return card.selfIsToTeacher && (card.showConfirmed);
+                });
             } catch(e) {
                 console.log(e);
                 this.arriving = [];
             }
             this.loadedA = true;
-            console.log('lA');
         });
 
-        this.api.getOutgoingSlips('798932', monthString, dayString).then(val => {
-            console.log(val);
+        this.api.getOutgoingSlipsUnconditional(this.loginService.smID, monthString, dayString).then(val => {
             try {
-                this.leaving = this.api.bottleCards(JSON.parse(val));
+                let temp = this.api.bottleCards(JSON.parse(val));
+                this.leaving = temp.filter(function(card) {
+                    return !card.selfIsToTeacher && (card.showConfirmed);
+                });
             } catch(e) {
                 console.log(e);
                 this.leaving = [];
             }
             this.loadedL = true;
-            console.log('lL');
         });
+    }
+
+    async deletePass(slipID: string) {
+        if(window.confirm('Are sure you want to delete this tutorial pass?')) {
+            this.arriving = this.arriving.filter(function(card) {
+                return !(card.slipID === slipID);
+            });
+            this.leaving = this.leaving.filter(function(card) {
+                return !(card.slipID === slipID);
+            });
+
+            this.api.deletePass(slipID);
+        }
     }
 
 }

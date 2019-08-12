@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {MatListItem, MatSidenavContainer} from "@angular/material";
-import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router, RouterEvent} from "@angular/router";
+import {Router} from "@angular/router";
 import {LoginService} from "./login.service";
 import {ApiService} from "./api.service";
 
@@ -11,7 +11,6 @@ import {ApiService} from "./api.service";
 })
 export class AppComponent implements AfterViewInit {
     title = 'Slipmate';
-    loading = true;
 
     @ViewChild(MatSidenavContainer, {static: true})sidenavContainer: MatSidenavContainer;
     @ViewChild(MatListItem, {static: true}) sidenavLink: MatListItem;
@@ -19,27 +18,6 @@ export class AppComponent implements AfterViewInit {
     constructor(private router: Router,
                 private api: ApiService,
                 private loginService: LoginService) {
-
-        router.events.subscribe((event: RouterEvent) => {
-            this.navigationInterceptor(event)
-        })
-    }
-
-    navigationInterceptor(event: RouterEvent): void {
-        if (event instanceof NavigationStart) {
-            this.loading = true
-        }
-        if (event instanceof NavigationEnd) {
-            this.loading = false
-        }
-
-        // Set loading state to false in both of the below events to hide the spinner in case a request fails
-        if (event instanceof NavigationCancel) {
-            this.loading = false
-        }
-        if (event instanceof NavigationError) {
-            this.loading = false
-        }
     }
 
     ngAfterViewInit() {
@@ -55,11 +33,8 @@ export class AppComponent implements AfterViewInit {
     }
 
     getTitle() {
-        return this.router.url.substring(1);
-    }
-
-    test() {
-        console.log(this.api.isBlockedDay('798932', "08:05"));
+        if (this.router.url.substring(1) === 'blockeddays') return 'blocked days';
+        else return this.router.url.substring(1);
     }
 
     isActive(path: string): boolean {

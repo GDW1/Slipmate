@@ -8,9 +8,12 @@ import {LoginService} from "./login.service";
 
 export class ApiService {
 
+    weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
     constructor(private loginService: LoginService) {}
 
-    private async request(func: string, data: any): Promise<any> {
+    //Takes request object as input in format {header: value} and makes http request
+    async request(func: string, data: any): Promise<any> {
         let req = new XMLHttpRequest;
         req.open('GET', 'https://cors-anywhere.herokuapp.com/https://us-central1-tutorial-pass-automator.cloudfunctions.net/' + func, false);
         for (let i in data) {
@@ -53,17 +56,6 @@ export class ApiService {
         })
     }
 
-    async initTeacher(teacherID: string, name: string): Promise<any> {
-        return this.request('initializeTeacher', {
-            id: teacherID,
-            teacher: name
-        });
-    }
-
-    async getAllTeachers(): Promise<any> {
-        return this.request('getAllTeachers', {});
-    }
-
     async getTeacher(id: string): Promise<any> {
         return this.request('getTeacher', {
             teacherID: id
@@ -91,6 +83,20 @@ export class ApiService {
         });
     }
 
+    async getIncomingSlipsUnconditional(id: string, month: string, day: string): Promise<any> {
+        return await this.request('getAllIncomingPassesUnconditionalFuture', {
+            teacherID: id,
+            day: (month + ':' + day)
+        });
+    }
+
+    async getOutgoingSlipsUnconditional(id: string, month: string, day: string): Promise<any> {
+        return await this.request('getAllOutgoingPassesUnconditionalFuture', {
+            teacherID: id,
+            day: (month + ':' + day)
+        });
+    }
+
     async getBlockedDays(id: string): Promise<any> {
         return this.request('getBlockedDays', {
             teacherID: id
@@ -110,27 +116,15 @@ export class ApiService {
         return false;
     }
 
-    async getUnapprovedSlips(id: string): Promise<any> {
-        return this.request('getUnapprovedSlips', {
-            teacherID: id
-        });
-    }
-
-    async deleteSlip(slipID: string): Promise<any> {
-        return this.request('deleteSlip', {
-            ID: slipID
-        });
+    deleteBlockedDay(day: string) {
+        return this.request('deleteBlockedDays', {
+            ids: day
+        })
     }
 
     async getSlip(slipID: string): Promise<any> {
         return this.request('getSlip', {
             ID: slipID
-        });
-    }
-
-    async getStudent(stuID: string): Promise<any> {
-        return this.request('getStudent', {
-            studentID: stuID
         });
     }
 
@@ -145,6 +139,12 @@ export class ApiService {
         return this.request('teacherDenyPass', {
             passID: passID,
             teacherID: teacherID
+        })
+    }
+
+    async deletePass(slipID: string) {
+        this.request('deleteSlip', {
+            ID: slipID
         })
     }
 
@@ -163,31 +163,45 @@ export class ApiService {
 
     bottleCard(data: any): Card {
         try {
+            //check if input data is valid, then copy some data directly from [input] pass to [output] card
             if (data == null) return;
             let c = new Card;
             c.name = data.studentName;
             c.toTeach = data.toTeachName;
-            c.fromTeach = data.fromTeach;
+            c.fromTeach = data.fromTeacherName;
             c.toTeachID = data.toTeachID;
             c.slipID = data.id;
             c.isTeacherPass = data.isTeacherPass;
-            c.approvedPass = data.approvedPass;
+            c.approved = data.approvedPass;
             c.denied = data.denied;
+            c.reason = data.reason;
 
+
+            //determine if current teacher is tutorial teacher or usual teacher
+            c.selfIsToTeacher = this.loginService.smID === data.toTeachID;
+
+
+            //compare current date to date on card to determine whether card date is this calendar year or the next one, then use Date object to get day of week
+            let curr = new Date();
+            let d = new Date(curr.getFullYear(), parseInt(data.month), parseInt(data.day));
+            if (d.getTime() < curr.getTime()) d.setFullYear(d.getFullYear() + 1);
+            c.weekday = this.weekdays[d.getDay()];
+
+
+            //convert input date to month and string
             let day = parseInt(data.day.split(':')[1]);
             c.date = this.month(data.day.split(':')[0]) + ' ' + day.toString() + this.daySuffix(day.toString());
 
-            c.showButtons = !((data.denied || data.approvedPass || data.isTeacherPass) && (this.loginService.smID) === data.toTeachID);
+
+            //determine whether to show buttons and/or card on respective pages
+            c.showPending = c.selfIsToTeacher && !c.approved && !c.denied;
+            c.showButtonsPending = !c.isTeacherPass && c.showPending;
+            c.showConfirmed = c.approved || c.denied;
+
             return c;
         } catch(err) {
             console.log(err.toString());
             return err.toString();
         }
-    }
-
-    deleteBlockedDay(day: string) {
-        return this.request('deleteBlockedDays', {
-            ids: day
-        })
     }
 }

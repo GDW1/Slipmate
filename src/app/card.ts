@@ -3,10 +3,16 @@ export default class Card {
     toTeach: string;
     fromTeach: string;
     toTeachID: string;
+    reason: string;
+    weekday: string;
     date: string;
     slipID: string;
-    showButtons: boolean;
+    showPending: boolean;
+    showButtonsPending: boolean;
+    showConfirmed: boolean;
+    selfIsToTeacher: boolean;
     isTeacherPass: boolean;
-    approvedPass: boolean;
+    approved: boolean;
     denied: boolean;
+
 }

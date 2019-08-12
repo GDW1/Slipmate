@@ -12,8 +12,8 @@ const routes: Routes = [
     {path: '', redirectTo: 'today', pathMatch: 'full'},
     {path: 'today', component: TodayComponent},
     {path: 'requests', component: RequestsComponent},
-    {path: 'students', component: StudentsComponent},
-    {path: 'calendar', component: CalendarComponent},
+    {path: 'confirmed', component: StudentsComponent},
+    {path: 'blockeddays', component: CalendarComponent},
     {path: 'create', component: CreateComponent},
     {path: 'settings', component: SettingsComponent},
     {path: 'help', component: HelpComponent}
