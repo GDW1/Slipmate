@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from "../api.service";
 import Card from "../card";
+import {LoginService} from '../login.service';
 
 @Component({
     selector: 'app-students',
@@ -9,7 +10,8 @@ import Card from "../card";
 })
 export class StudentsComponent implements OnInit {
 
-    constructor(private api: ApiService) {
+    constructor(private api: ApiService,
+                private loginService: LoginService) {
     }
 
     public leaving: any = [];
@@ -31,14 +33,14 @@ export class StudentsComponent implements OnInit {
         }else{
             dayString = dayNum.toString();
         }
-        this.api.getOutgoingSlipsToday('798932', monthString, dayString).then(val => {
+        this.api.getOutgoingSlipsToday(this.loginService.user.email.split('@')[0], monthString, dayString).then(val => {
             try{
                 this.leaving = this.api.bottleCards(JSON.parse(val));
             }catch(e){
                 throw e
             }
         })
-        this.api.getIncomingSlipsToday('798932', monthString, dayString).then(val => {
+        this.api.getIncomingSlipsToday(this.loginService.user.email.split('@')[0], monthString, dayString).then(val => {
             try {
 
                 this.arriving = this.api.bottleCards(JSON.parse(val));
