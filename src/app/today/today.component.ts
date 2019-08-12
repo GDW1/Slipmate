@@ -19,17 +19,21 @@ export class TodayComponent implements OnInit {
   private isBlocked = false;
   private styleTag: string = "visible"
   private redStyle: string = "hidden"
+  private once: boolean;
+  private twice: boolean;
   constructor(
       private api: ApiService,
       private loginService: LoginService,
   ){}
 
   async ngOnInit() {
+    this.once = false;
+    this.twice = false;
     // @ts-ignore
     await this.checkBlocked().then(val => this.isBlocked = val)
     if(!this.isBlocked) {
-      this.loadNumberOfIncoming().then((val) => this.incomingPasses = JSON.parse(val.toString())).then(() => this.loadData());
-      this.loadNumberOfOutgoing().then((val) => this.outgoingPasses = JSON.parse(val.toString())).then(() => this.loadData());
+      this.loadNumberOfIncoming().then((val) => this.incomingPasses = (val.toString())).then(() => this.loadData());
+      this.loadNumberOfOutgoing().then((val) => this.outgoingPasses = (val.toString())).then(() => this.loadData());
     }else{
       this.styleTag = this.redStyle
       this.redStyle = "visible"
@@ -119,6 +123,7 @@ export class TodayComponent implements OnInit {
   }
 
   fillInTable(){
+    this.stus = []
     for(let i = 0; i < this.incomingPasses.length; i++){
       this.stus.push({reason: this.incomingPasses[i].reason, studentName: this.incomingPasses[i].studentName})
       console.log(this.stus[i])
@@ -128,20 +133,34 @@ export class TodayComponent implements OnInit {
   }
   
   loadData(){
-    console.log(this.incomingPasses)
-    if(this.incomingPasses.length === 1){
-      this.numberOfIncoming = ("There is " + this.incomingPasses.length.toString() + " student coming today");
-    }else if(this.incomingPasses.length !== 0){
-      this.numberOfIncoming = ("There is " + this.incomingPasses.length.toString() + " student coming today");
-    }else{
+    try{
+      if(!this.once){
+        this.incomingPasses = JSON.parse(this.incomingPasses)
+      }
+      console.log(this.incomingPasses.length)
+      if(this.incomingPasses.length === 1){
+        this.numberOfIncoming = ("There is " + this.incomingPasses.length.toString() + " student coming today");
+      }else{
+        this.numberOfIncoming = ("There is " + this.incomingPasses.length.toString() + " student coming today");
+      }
+      this.once = true;
+    }catch(error){
+      console.log("CATCH")
       this.numberOfIncoming = ("There are no students coming today");
     }
-    if(this.outgoingPasses.length === 1){
-      this.numberOfOutgoing = ("There is " + this.outgoingPasses.length.toString() + " student going today");
-    }else if(this.incomingPasses.length === 0){
-      this.numberOfIncoming = ("There are no students going today");
-    }else{
-      this.numberOfOutgoing = ("There are " + this.outgoingPasses.length.toString() + " students going today");
+    try{
+      if(!this.twice){
+        this.outgoingPasses = JSON.parse(this.outgoingPasses)
+      }
+      if(this.outgoingPasses.length === 1){
+        this.numberOfOutgoing = ("There is " + this.outgoingPasses.length.toString() + " student going today");
+      }else{
+        this.numberOfOutgoing = ("There are " + this.outgoingPasses.length.toString() + " students going today");
+      }
+      this.twice = true
+    }catch(error){
+      console.log("CATCH")
+      this.numberOfOutgoing = ("There are no students coming today");
     }
     console.log(this.stus)
     this.fillInTable();
