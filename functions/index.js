@@ -209,11 +209,12 @@ exports.createPass = functions.https.onRequest((request, response) => {
                 db.collection("blockedDay").where("teachID", "==", teacherToID).where("blockDay", "==", dayOfPass).get()
                     .then(docs => {
                         if(docs.empty){
-                            db.collection("students").where("student", "==", stuID).get().then(students => {
+                            db.collection("students").where("stuID", "==", stuID).get().then(students => {
                                 if(students.empty){
                                     response.send("ERROR: 1: no students with this ID");
                                     return
                                 }else{
+                                    let datacreate = db.collection("passes").add(data);
                                     let email = false
                                     students.forEach(student => {
                                         if(student.data().emails === true){
