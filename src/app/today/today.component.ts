@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ApiService} from '../api.service';
 import {LoginService} from '../login.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {defer} from 'rxjs';
+import {MatTableDataSource} from '@angular/material';
 
 @Component({
   selector: 'app-today',
@@ -12,9 +11,11 @@ import {defer} from 'rxjs';
 export class TodayComponent implements OnInit {
   private numberOfIncoming: any;
   private numberOfOutgoing: any;
-  private displayedColumns = ["Reason", "NumberOfStudents"];
-  private dataSource: Row[];
-  private incomingPasses: Pass[];
+  private displayedColumns = ["Reason", "StudentName"];
+  private stus: Row[] = [];
+  private incomingPasses: any;
+  private outgoingPasses: any;
+  private dataSource = new MatTableDataSource(this.stus);
 
   constructor(
       private api: ApiService,
@@ -22,8 +23,8 @@ export class TodayComponent implements OnInit {
   ){}
 
   async ngOnInit() {
-    this.loadNumberOfIncoming().then((val) => this.numberOfIncoming = (val));
-    this.loadNumberOfOutgoing().then((val) => this.numberOfOutgoing = (val));
+    this.loadNumberOfIncoming().then((val) => this.incomingPasses = JSON.parse(val.toString())).then(() => this.loadData());
+    this.loadNumberOfOutgoing().then((val) => this.outgoingPasses = JSON.parse(val.toString())).then(() => this.loadData());
   }
 
   loadNumberOfIncoming(){
@@ -44,17 +45,7 @@ export class TodayComponent implements OnInit {
         console.log("Async Work Complete");
         this.api.getIncomingSlipsToday(this.loginService.user.email.split('@')[0], month,
             day).then(val => {
-          try{
-            let resp = JSON.parse(val.toString())
-            console.log("RETURNED: " + val)
-            if(resp.length === 1){
-              resolve("There is " + resp.length.toString() + " student coming today");
-            }else{
-              resolve("There are " + resp.length.toString() + " students coming today");
-            }
-          }catch(error){
-            resolve("There are no students coming today");
-          }
+          resolve(val.toString())
         })
       });
     });
@@ -78,16 +69,7 @@ export class TodayComponent implements OnInit {
         }
         console.log("Async Work Complete");
         this.api.getOutgoingSlipsToday(this.loginService.user.email.split('@')[0], month, day).then(val => {
-          try{
-            let resp = JSON.parse(val.toString())
-            if(resp.length === 1){
-              resolve("There is " + resp.length.toString() + " student going today");
-            }else{
-              resolve("There are " + resp.length.toString() + " students going today");
-            }
-          }catch(error){
-            resolve("There are no students going today");
-          }
+          resolve(val)
         })
       });
     });
@@ -95,23 +77,38 @@ export class TodayComponent implements OnInit {
   }
 
   fillInTable(){
-    var promise1 = new Promise(function(resolve, reject) {
-      setTimeout(function() {
-
-        resolve('foo');
-      });
-    });
-
+    for(let i = 0; i < this.incomingPasses.length; i++){
+      this.stus.push({reason: this.incomingPasses[i].reason, studentName: this.incomingPasses[i].studentName})
+      console.log(this.stus[i])
+    }
+    console.log("DATA:" + this.stus)
+    this.dataSource = new MatTableDataSource(this.stus);
+  }
+  
+  loadData(){
+    console.log(this.incomingPasses)
+    if(this.incomingPasses.length === 1){
+      this.numberOfIncoming = ("There is " + this.incomingPasses.length.toString() + " student coming today");
+    }else if(this.incomingPasses.length !== 0){
+      this.numberOfIncoming = ("There is " + this.incomingPasses.length.toString() + " student coming today");
+    }else{
+      this.numberOfIncoming = ("There are no students coming today");
+    }
+    if(this.outgoingPasses.length === 1){
+      this.numberOfOutgoing = ("There is " + this.outgoingPasses.length.toString() + " student going today");
+    }else if(this.incomingPasses.length === 0){
+      this.numberOfIncoming = ("There are no students going today");
+    }else{
+      this.numberOfOutgoing = ("There are " + this.outgoingPasses.length.toString() + " students going today");
+    }
+    console.log(this.stus)
+    this.fillInTable();
   }
 }
 
+
+
 export interface Row {
   reason: string;
-  numberForReason: number;
-}
-
-export interface Pass {
-  reason: string;
-  nameOfStudent: string;
-  fromTeacherName: string;
+  studentName: number;
 }
