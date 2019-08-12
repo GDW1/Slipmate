@@ -31,10 +31,11 @@ export class StudentsComponent implements OnInit {
         }else{
             dayString = dayNum.toString();
         }
-        this.leaving = this.api.getOutgoingSlipsToday('798932', monthString, dayString).then(val => {
+        this.api.getOutgoingSlipsToday('798932', monthString, dayString).then(val => {
+            console.log(JSON.parse(val))
             this.leaving = this.api.bottleCards(JSON.parse(val));
         })
-        this.arriving = this.api.getIncomingSlipsToday('798932', monthString, dayString).then(val => {
+        this.api.getIncomingSlipsToday('798932', monthString, dayString).then(val => {
             this.arriving = this.api.bottleCards(JSON.parse(val));
         })
     }
