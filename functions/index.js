@@ -1140,8 +1140,8 @@ exports.getTeacherSlipsUnapprovedByStudent = functions.https.onRequest((request,
             .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
         return;
     }
-    let teacherID = request.get("teacherID");
-    db.collection("passes").where("toTeachID", "==", teacherID).where("isTeacherPass", "==", false)
+    let teacherID = request.get("studentId");
+    db.collection("passes").where("studentID", "==", teacherID).where("isTeacherPass", "==", true)
         .where("denied", "==", false).where("approvedPass", "==", false).get().then(docs => {
         if(docs.empty){
             response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
@@ -1638,3 +1638,21 @@ exports.studentIsOpted = functions.https.onRequest((request, response) => {
         throw err
     })
 })
+
+exports.studentIsInitialized = functions.https.onRequest((request, response) => {
+    if (request.method === `OPTIONS`) {
+        response.header('Access-Control-Allow-Origin', "https://student.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
+            .header("Access-Control-Allow-Headers", "Content-Type, id")
+            .header("Access-Control-Allow-Credentials", 'true').status(200).send("ERROR: 3: CORS");
+        return;
+    }
+    db.collection("students").where("stuID", "==", request.get("id")).get().then(docs => {
+        response.header('Access-Control-Allow-Origin', "https://student.slipmate.ml").header('Access-Control-Allow-Methods', 'GET')
+            .header("Access-Control-Allow-Headers", "Content-Type, id")
+            .header("Access-Control-Allow-Credentials", 'true').status(200)
+        response.send(docs.empty)
+        return
+    }).catch(err => {
+        throw err
+    });
+});

@@ -13,10 +13,11 @@
     "logs": "firebase functions:log"
   },
   "dependencies": {
+    "acorn": "^6.3.0",
     "firebase-admin": "~7.0.0",
     "firebase-functions": "^3.0.1",
-    "nodemailer": "6.2.1",
     "google-auth-library": "^4.2.2",
+    "nodemailer": "6.2.1",
     "nodemailer-smtp-transport": "^2.7.4"
   },
   "devDependencies": {
