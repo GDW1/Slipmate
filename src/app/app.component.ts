@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
     public mobile = false;
     public sign = 'Sign in with';
     public signImg = true;
-
+    public pressed: boolean;
     @HostListener('window:resize', ['$event'])
     onResize(event) {
         this.mobile = event.target.innerWidth < 768;
@@ -42,10 +42,11 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.pressed = false;
         this.authService.authState.subscribe((user) => {
             this.user = user;
             this.loggedIn = (user != null);
-            if (this.loggedIn) {
+            if (this.loggedIn && this.pressed === true) {
                 let email = this.user.email.split('@');
                 if (email[1] === 'seq.org') {
                     console.log(this.user.idToken);
