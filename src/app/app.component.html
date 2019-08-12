@@ -1,7 +1,12 @@
 <div *ngIf="!loginService.loggedIn" style="height: 100vh;">
-    <div style="display: flex; margin-top: 47vh">
+    <div style="display: flex;">
         <span class="spacer"></span>
-        <button mat-raised-button color="primary" (click)="this.loginService.signInWithGoogle()">Sign in</button>
+        <div style="display: inline" *ngIf="true">
+            <img class="logo" (click)="this.loginService.signInWithGoogle()" width="400" src="../assets/images/white_overlay_logo.png" style="cursor: pointer; margin-top: 40vh;" alt="Slipmate">
+        </div>
+        <div *ngIf="false">
+            <button mat-raised-button color="primary" (click)="this.loginService.signInWithGoogle()">Sign in</button>
+        </div>
         <span class="spacer"></span>
     </div>
 </div>
@@ -21,17 +26,17 @@
         <span class="spacer"></span>
         <span>{{this.getTitle() | titlecase}}</span>
         <span class="spacer"></span>
-        <span style="margin-right: 1em">Hello, {{this.loginService.user.name.split(' ')[0]}}!</span>
+        <span style="margin-right: 1em">Hello, {{this.loginService.name.split(' ')[0]}}!</span>
         <button mat-mini-fab [matMenuTriggerFor]="usermenu" style="overflow-y: hidden; overflow-x: hidden">
             <img src="{{this.loginService.user.photoUrl}}" width="100%" style="margin-top: -0.575em" alt="Profile">
         </button>
         <mat-menu #usermenu style="border-radius: 10em">
-            <span class="name">{{this.loginService.user.name}}</span>
+            <span class="name">{{this.loginService.name}}</span>
             <mat-divider></mat-divider>
             <a mat-menu-item routerLink="settings">Settings</a>
             <a mat-menu-item routerLink="help">Help</a>
             <a mat-menu-item (click)="this.loginService.signOut()">Log Out</a>
-            <a mat-menu-item (click)="this.api.getTeacher('798932')">Test getTeacher()</a>
+            <a mat-menu-item (click)="this.test()">Test</a>
         </mat-menu>
     </mat-toolbar>
 
