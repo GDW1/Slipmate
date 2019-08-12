@@ -52,7 +52,7 @@ export class CreateComponent implements OnInit {
         this.reason = document.forms[3].elements['reason'].value;
     }
 
-    submit() {
+    async submit() {
         this.loadReason();
         this.loading = true;
         this.ngZone.run(() => {});
@@ -64,7 +64,9 @@ export class CreateComponent implements OnInit {
             this.gotError = true;
             this.loading = false;
         } else {
-            this.response = this.api.createPass(true, this.ttID, this.ftID, this.studentID, this.month, this.day, this.reason);
+            this.api.createPass(true, this.ttID, this.ftID, this.studentID, this.month, this.day, this.reason).then(val => {
+                this.response = val
+            });
             this.loading = false;
         }
 

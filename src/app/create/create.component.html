@@ -54,7 +54,7 @@
                     </mat-form-field>
                     <div>
                         <button mat-stroked-button matStepperPrevious style="margin-right: 1em">Back</button>
-                        <button mat-raised-button matStepperNext style="background-color: dodgerblue; color: white" (click)="submit()" type="submit">Finish</button>
+                        <button mat-raised-button matStepperNext style="background-color: dodgerblue; color: white" (click)="this.submit()" type="submit">Finish</button>
                         <mat-spinner style="height: 30px; width: 30px;" *ngIf="loading"></mat-spinner>
                     </div>
                 </form>
@@ -63,7 +63,7 @@
                 <ng-template matStepLabel>Finish</ng-template>
                 <div *ngIf="!loading">
                     <p *ngIf="gotError">An error occurred while processing your request. Please try again.</p>
-                    <p style="padding: 1em">{{response}}</p>
+                    <p style="padding: 1em">{{this.response}}</p>
                     <div>
                         <button mat-stroked-button (click)="stepper.reset();">Create Another</button>
                     </div>
