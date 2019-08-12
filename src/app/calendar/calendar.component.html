@@ -43,7 +43,7 @@
     <!-- Position Column -->
     <ng-container matColumnDef="day">
       <mat-header-cell *matHeaderCellDef> Day </mat-header-cell>
-      <mat-cell *matCellDef="let data"> {{data.day.toString()}} </mat-cell>
+      <mat-cell *matCellDef="let data"> {{convertDate(data.day.toString())}} </mat-cell>
 
     </ng-container>
     <ng-container matColumnDef="id">

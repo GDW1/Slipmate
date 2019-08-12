@@ -12,8 +12,8 @@ export class StudentsComponent implements OnInit {
     constructor(private api: ApiService) {
     }
 
-    public leaving: Card[];
-    public arriving: Card[];
+    public leaving: any = [];
+    public arriving: any = [];
 
     ngOnInit() {
         let date = new Date();
@@ -32,11 +32,19 @@ export class StudentsComponent implements OnInit {
             dayString = dayNum.toString();
         }
         this.api.getOutgoingSlipsToday('798932', monthString, dayString).then(val => {
-            console.log(JSON.parse(val))
-            this.leaving = this.api.bottleCards(JSON.parse(val));
+            try{
+                this.leaving = this.api.bottleCards(JSON.parse(val));
+            }catch(e){
+                throw e
+            }
         })
         this.api.getIncomingSlipsToday('798932', monthString, dayString).then(val => {
-            this.arriving = this.api.bottleCards(JSON.parse(val));
+            try {
+
+                this.arriving = this.api.bottleCards(JSON.parse(val));
+            }catch (e) {
+                throw e
+            }
         })
     }
 
