@@ -60,8 +60,8 @@ export class CreateComponent implements OnInit {
         this.reason = document.forms[3].elements['reason'].value;
     }
 
-    async submitButton() {
-        this.loadData();
+    async submit() {
+        this.loadReason();
         this.loading = true;
 
         setTimeout(() => { this.doAPICall(); }, 10);

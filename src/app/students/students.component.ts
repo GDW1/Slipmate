@@ -47,30 +47,12 @@ export class StudentsComponent implements OnInit, AfterViewInit {
         } else {
             dayString = dayNum.toString();
         }
-
-        this.api.getIncomingSlips('798932', monthString, dayString).then(val => {
-            console.log(val);
-            try {
-                this.arriving = this.api.bottleCards(JSON.parse(val));
-            } catch(e) {
-                console.log(e);
-                this.arriving = [];
-            }
-            this.loadedA = true;
-            console.log('lA');
-        });
-
-        this.api.getOutgoingSlips('798932', monthString, dayString).then(val => {
-            console.log(val);
-            try {
-                this.leaving = this.api.bottleCards(JSON.parse(val));
-            } catch(e) {
-                console.log(e);
-                this.leaving = [];
-            }
-            this.loadedL = true;
-            console.log('lL');
-        });
+        this.api.getOutgoingSlipsToday('798932', monthString, dayString).then(val => {
+            this.leaving = this.api.bottleCards(JSON.parse(val));
+        })
+        this.api.getIncomingSlipsToday('798932', monthString, dayString).then(val => {
+            this.arriving = this.api.bottleCards(JSON.parse(val));
+        })
     }
 
 }
