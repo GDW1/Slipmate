@@ -204,4 +204,17 @@ export class ApiService {
             return err.toString();
         }
     }
-}
+
+    getOutgoingSlipsToday(id: string, month: string, day: string): any {
+        return this.request('getOutgoingSlipsForTeacherToday', {
+            teacherID: id,
+            day: (month + ':' + day)
+        });
+    }
+
+    getIncomingSlipsToday(id: string, month: string, day: string): any {
+        return this.request('getIncomingSlipsForTeacherToday', {
+            teacherID: id,
+            day: (month + ':' + day)
+        });
+    }}
