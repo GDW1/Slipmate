@@ -27,35 +27,28 @@ export class CreateComponent implements OnInit {
     reason: string;
 
     constructor(private formBuilder: FormBuilder,
-                private api: ApiService,
-                private ngZone: NgZone) {
+                private api: ApiService) {
     }
 
-    loadSID() {
+    load() {
         this.studentID = document.forms[0].elements['studentID'].value;
-    }
 
-    loadDate() {
         let date = document.forms[1].elements['date'].value;
         this.month = date.split('/')[0];
         this.day = date.split('/')[1];
         if (parseInt(this.month) < 10) { this.month = '0' + this.month; }
         if (parseInt(this.day) < 10) this.day = '0' + this.day;
-    }
 
-    loadTeachers() {
         this.ttID = document.forms[2].elements['toTeachID'].value;
         this.ftID = document.forms[2].elements['fromTeachID'].value;
-    }
 
-    loadReason() {
         this.reason = document.forms[3].elements['reason'].value;
     }
 
     async submit() {
-        this.loadReason();
+        this.load();
+        this.gotError = false;
         this.loading = true;
-        this.ngZone.run(() => {});
 
         if (this.studentID.trim() === '' || this.ttID.trim() === '' || this.ftID.trim() === '' || this.day === '' || this.month === '') {
             // tslint:disable-next-line:max-line-length
@@ -64,13 +57,18 @@ export class CreateComponent implements OnInit {
             this.gotError = true;
             this.loading = false;
         } else {
-            this.api.createPass(true, this.ttID, this.ftID, this.studentID, this.month, this.day, this.reason).then(val => {
-                this.response = val
-            });
-            this.loading = false;
+            if (!this.api.isBlockedDay(this.month, this.day)) {
+                this.api.createPass(true, this.ttID, this.ftID, this.studentID, this.month, this.day, this.reason).then(val => {
+                    this.response = val;
+                    this.loading = false;
+                });
+            } else {
+                // tslint:disable-next-line:max-line-length
+                this.response = 'Error: You have selected a blocked day. If you still want to create this pass, unblock this day from  the Blocked Days tab.';
+                this.gotError = true;
+                this.loading = false;
+            }
         }
-
-        this.ngZone.run(() => {});
     }
 
     ngOnInit() {
