@@ -29,26 +29,7 @@ export class StudentsComponent implements OnInit, AfterViewInit {
     }
 
     async doAPICall() {
-        let date = new Date();
-        let monthNum = date.getMonth();
-        let monthString = "";
-
-        if (monthNum + 1 < 10){
-            monthString = "0" + (monthNum+1).toString();
-        } else {
-            monthString = (monthNum+1).toString();
-        }
-
-        let dayNum = date.getDate();
-        let dayString = "";
-
-        if (dayNum < 10){
-            dayString = "0" + (dayNum).toString();
-        } else {
-            dayString = dayNum.toString();
-        }
-
-        this.api.getIncomingSlipsUnconditional(this.loginService.smID, monthString, dayString).then(val => {
+        this.api.getIncomingSlipsUnconditional(this.loginService.smID).then(val => {
             try {
                 let temp = this.api.bottleCards(JSON.parse(val));
                 this.arriving = temp.filter(function(card) {
@@ -61,7 +42,7 @@ export class StudentsComponent implements OnInit, AfterViewInit {
             this.loadedA = true;
         });
 
-        this.api.getOutgoingSlipsUnconditional(this.loginService.smID, monthString, dayString).then(val => {
+        this.api.getOutgoingSlipsUnconditional(this.loginService.smID).then(val => {
             try {
                 let temp = this.api.bottleCards(JSON.parse(val));
                 this.leaving = temp.filter(function(card) {

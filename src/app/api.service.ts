@@ -25,6 +25,28 @@ export class ApiService {
         return req.response;
     }
 
+    private getMonth(): string {
+        let date = new Date();
+        let monthNum = date.getMonth();
+
+        if (monthNum + 1 < 10){
+            return "0" + (monthNum+1).toString();
+        } else {
+            return (monthNum+1).toString();
+        }
+    }
+
+    private getDay(): string {
+        let date = new Date();
+        let dayNum = date.getDate();
+
+        if (dayNum < 10){
+            return "0" + (dayNum).toString();
+        } else {
+            return dayNum.toString();
+        }
+    }
+
     private month(m: string): string {
         let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         return months[parseInt(m) - 1];
@@ -69,31 +91,31 @@ export class ApiService {
         });
     }
 
-    async getOutgoingSlips(id: string, month: string, day: string): Promise<any> {
+    async getOutgoingSlipsToday(id: string): Promise<any> {
         return await this.request('getOutgoingSlipsForTeacherToday', {
             teacherID: id,
-            day: (month + ':' + day)
+            day: (this.getMonth() + ':' + this.getDay())
         });
     }
 
-    async getIncomingSlips(id: string, month: string, day: string): Promise<any> {
+    async getIncomingSlipsToday(id: string): Promise<any> {
         return await this.request('getIncomingSlipsForTeacherToday', {
             teacherID: id,
-            day: (month + ':' + day)
+            day: (this.getMonth() + ':' + this.getDay())
         });
     }
 
-    async getIncomingSlipsUnconditional(id: string, month: string, day: string): Promise<any> {
+    async getIncomingSlipsUnconditional(id: string): Promise<any> {
         return await this.request('getAllIncomingPassesUnconditionalFuture', {
             teacherID: id,
-            day: (month + ':' + day)
+            day: (this.getMonth() + ':' + this.getDay())
         });
     }
 
-    async getOutgoingSlipsUnconditional(id: string, month: string, day: string): Promise<any> {
+    async getOutgoingSlipsUnconditional(id: string): Promise<any> {
         return await this.request('getAllOutgoingPassesUnconditionalFuture', {
             teacherID: id,
-            day: (month + ':' + day)
+            day: (this.getMonth() + ':' + this.getDay())
         });
     }
 
@@ -116,29 +138,23 @@ export class ApiService {
         return false;
     }
 
-    deleteBlockedDay(day: string) {
+    async deleteBlockedDay(day: string) {
         return this.request('deleteBlockedDays', {
             ids: day
         })
     }
 
-    async getSlip(slipID: string): Promise<any> {
-        return this.request('getSlip', {
-            ID: slipID
-        });
-    }
-
-    async teacherApprovePass(passID: string, teacherID: string) {
+    async approvePass(passID: string) {
         return this.request('teacherApprovePass', {
             passID: passID,
-            teacherID: teacherID
+            teacherID: this.loginService.smID
         })
     }
 
-    async teacherDenyPass(passID: string, teacherID: string) {
+    async denyPass(passID: string) {
         return this.request('teacherDenyPass', {
             passID: passID,
-            teacherID: teacherID
+            teacherID: this.loginService.smID
         })
     }
 
@@ -204,17 +220,4 @@ export class ApiService {
             return err.toString();
         }
     }
-
-    getOutgoingSlipsToday(id: string, month: string, day: string): any {
-        return this.request('getOutgoingSlipsForTeacherToday', {
-            teacherID: id,
-            day: (month + ':' + day)
-        });
-    }
-
-    getIncomingSlipsToday(id: string, month: string, day: string): any {
-        return this.request('getIncomingSlipsForTeacherToday', {
-            teacherID: id,
-            day: (month + ':' + day)
-        });
-    }}
+}
