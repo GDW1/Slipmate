@@ -1,14 +1,9 @@
-<div *ngIf="!loginService.loggedIn" style="height: 100vh;">
-    <div style="display: flex;">
-        <span class="spacer"></span>
-        <div style="display: inline" *ngIf="true">
-            <img class="logo" (click)="this.loginService.signInWithGoogle()" width="400" src="../assets/images/white_overlay_logo.png" style="cursor: pointer; margin-top: 40vh;" alt="Slipmate">
-        </div>
-        <div *ngIf="false">
-            <button mat-raised-button color="primary" (click)="this.loginService.signInWithGoogle()">Sign in</button>
-        </div>
-        <span class="spacer"></span>
+<div *ngIf="!loginService.loggedIn">
+    <div style="width: fit-content; top: 50%; left: 50%;  transform: translate(-50%, -50%)">
+        <img class="logo" (click)="this.loginService.signInWithGoogle()" width="400" src="../assets/images/white_overlay_logo.png" style="cursor: pointer; position: absolute;" alt="Slipmate">
+        <p>Teacher</p>
     </div>
+    <p style="font-size: 12pt; color: darkgray; position: absolute; bottom: 0">Trouble logging in? Try clicking the logo!</p>
 </div>
 
 

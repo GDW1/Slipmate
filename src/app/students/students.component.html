@@ -21,7 +21,7 @@
                 <mat-card-title style="font-family: psans-med, sans-serif; font-size: 32px; padding: 0.25em 0.5em 0.5em;">{{a.name}}</mat-card-title>
                 <mat-card-content style="padding-left: 1em; margin-bottom: 0;">
                     <div style="display: inline-flex; width: 100%; margin: 0 0 0 1em">
-                        <div style="flex: 4; padding: 0 0.5em;">
+                        <div style="flex: 3; padding: 0 0.5em;">
                             <span style="font-size: 24px; color: navy;">Date:</span>
                             <p style="font-size: 18px; margin-bottom: 0.125em">{{a.weekday}}</p>
                             <p style="font-size: 18px; margin-top: 0.125em">{{a.date}}</p>
@@ -30,11 +30,11 @@
                             <span style="font-size: 24px; color: navy;">From:</span>
                             <p style="font-size: 18px;">{{a.fromTeach}}</p>
                         </div>
-                        <div style="flex: 6; padding: 0 0.5em">
+                        <div style="flex: 5; padding: 0 0.5em">
                             <span style="font-size: 24px; color: navy; margin-left: 0;">Reason:</span>
                             <p style="font-size: 18px;">{{a.reason}}</p>
                         </div>
-                        <div style="flex: 4; padding: 0 0.5em">
+                        <div style="flex: 6; padding: 0 0.5em">
                             <span style="font-size: 24px; color: navy;">Status:</span>
                             <p *ngIf="a.approved && !a.denied" style="font-size: 18px; color: limegreen;">Approved</p>
                             <p *ngIf="a.denied" style="font-size: 18px; color: red;">Denied</p>
@@ -68,7 +68,7 @@
                 <mat-card-title style="font-family: psans-med, sans-serif; font-size: 32px; padding: 0.25em 0.5em 0.5em;">{{l.name}}</mat-card-title>
                 <mat-card-content style="padding-left: 1em; margin-bottom: 0;">
                     <div style="display: inline-flex; width: 100%; margin: 0 0 0 1em">
-                        <div style="flex: 4; padding: 0 0.5em;">
+                        <div style="flex: 3; padding: 0 0.5em;">
                             <span style="font-size: 24px; color: navy;">Date:</span>
                             <p style="font-size: 18px; margin-bottom: 0.125em">{{l.weekday}}</p>
                             <p style="font-size: 18px; margin-top: 0.125em">{{l.date}}</p>
@@ -77,11 +77,11 @@
                             <span style="font-size: 24px; color: navy;">From:</span>
                             <p style="font-size: 18px;">{{l.fromTeach}}</p>
                         </div>
-                        <div style="flex: 6; padding: 0 0.5em">
+                        <div style="flex: 5; padding: 0 0.5em">
                             <span style="font-size: 24px; color: navy; margin-left: 0;">Reason:</span>
                             <p style="font-size: 18px;">{{l.reason}}</p>
                         </div>
-                        <div style="flex: 4; padding: 0 0.5em">
+                        <div style="flex: 6; padding: 0 0.5em">
                             <span style="font-size: 24px; color: navy;">Status:</span>
                             <p *ngIf="l.approved && !l.denied" style="font-size: 18px; color: limegreen;">Approved</p>
                             <p *ngIf="l.denied" style="font-size: 18px; color: red;">Denied</p>
@@ -91,7 +91,6 @@
                 </mat-card-content>
                 <mat-card-actions style="overflow: auto">
                     <div style="float: right; width: 100%; margin: 0 1em -0.25em;">
-                        <button mat-stroked-button color="warn" (click)="deletePass(l.slipID)" style="float: right;">Delete</button>
                     </div>
                     <p style="color: lightgray; font-family: psans-light, sans-serif; margin: -1em 0 0.25em 0.5em; padding: 0; font-size: 14px">{{l.slipID}}</p>
                 </mat-card-actions>

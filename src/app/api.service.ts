@@ -60,12 +60,18 @@ export class ApiService {
     }
 
     async createPass(isTeacherPass: boolean, teacherToID: string, teacherFromID: string, studentID: string, month: string, day: string, reason: string): Promise<any> {
-        let tt = this.getTeacher(teacherToID);
-        let ft = this.getTeacher(teacherFromID);
-        let ttName = '';
-        let ftName = '';
-        if (!tt.hasOwnProperty('name')) ttName = 'null';
-        if (!ft.hasOwnProperty('name')) ftName = 'null';
+        let ttName = 'null';
+        let ftName = 'null';
+
+        await this.getTeacher(teacherToID).then(val => {
+            let tt = JSON.parse(val);
+            if (tt.hasOwnProperty('teachName')) ttName = tt.teachName;
+        });
+        await this.getTeacher(teacherFromID).then(val => {
+            let ft = JSON.parse(val);
+            if (ft.hasOwnProperty('teachName')) ftName = ft.teachName;
+        });
+
         return this.request('createPass', {
             isTeacherPass: isTeacherPass,
             toTeachID: teacherToID,
@@ -128,14 +134,18 @@ export class ApiService {
     async isBlockedDay(id: string, date: string): Promise<boolean> {
         let r = await this.getBlockedDays(id);
         console.log(r.__zone_symbol__value);
-        let a: [string] = JSON.parse(r.__zone_symbol__value);
-        for (let i = 0; i < a.length; i++) {
-            console.log(a[i]);
-            if (a[i] === date) {
-                return true;
+        try {
+            let a: [string] = JSON.parse(r);
+            for (let i = 0; i < a.length; i++) {
+                console.log(a[i]);
+                if (a[i] === date) {
+                    return true;
+                }
             }
+            return false;
+        } catch {
+            return false;
         }
-        return false;
     }
 
     async deleteBlockedDay(day: string) {

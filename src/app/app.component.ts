@@ -28,7 +28,7 @@ export class AppComponent implements AfterViewInit, OnInit {
         if (this.loginService.loggedIn) {
             this.sidenavContainer.scrollable.elementScrolled().subscribe(() => {});
             if(this.loginService.firsttime){
-                this.router.navigate(["/help"])
+                this.router.navigate(['/help'])
             }
         } else {
             this.tryLogin()

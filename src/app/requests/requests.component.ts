@@ -56,6 +56,16 @@ export class RequestsComponent implements OnInit, AfterViewInit {
         });
     }
 
+    async deletePass(slipID: string) {
+        if(window.confirm('Are sure you want to cancel this request?')) {
+            this.waiting = this.waiting.filter(function(card) {
+                return !(card.slipID === slipID);
+            });
+
+            this.api.deletePass(slipID);
+        }
+    }
+
     async deny(slipID: string) {
         if(window.confirm('Are sure you want to deny this tutorial pass? You will not be able to get it back!')) {
             this.pending = this.pending.filter(function(card) {

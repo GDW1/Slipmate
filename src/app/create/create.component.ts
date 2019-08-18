@@ -1,6 +1,7 @@
 import {Component, OnInit, NgZone} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from "../api.service";
+import {LoginService} from "../login.service";
 
 @Component({
     selector: 'app-create',
@@ -25,7 +26,8 @@ export class CreateComponent implements OnInit {
     reason: string;
 
     constructor(private formBuilder: FormBuilder,
-                private api: ApiService) {
+                private api: ApiService,
+                private loginService: LoginService) {
     }
 
     ngOnInit() {
@@ -76,7 +78,7 @@ export class CreateComponent implements OnInit {
             this.gotError = true;
             this.loading = false;
         } else {
-            if (!await this.api.isBlockedDay(this.month, this.day)) {
+            if (!await this.api.isBlockedDay(this.loginService.smID, this.month + this.day)) {
                 this.api.createPass(true, this.ttID, this.ftID, this.studentID, this.month, this.day, this.reason).then(val => {
                     this.response = val;
                     this.loading = false;
