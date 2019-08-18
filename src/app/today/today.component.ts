@@ -8,7 +8,7 @@ import {MatTableDataSource} from '@angular/material';
   templateUrl: './today.component.html',
   styleUrls: ['./today.component.scss']
 })
-export class TodayComponent implements OnInit, AfterViewInit {
+export class TodayComponent implements OnInit {
   private numberOfIncoming: any;
   private numberOfOutgoing: any;
   private displayedColumns = ["Reason", "StudentName"];
@@ -26,34 +26,35 @@ export class TodayComponent implements OnInit, AfterViewInit {
       private loginService: LoginService,
   ){}
 
-  async ngAfterViewInit() {
+  ngOnInit() {
     this.once = false;
     this.twice = false;
     // @ts-ignore
-    await this.checkBlocked().then(val => this.isBlocked = val);
-    if(!this.isBlocked) {
-      var someFunction = function(loadNumberOfIncoming, loadNumberOfOutgoing, thisClass) {
-          return new Promise(function(resolve, reject){
-          setTimeout(() => {
-            thisClass.incomingPasses = loadNumberOfIncoming(thisClass);
-            thisClass.outgoingPasses = loadNumberOfOutgoing(thisClass);
-            resolve("finished")
-          })
+    this.checkBlocked().then((val)=>{
+      console.log("ISBLOCKED?: " + this.isBlocked)
+      // @ts-ignore
+      this.isBlocked = val
+      // @ts-ignore
+      if(!val) {
+        console.log("NOTBLOCKED")
+        this.loadNumberOfIncoming().then(val=>{
+          this.incomingPasses = val;
+          this.loadData()
         })
+        this.loadNumberOfOutgoing().then(val=> {
+          this.outgoingPasses = val;
+          this.loadData()
+        })
+      }else{
+        this.styleTag = 'hidden';
+        this.redStyle = "visible"
       }
-      someFunction(this.loadNumberOfIncoming, this.loadNumberOfOutgoing, this).then(() => this.loadData()).then(() => this.fillInTable())
-    }else{
-      this.styleTag = this.redStyle;
-      this.redStyle = "visible"
-    }
-    console.log(this.isBlocked)
-  }
-  ngOnInit(): void {
+      console.log(this.isBlocked)
+    })
   }
 
-  checkBlocked(){
-    return new Promise((resolve) => {
-      setTimeout(() => {
+
+  async checkBlocked(){
         let month = "";
         if(((new Date()).getMonth() + 1) < 10){
           month = "0" + ((new Date()).getMonth() + 1).toString()
@@ -68,54 +69,65 @@ export class TodayComponent implements OnInit, AfterViewInit {
         }
         let dateStamp = month + ":" + day;
         console.log("DATE: " + dateStamp);
-        this.api.getBlockedDays(this.loginService.smID).then(val => {
+        await this.api.getBlockedDays(this.loginService.smID).then(val => {
           try{
             let jsonD = JSON.parse(val.toString());
             for(let i = 0; i < jsonD.length; i++){
               if(jsonD[i][0] === dateStamp){
                 console.log("FOUND");
-                resolve(true);
+                this.styleTag = 'hidden';
+                this.redStyle = "visible"
+                return (true);
               }
             }
           }catch{
-            resolve(false);
+            return (false);
           }
         })
-      })
+  }
+
+  loadNumberOfIncoming(){
+    return new Promise((resolve) => {
+      setTimeout(() => {
+      console.log("EMAILTOBACKEND" + this.loginService.user.email)
+      this.api.getIncomingSlipsToday(this.loginService.smID).then(val => {
+          console.log("loadNumberOfIncoming: " + val)
+          resolve (val.toString())
+        })
+      });
     });
   }
 
-  loadNumberOfIncoming(thisClass){
-    // return new Promise((resolve) => {
-    //   setTimeout(() => {
-    console.log("EMAILTOBACKEND" + this.loginService.user.email)
-    thisClass.api.getIncomingSlipsToday(thisClass.loginService.smID).then(val => {
-          console.log("loadNumberOfIncoming: " + val)
-          return (val)
-        })
-    //   });
-    // });
-  }
+  loadNumberOfOutgoing(){
+    return new Promise((resolve) => {
+      setTimeout(() => {
 
-  loadNumberOfOutgoing(thisClass){
-      thisClass.api.getOutgoingSlipsToday(thisClass.loginService.smID).then(val => {
+        this.api.getOutgoingSlipsToday(this.loginService.smID).then(val => {
           console.log("loadNumberOfOutgoing: " + val)
-          return (val)
-      })
+          resolve (val.toString())
+      })})})
   }
 
   fillInTable(){
-    this.stus = [];
-    for(let i = 0; i < this.incomingPasses.length; i++){
-      this.stus.push({reason: this.incomingPasses[i].reason, studentName: this.incomingPasses[i].studentName});
-      console.log(this.stus[i])
+    if(this.numberOfOutgoing !== "" ||this.numberOfIncoming !== "" ){
+      try{
+        JSON.parse(this.incomingPasses)
+        this.stus = [];
+        for(let i = 0; i < this.incomingPasses.length; i++){
+          this.stus.push({reason: this.incomingPasses[i].reason, studentName: this.incomingPasses[i].studentName});
+          console.log(this.stus[i])
+        }
+        console.log("DATA:" + this.stus);
+        this.dataSource = new MatTableDataSource(this.stus);
+
+      }catch(err) {
+      }
     }
-    console.log("DATA:" + this.stus);
-    this.dataSource = new MatTableDataSource(this.stus);
   }
   
   loadData(){
     try{
+      console.log("INCOMINGPASSESLENGTH" + this.incomingPasses.length)
       if(!this.once){
         this.incomingPasses = JSON.parse(this.incomingPasses)
       }
