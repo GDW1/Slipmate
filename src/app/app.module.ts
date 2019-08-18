@@ -12,7 +12,7 @@ import {
     MatListModule,
     MatMenuModule,
     MatNativeDateModule, MatProgressSpinnerModule,
-    MatSidenavModule,
+    MatSidenavModule, MatSlideToggleModule,
     MatStepperModule, MatTableModule,
     MatToolbarModule
 } from '@angular/material';
@@ -74,7 +74,8 @@ export function provideConfig() {
         FormsModule,
         SocialLoginModule,
         MatProgressSpinnerModule,
-        MatTableModule
+        MatTableModule,
+        MatSlideToggleModule
     ],
     providers: [
         {
