@@ -50,41 +50,39 @@ export class AppComponent implements AfterViewInit, OnInit {
     }
 
     private emailStatus(){
-        var promise = new Promise((resolve) => {
+        return new Promise((resolve) => {
             setTimeout(() => {
-                this.api.getEmailValue(this.loginService.user.email.split('@')[0]).then(val => {
-                    console.log("VAL: " + val)
-                    resolve(val.toString())
-                    return
+                this.api.getEmailValue(this.loginService.smID).then(val => {
+                    console.log("VAL: " + val);
+                    resolve(val.toString());
+                    return;
                 }).catch(err=> {
                     resolve(err)
                 })
             });
         });
-        return promise;
     }
     setOtherEmail() {
-        var promise = new Promise((resolve) => {
+        return new Promise((resolve) => {
             setTimeout(() => {
-                this.api.getTeacher(this.loginService.user.email.split('@')[0]).then((val) => {
-                    console.log(val)
+                this.api.getTeacher(this.loginService.smID).then((val) => {
+                    console.log(val);
                     this.api.optInOrOut(JSON.parse(val).id, this.isEmailed.toString()).then(val => {
-                        this.isEmailed = !this.isEmailed
-                        resolve(val.toString())
+                        this.isEmailed = !this.isEmailed;
+                        resolve(val.toString());
                         return
                     })
 
                 })
             });
         });
-        return promise;
     }
 
     initLogin() {
         this.emailStatus().then(val => {
             this.isEmailed = (val === "true");
             console.log("EMAIL: "+ val)
-        })
+        });
         this.checked=true
 
     }
