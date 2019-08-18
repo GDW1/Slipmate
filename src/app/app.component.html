@@ -13,6 +13,7 @@
 
 
 <div class="container" *ngIf="loginService.loggedIn">
+    <span *ngIf="!this.checked" >{{this.initLogin()}}</span>
     <mat-toolbar color="primary" class="app-toolbar">
         <button mat-icon-button (click)="sidenav.toggle()" style="margin-right: 1em; margin-bottom: 2px">
             <mat-icon style="margin-bottom: 1px">menu</mat-icon>
@@ -33,7 +34,7 @@
         <mat-menu #usermenu style="border-radius: 10em">
             <span class="name">{{this.loginService.name}}</span>
             <mat-divider></mat-divider>
-            <p mat-menu-item routerLink="settings">Receive Emails <mat-slide-toggle></mat-slide-toggle></p>
+            <p mat-menu-item>Receive Emails <mat-slide-toggle [checked]="isEmailed" (change)="this.setOtherEmail()"></mat-slide-toggle></p>
             <a mat-menu-item routerLink="help">Help</a>
             <a mat-menu-item (click)="this.loginService.signOut()">Log Out</a>
         </mat-menu>

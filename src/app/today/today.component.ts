@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ApiService} from '../api.service';
 import {LoginService} from '../login.service';
 import {MatTableDataSource} from '@angular/material';
@@ -8,7 +8,7 @@ import {MatTableDataSource} from '@angular/material';
   templateUrl: './today.component.html',
   styleUrls: ['./today.component.scss']
 })
-export class TodayComponent implements OnInit {
+export class TodayComponent implements OnInit, AfterViewInit {
   private numberOfIncoming: any;
   private numberOfOutgoing: any;
   private displayedColumns = ["Reason", "StudentName"];
@@ -26,7 +26,7 @@ export class TodayComponent implements OnInit {
       private loginService: LoginService,
   ){}
 
-  async ngOnInit() {
+  async ngAfterViewInit() {
     this.once = false;
     this.twice = false;
     // @ts-ignore
@@ -48,6 +48,8 @@ export class TodayComponent implements OnInit {
     }
     console.log(this.isBlocked)
   }
+  ngOnInit(): void {
+  }
 
   checkBlocked(){
     return new Promise((resolve) => {
@@ -67,14 +69,17 @@ export class TodayComponent implements OnInit {
         let dateStamp = month + ":" + day;
         console.log("DATE: " + dateStamp);
         this.api.getBlockedDays(this.loginService.smID).then(val => {
-          let jsonD = JSON.parse(val.toString());
-          for(let i = 0; i < jsonD.length; i++){
-            if(jsonD[i][0] === dateStamp){
-              console.log("FOUND");
-              resolve(true);
+          try{
+            let jsonD = JSON.parse(val.toString());
+            for(let i = 0; i < jsonD.length; i++){
+              if(jsonD[i][0] === dateStamp){
+                console.log("FOUND");
+                resolve(true);
+              }
             }
+          }catch{
+            resolve(false);
           }
-          resolve(false);
         })
       })
     });
@@ -83,6 +88,7 @@ export class TodayComponent implements OnInit {
   loadNumberOfIncoming(thisClass){
     // return new Promise((resolve) => {
     //   setTimeout(() => {
+    console.log("EMAILTOBACKEND" + this.loginService.user.email)
     thisClass.api.getIncomingSlipsToday(thisClass.loginService.smID).then(val => {
           console.log("loadNumberOfIncoming: " + val)
           return (val)

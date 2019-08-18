@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {AuthService, GoogleLoginProvider, SocialUser} from "angularx-social-login";
+import {AppRoutingModule} from "./app-routing.module";
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,10 @@ export class LoginService {
               req.setRequestHeader('id', this.smID);
               req.setRequestHeader('teacher', this.name);
               req.send();
+              if(req.response !== "ERROR: 1: Account was already created"){
+                this.firsttime = true
+              }
+              window.location.href = "localhost:4200"
               console.log('done')
           }
       });
@@ -35,11 +40,15 @@ export class LoginService {
     }
 
     checkIfCorrectLogin(){
-       // if(this.user.email.split('@')[0].toString());
+       if((/^[a-zA-Z]/.test(this.smID) /*&& this.user.email.split('@')[1] === 'seq.org'*/) || this.smID === '798932' || this.smID === '796940'){
+            console.log("REGEXMATCHES")
+       }else{
+            window.location.href = 'slipmate.ml'
+       };
 
 
     }
-
+    public firsttime = false;
     public user: SocialUser;
     public loggedIn: boolean;
     public name: string;

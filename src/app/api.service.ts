@@ -220,4 +220,18 @@ export class ApiService {
             return err.toString();
         }
     }
+
+
+    getEmailValue(idD: string) {
+        return this.request('teacherIsOpted', {
+            teachID: idD
+        })
+    }
+
+    optInOrOut(idD: string, current: string) {
+        return this.request('teacherOptIn', {
+            docID: idD,
+            currentStatus: current
+        })
+    }
 }

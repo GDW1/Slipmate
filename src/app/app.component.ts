@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatListItem, MatSidenavContainer} from "@angular/material";
 import {Router} from "@angular/router";
 import {LoginService} from "./login.service";
@@ -9,9 +9,10 @@ import {ApiService} from "./api.service";
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent implements AfterViewInit, OnInit {
     title = 'Slipmate';
-
+    private isEmailed: boolean;
+    private checked: boolean;
     @ViewChild(MatSidenavContainer, {static: true})sidenavContainer: MatSidenavContainer;
     @ViewChild(MatListItem, {static: true}) sidenavLink: MatListItem;
 
@@ -19,10 +20,16 @@ export class AppComponent implements AfterViewInit {
                 private api: ApiService,
                 private loginService: LoginService) {
     }
+    ngOnInit(){
+        this.checked=false;
+    }
 
     ngAfterViewInit() {
         if (this.loginService.loggedIn) {
             this.sidenavContainer.scrollable.elementScrolled().subscribe(() => {});
+            if(this.loginService.firsttime){
+                this.router.navigate(["/help"])
+            }
         } else {
             this.tryLogin()
         }
@@ -40,5 +47,41 @@ export class AppComponent implements AfterViewInit {
 
     isActive(path: string): boolean {
         return this.router.url.substring(1) === path;
+    }
+
+    private emailStatus(){
+        var promise = new Promise((resolve) => {
+            setTimeout(() => {
+                this.api.getEmailValue(this.loginService.user.email.split('@')[0]).then(val => {
+                    console.log("VAL: " + val)
+                    resolve(val.toString())
+                    return
+                }).catch(err=> {
+                    resolve(err)
+                })
+            });
+        });
+        return promise;
+    }
+    setOtherEmail() {
+        var promise = new Promise((resolve) => {
+            setTimeout(() => {
+                this.api.optInOrOut(this.loginService.user.email.split('@')[0], this.isEmailed.toString()).then(val => {
+                    this.isEmailed = !this.isEmailed
+                    resolve(val.toString())
+                    return
+                })
+            });
+        });
+        return promise;
+    }
+
+    initLogin() {
+        this.emailStatus().then(val => {
+            this.isEmailed = (val === "true");
+            console.log("EMAIL: "+ val)
+        })
+        this.checked=true
+
     }
 }
