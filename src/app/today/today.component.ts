@@ -32,8 +32,16 @@ export class TodayComponent implements OnInit {
     // @ts-ignore
     await this.checkBlocked().then(val => this.isBlocked = val);
     if(!this.isBlocked) {
-      this.loadNumberOfIncoming().then((val) => this.incomingPasses = (val.toString())).then(() => this.loadData());
-      this.loadNumberOfOutgoing().then((val) => this.outgoingPasses = (val.toString())).then(() => this.loadData());
+      var someFunction = function(loadNumberOfIncoming, loadNumberOfOutgoing, thisClass) {
+          return new Promise(function(resolve, reject){
+          setTimeout(() => {
+            thisClass.incomingPasses = loadNumberOfIncoming(thisClass);
+            thisClass.outgoingPasses = loadNumberOfOutgoing(thisClass);
+            resolve("finished")
+          })
+        })
+      }
+      someFunction(this.loadNumberOfIncoming, this.loadNumberOfOutgoing, this).then(() => this.loadData()).then(() => this.fillInTable())
     }else{
       this.styleTag = this.redStyle;
       this.redStyle = "visible"
@@ -72,26 +80,22 @@ export class TodayComponent implements OnInit {
     });
   }
 
-  loadNumberOfIncoming(){
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        console.log("Async Work Complete");
-        this.api.getIncomingSlipsToday(this.loginService.smID).then(val => {
-          resolve(val.toString())
+  loadNumberOfIncoming(thisClass){
+    // return new Promise((resolve) => {
+    //   setTimeout(() => {
+    thisClass.api.getIncomingSlipsToday(thisClass.loginService.smID).then(val => {
+          console.log("loadNumberOfIncoming: " + val)
+          return (val)
         })
-      });
-    });
+    //   });
+    // });
   }
 
-  loadNumberOfOutgoing(){
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        console.log("Async Work Complete");
-        this.api.getOutgoingSlipsToday(this.loginService.smID).then(val => {
-          resolve(val)
-        })
-      });
-    });
+  loadNumberOfOutgoing(thisClass){
+      thisClass.api.getOutgoingSlipsToday(thisClass.loginService.smID).then(val => {
+          console.log("loadNumberOfOutgoing: " + val)
+          return (val)
+      })
   }
 
   fillInTable(){

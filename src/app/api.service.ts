@@ -91,15 +91,15 @@ export class ApiService {
         });
     }
 
-    async getOutgoingSlipsToday(id: string): Promise<any> {
-        return await this.request('getOutgoingSlipsForTeacherToday', {
+    getOutgoingSlipsToday(id: string): Promise<any> {
+        return this.request('getOutgoingSlipsForTeacherToday', {
             teacherID: id,
             day: (this.getMonth() + ':' + this.getDay())
         });
     }
 
-    async getIncomingSlipsToday(id: string): Promise<any> {
-        return await this.request('getIncomingSlipsForTeacherToday', {
+    getIncomingSlipsToday(id: string): Promise<any> {
+        return this.request('getIncomingSlipsForTeacherToday', {
             teacherID: id,
             day: (this.getMonth() + ':' + this.getDay())
         });

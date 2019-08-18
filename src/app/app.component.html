@@ -33,7 +33,7 @@
         <mat-menu #usermenu style="border-radius: 10em">
             <span class="name">{{this.loginService.name}}</span>
             <mat-divider></mat-divider>
-            <a mat-menu-item routerLink="settings">Settings</a>
+            <p mat-menu-item routerLink="settings">Receive Emails <mat-slide-toggle></mat-slide-toggle></p>
             <a mat-menu-item routerLink="help">Help</a>
             <a mat-menu-item (click)="this.loginService.signOut()">Log Out</a>
         </mat-menu>

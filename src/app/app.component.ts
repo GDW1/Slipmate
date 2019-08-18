@@ -37,6 +37,7 @@ export class AppComponent implements AfterViewInit {
         else return this.router.url.substring(1);
     }
 
+
     isActive(path: string): boolean {
         return this.router.url.substring(1) === path;
     }

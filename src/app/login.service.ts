@@ -14,7 +14,7 @@ export class LoginService {
           if (this.loggedIn) {
               this.smID = user.email.split('@')[0];
               this.name = user.name;
-
+              this.checkIfCorrectLogin();
               let req = new XMLHttpRequest;
               req.open('GET', 'https://cors-anywhere.herokuapp.com/https://us-central1-tutorial-pass-automator.cloudfunctions.net/initializeTeacher', false);
               req.setRequestHeader('id', this.smID);
@@ -32,6 +32,12 @@ export class LoginService {
     signOut(): void {
         this.authService.signOut();
         // document.location.href = 'https://slipmate.ml';
+    }
+
+    checkIfCorrectLogin(){
+       // if(this.user.email.split('@')[0].toString());
+
+
     }
 
     public user: SocialUser;
