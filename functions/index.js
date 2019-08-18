@@ -590,10 +590,6 @@ exports.getTeacher = functions.https.onRequest((request, response) => {
     }else{
         origin = "https://student.slipmate.ml"
     }
-    if(request.get("origin") !== "https://teacher.slipmate.ml" && request.get("origin") !== "https://student.slipmate.ml"){
-        response.send("This is not an approved origin")
-        return;
-    }
     if (request.method === `OPTIONS`) {
         response.header('Access-Control-Allow-Origin', origin).header('Access-Control-Allow-Methods', 'GET')
             .header("Access-Control-Allow-Headers", "Content-Type, teacherid")
