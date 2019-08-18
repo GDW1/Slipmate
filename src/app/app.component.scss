@@ -9,6 +9,12 @@
     z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
 }
 
+mat-spinner.load{
+    display:none;
+}
+router-outlet + mat-spinner.load{
+    display: block;
+}
 
 .container {
     display: flex;
@@ -52,4 +58,16 @@
     font-size: 18px;
     font-family: psans-bold, sans-serif;
     margin: 0.5em 0.5em 0.5em 0.5em;
+}
+
+.logo {
+    background: linear-gradient(90deg, #ff6622, #ff6622, #bbbbbb, #ff6622, #ff6622);
+    background-size: 400% 100%;
+
+    animation: Logo 2s ease-in infinite;
+}
+
+@keyframes Logo {
+    0%{background-position:95% 50%}
+    100%{background-position:0% 50%}
 }

@@ -42,7 +42,7 @@ export class RequestsComponent implements OnInit, AfterViewInit {
             this.loadedP = true;
         });
 
-        this.api.getOutgoingSlipsUnconditional(this.loginService.smID).then(val => {
+        this.api.getIncomingSlipsUnconditional(this.loginService.smID).then(val => {
             try {
                 let temp = this.api.bottleCards(JSON.parse(val));
                 this.waiting = temp.filter(function(card) {
