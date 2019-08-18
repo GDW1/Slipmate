@@ -585,11 +585,7 @@ exports.getUnapprovedSlips = functions.https.onRequest((request, response) => {
 exports.getTeacher = functions.https.onRequest((request, response) => {
     let googleAuth = request.get("id_token");
     let origin = "";
-    if(request.get("origin") === "https://teacher.slipmate.ml"){
-        origin = "https://teacher.slipmate.ml"
-    }else{
-        origin = "https://student.slipmate.ml"
-    }
+
     if(request.get("origin") !== "https://teacher.slipmate.ml" && request.get("origin") !== "https://student.slipmate.ml"){
         response.send("This is not an approved origin")
         return;

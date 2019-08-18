@@ -18,8 +18,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/functions/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="262" column="78" selection-start-line="262" selection-start-column="78" selection-end-line="262" selection-end-column="78" />
+            <state relative-caret-position="216">
+              <caret line="587" selection-start-line="587" selection-end-line="587" />
             </state>
           </provider>
         </entry>
@@ -69,10 +69,26 @@
     <option name="height" value="1050" />
   </component>
   <component name="ProjectView">
-    <navigator currentView="Scope" currentSubView="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope" proportions="" version="1">
+    <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Tutorial-Pass-Automator" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Tutorial-Pass-Automator" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Tutorial-Pass-Automator" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Tutorial-Pass-Automator" type="462c0819:PsiDirectoryNode" />
+              <item name="functions" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="Scope">
         <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
           <expand>
@@ -84,22 +100,6 @@
               <item name="Tutorial-Pass-Automator" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="~/Documents/GitHub/Tutorial-Pass-Automator" type="442cc68d:ScopeViewTreeModel$RootNode" />
               <item name="functions" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="Slipmate" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Slipmate" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Slipmate" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Slipmate" type="462c0819:PsiDirectoryNode" />
-              <item name="functions" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -166,7 +166,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="79507000" />
+    <option name="totallyTimeSpent" value="79517000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -178,10 +178,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
+    <frame x="0" y="23" width="1680" height="971" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24593128" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24954791" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -193,7 +193,7 @@
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32857144" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.272449" />
+      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.32992035" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -253,8 +253,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/functions/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="262" column="78" selection-start-line="262" selection-start-column="78" selection-end-line="262" selection-end-column="78" />
+        <state relative-caret-position="216">
+          <caret line="587" selection-start-line="587" selection-end-line="587" />
         </state>
       </provider>
     </entry>
