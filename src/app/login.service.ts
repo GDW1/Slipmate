@@ -45,7 +45,7 @@ export class LoginService {
     }
 
     checkIfCorrectLogin(){
-        if (!((/^[a-zA-Z]/.test(this.smID) /*&& this.user.email.split('@')[1] === 'seq.org'*/) || this.smID === '798932' || this.smID === '796940')) {
+        if (!((/^[a-zA-Z]/.test(this.smID) && this.user.email.split('@')[1] === 'seq.org') || this.smID === '798932' || this.smID === '796940')) {
             this.signOut();
             window.location.href = 'https://slipmate.ml'
         }
