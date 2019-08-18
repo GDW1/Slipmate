@@ -12,7 +12,7 @@ import {ApiService} from "./api.service";
 export class AppComponent implements AfterViewInit, OnInit {
     title = 'Slipmate';
     private isEmailed: boolean;
-    private checked: boolean;
+    private checked: boolean = false;
     @ViewChild(MatSidenavContainer, {static: true})sidenavContainer: MatSidenavContainer;
     @ViewChild(MatListItem, {static: true}) sidenavLink: MatListItem;
 
@@ -21,7 +21,6 @@ export class AppComponent implements AfterViewInit, OnInit {
                 private loginService: LoginService) {
     }
     ngOnInit(){
-        this.checked=false;
     }
 
     ngAfterViewInit() {
@@ -81,11 +80,11 @@ export class AppComponent implements AfterViewInit, OnInit {
     }
 
     initLogin() {
+        if(this.checked){
         this.emailStatus().then(val => {
             this.isEmailed = (val === "true");
             console.log("EMAIL: "+ val)
-        })
-        this.checked=true
-
+            this.checked=true
+        })}
     }
 }

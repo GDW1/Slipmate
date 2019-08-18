@@ -13,7 +13,7 @@
 
 
 <div class="container" *ngIf="loginService.loggedIn">
-    <span *ngIf="!this.checked" >{{this.initLogin()}}</span>
+    <span >{{this.initLogin()}}</span>
     <mat-toolbar color="primary" class="app-toolbar">
         <button mat-icon-button (click)="sidenav.toggle()" style="margin-right: 1em; margin-bottom: 2px">
             <mat-icon style="margin-bottom: 1px">menu</mat-icon>
