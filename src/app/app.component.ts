@@ -66,10 +66,14 @@ export class AppComponent implements AfterViewInit, OnInit {
     setOtherEmail() {
         var promise = new Promise((resolve) => {
             setTimeout(() => {
-                this.api.optInOrOut(this.loginService.user.email.split('@')[0], this.isEmailed.toString()).then(val => {
-                    this.isEmailed = !this.isEmailed
-                    resolve(val.toString())
-                    return
+                this.api.getTeacher(this.loginService.user.email.split('@')[0]).then((val) => {
+                    console.log(val)
+                    this.api.optInOrOut(JSON.parse(val).id, this.isEmailed.toString()).then(val => {
+                        this.isEmailed = !this.isEmailed
+                        resolve(val.toString())
+                        return
+                    })
+
                 })
             });
         });
